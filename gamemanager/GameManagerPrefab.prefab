@@ -1,0 +1,152 @@
+[
+  {
+    "__type__": "cc.Prefab",
+    "_name": "",
+    "_objFlags": 0,
+    "_native": "",
+    "data": {
+      "__id__": 1
+    },
+    "optimizationPolicy": 0,
+    "asyncLoadAssets": false,
+    "readonly": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "GameManagerPrefab",
+    "_objFlags": 0,
+    "_parent": null,
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 2
+      },
+      {
+        "__id__": 3
+      },
+      {
+        "__id__": 4
+      },
+      {
+        "__id__": 5
+      }
+    ],
+    "_prefab": {
+      "__id__": 6
+    },
+    "_opacity": 0,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
+  },
+  {
+    "__type__": "bfec6DBzDVNlLKAAIRi50qk",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "ARR_Prefab___": [],
+    "game_font": null,
+    "wssCacert": null,
+    "sound_click": null,
+    "_id": ""
+  },
+  {
+    "__type__": "88a17mvSERJ/5Z8mGLe8KgG",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "toolTipPrefable": {
+      "__uuid__": "0bd9e680-0d75-455b-9d48-dc80ebafb367"
+    },
+    "toolTipPrefable_2": {
+      "__uuid__": "0bd9e680-0d75-455b-9d48-dc80ebafb367"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "ccd7cPx3JlGhJIUcAuk/Zsp",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "toolTipPrefable": {
+      "__uuid__": "3da44410-e912-4711-9d8e-3b7e3ea84b27"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "7a1d3ZUQuZI0p04TEEALTUM",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "toolTipPrefable": {
+      "__uuid__": "01b155ef-65b2-4a0f-af8e-264f7d74d2db"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "781832a7-11fd-47f4-aaac-4dfb049972c0"
+    },
+    "fileId": "efdmN94C1GLq6aKv5ik/eF",
+    "sync": false
+  }
+]

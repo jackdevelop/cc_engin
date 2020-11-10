@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "6600f0d1-cc41-4f5b-8126-b431daa55145",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 134,
+  "height": 134,
+  "platformSettings": {},
+  "subMetas": {
+    "loadingchrysanthemum_juhua": {
+      "ver": "1.0.4",
+      "uuid": "803743df-f971-461f-9287-211233a7e781",
+      "rawTextureUuid": "6600f0d1-cc41-4f5b-8126-b431daa55145",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -3.5,
+      "offsetY": 11.5,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 127,
+      "height": 111,
+      "rawWidth": 134,
+      "rawHeight": 134,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
