@@ -104,12 +104,8 @@
       "__id__": 1
     },
     "_enabled": true,
-    "toolTipPrefable": {
-      "__uuid__": "0bd9e680-0d75-455b-9d48-dc80ebafb367"
-    },
-    "toolTipPrefable_2": {
-      "__uuid__": "0bd9e680-0d75-455b-9d48-dc80ebafb367"
-    },
+    "toolTipPrefable": null,
+    "toolTipPrefable_2": null,
     "_id": ""
   },
   {
@@ -120,9 +116,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "toolTipPrefable": {
-      "__uuid__": "3da44410-e912-4711-9d8e-3b7e3ea84b27"
-    },
+    "m_prefable": null,
+    "m_max_num": 3,
+    "m_zorder": 2000,
     "_id": ""
   },
   {
@@ -146,7 +142,7 @@
     "asset": {
       "__uuid__": "781832a7-11fd-47f4-aaac-4dfb049972c0"
     },
-    "fileId": "efdmN94C1GLq6aKv5ik/eF",
+    "fileId": "",
     "sync": false
   }
 ]
