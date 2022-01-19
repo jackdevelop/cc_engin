@@ -1,29 +1,65 @@
+
+
+
+
+
+
+
 const { ccclass, property } = cc._decorator;
+
 @ccclass
-export class BaseModel {
-  private M_FSM = null;
-  public FSM_init() {
-    return true;
-  }
-  public FSM_get() {
-    return this.M_FSM;
-  }
-  public FSM_go(one) {
-    this.M_FSM.go(one);
-  }
-  public FSM_canGo(one) {
-    return this.M_FSM.canGo(one);
-  }
-  public FSM_is(one) {
-    return this.M_FSM.is(one);
-  }
-  public destroy(model) {
-    this.M_FSM = null;
-    if (this.instance) {
-      this.instance = null;
-    }
-    if (model && model.instance) {
-      model.instance = null;
-    }
-  }
+export default class BaseModel {
+	
+	private m_items = new Object();
+
+	
+	public set_item(item_id, item) {
+		let is_hav = this.get_item_by_itemid(item_id);
+		if (!is_hav) {
+			item_id = item_id + '';
+
+			
+			
+			item.___item_no = item_id;
+
+			this.m_items[item_id] = item;
+		} else {
+			cc.log('当前含有数据了，' + item_id + '请先删除在添加');
+		}
+
+		return item;
+	}
+
+	
+	public get_items() {
+		return this.m_items;
+	}
+
+	
+	public delete_item_by_itemid(item_id) {
+		item_id = item_id + '';
+
+		var item = this.m_items[item_id];
+
+		
+		this.m_items[item_id] = null;
+		delete this.m_items[item_id];
+
+		return item;
+	}
+
+	
+	public delete_all_items() {
+		let ret = this.m_items
+		this.m_items = {};
+		return ret
+	}
+
+	
+	public get_item_by_itemid(item_id) {
+		item_id = item_id + '';
+		var item = this.m_items[item_id];
+
+		return item;
+	}
 }

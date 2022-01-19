@@ -92,7 +92,6 @@ export default class List extends cc.Component {
   @property()
   private _virtual: boolean = true;
   @property({
-    type: cc.Boolean,
     tooltip: CC_DEV && '是否为虚拟列表（动态列表）',
   })
   set virtual(val: boolean) {
@@ -1433,7 +1432,7 @@ export default class List extends cc.Component {
   }
   
   _onTouchStart(ev, captureListeners) {
-    if (this._scrollView['_hasNestedViewGroup'](ev, captureListeners)) return;
+    if (this._scrollView['hasNestedViewGroup'](ev, captureListeners)) return;
     let isMe = ev.eventPhase === cc.Event.AT_TARGET && ev.target === this.node;
     if (!isMe) {
       let itemNode: any = ev.target;
@@ -1462,7 +1461,7 @@ export default class List extends cc.Component {
   _onTouchCancelled(ev, captureListeners) {
     let t = this;
     if (
-      t._scrollView['_hasNestedViewGroup'](ev, captureListeners) ||
+      t._scrollView['hasNestedViewGroup'](ev, captureListeners) ||
       ev.simulate
     )
       return;

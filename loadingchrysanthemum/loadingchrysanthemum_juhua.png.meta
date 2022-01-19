@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "6600f0d1-cc41-4f5b-8126-b431daa55145",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "loadingchrysanthemum_juhua": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "803743df-f971-461f-9287-211233a7e781",
+      "importer": "sprite-frame",
       "rawTextureUuid": "6600f0d1-cc41-4f5b-8126-b431daa55145",
       "trimType": "auto",
       "trimThreshold": 1,

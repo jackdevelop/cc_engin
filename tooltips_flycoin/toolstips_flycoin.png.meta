@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "794149d8-60d6-42d4-b002-01b892f21b50",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "toolstips_flycoin": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "0e27a012-5f3b-455e-9f07-a49a05a3db70",
+      "importer": "sprite-frame",
       "rawTextureUuid": "794149d8-60d6-42d4-b002-01b892f21b50",
       "trimType": "auto",
       "trimThreshold": 1,

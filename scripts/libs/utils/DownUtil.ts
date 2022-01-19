@@ -1,6 +1,21 @@
-var _ = require("Underscore");
+import { GameLoader } from "./GameLoader";
+
+var _ = require('Underscore');
+
 export class DownUtil {
+  
   private static _seq: number = 1;
+
+
+  
+  public static async getInfoWithPath(url){
+    
+    let is_hav = await GameLoader.load(url,null);
+
+    return is_hav
+  }
+
+  
   public static HttpDownload(
     url: string,
     fileName: string,
@@ -9,7 +24,9 @@ export class DownUtil {
   ) {
     if (CC_JSB) {
       fileName = jsb.fileUtils.getWritablePath() + fileName;
+      
       if (jsb.fileUtils.isFileExist(fileName) && !overwrite) {
+        
         handler && handler(null, fileName);
         return;
       }
@@ -17,11 +34,11 @@ export class DownUtil {
     let seq = this._seq++;
     let self = this;
     let xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
+    xhr.open('GET', url, true);
     if (CC_JSB) {
-      xhr.responseType = "arraybuffer";
+      xhr.responseType = 'arraybuffer';
     } else {
-      xhr.responseType = "blob";
+      xhr.responseType = 'blob';
     }
     xhr.onload = function (e) {
       if (this.status == 200) {
@@ -30,18 +47,20 @@ export class DownUtil {
           self.saveFileInNative(this.response, fileName, handler, overwrite);
         CC_DEBUG &&
           cc.log(
-            `[S->C] [Download.${seq}] ->${url}%c success`,
-            `color:#19a316;`
+            `[S->C] [Download.${seq}] -> ${url}%c success`,
+            `color:#19A316;`
           );
       } else {
         CC_DEBUG &&
-          cc.log(`%c[S->C] [Download.${seq}] ->${url}failed`, `color:red;`);
-        handler && handler("error", null);
+          cc.log(`%c[S->C] [Download.${seq}] -> ${url} failed`, `color:#f00;`);
+        handler && handler('error', null);
       }
     };
     xhr.send();
-    CC_DEBUG && cc.log(`[C->S] [Download.${seq}] ->${url}`);
+    CC_DEBUG && cc.log(`[C->S] [Download.${seq}] -> ${url}`);
   }
+
+  
   public static saveFileInNative(
     arrayBuffer: ArrayBuffer,
     fullPath: string,
@@ -56,22 +75,24 @@ export class DownUtil {
       fullPath
     );
     if (success) {
-      cc.log("save file data success!", fullPath);
+      cc.log('save file data success!', fullPath);
       handler && handler(null, fullPath);
     } else {
-      cc.log("save file data failed!", fullPath);
-      handler && handler("error", null);
+      cc.log('save file data failed!', fullPath);
+      handler && handler('error', null);
     }
   }
+
+  
   public static saveFileInBrowser(blob: Blob, fileName: string) {
-    if (typeof window.navigator.msSaveBlob !== "undefined") {
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
       window.navigator.msSaveBlob(blob, fileName);
     } else {
-      let url = window.URL || window[`webkitURL`];
-      let objectUrl = url.createObjectURL(blob);
+      let URL = window.URL || window[`webkitURL`];
+      let objectUrl = URL.createObjectURL(blob);
       if (fileName) {
-        var a = document.createElement("a");
-        if (typeof a.download === "undefined") {
+        var a = document.createElement('a');
+        if (typeof a.download === 'undefined') {
           window.location = objectUrl;
         } else {
           a.href = objectUrl;
@@ -83,7 +104,7 @@ export class DownUtil {
       } else {
         window.location = objectUrl;
       }
-      url.revokeObjectURL(objectUrl);
+      URL.revokeObjectURL(objectUrl);
     }
   }
 }

@@ -1,5 +1,11 @@
-import { BaseEvent } from "../base/BaseEvent";
+
+
+import { BaseEvent } from '../base/BaseEvent';
+
+
+
 export class GameNotify extends BaseEvent {
+  
   private static instance: GameNotify = null;
   public static getInstance(): GameNotify {
     if (this.instance == null) {
@@ -7,31 +13,99 @@ export class GameNotify extends BaseEvent {
     }
     return this.instance;
   }
+
+  
   public serverToClientHandle(msg) {
+    
+    
+    
+    
+    
     var self = GameNotify.getInstance();
-    var event = { name: "CMD", data: msg };
+    var event = { name: 'CMD', data: msg };
     self.dispatchEvent(event);
   }
+
+  
+
+  
   public onConnectionLost(event) {
     var self = GameNotify.getInstance();
-    var event = { name: "CONNECTION_LOST", data: event.data };
+
+    var event = { name: 'CONNECTION_LOST', data: event.data };
     self.dispatchEvent(event);
   }
+  
   public onConnectionClose(event) {
     var self = GameNotify.getInstance();
-    cc.log("GameNotify.onConnectionClose");
-    var event = { name: "CONNECTION_CLOSE", data: event.data };
+
+    cc.log('GameNotify.onConnectionClose');
+    var event = { name: 'CONNECTION_CLOSE', data: event.data };
     self.dispatchEvent(event);
   }
+  
   public onConnectionError(event) {
     var self = GameNotify.getInstance();
-    cc.log("GameNotify.onConnectionError");
-    var event = { name: "CONNECTION_ERROR", data: event.data };
+
+    cc.log('GameNotify.onConnectionError');
+    var event = { name: 'CONNECTION_ERROR', data: event.data };
     self.dispatchEvent(event);
   }
+  
   public onConnection(event) {
     var self = GameNotify.getInstance();
-    var event = { name: "CONNECTION", data: event.data };
-    self.dispatchEvent(event);
+
+    var e = { name: 'CONNECTION', data: event.data };
+    self.dispatchEvent(e);
   }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

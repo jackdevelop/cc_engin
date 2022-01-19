@@ -1,4 +1,15 @@
+
+
+
+
+
+
+
+
+
+
 const { ccclass, property } = cc._decorator;
+
 @ccclass
 export default class BezierHelp {
   public static Factorial(number) {
@@ -10,17 +21,21 @@ export default class BezierHelp {
     }
     return factorial;
   }
+
   public static Combination(count, r) {
     return (
       this.Factorial(count) / (this.Factorial(r) * this.Factorial(count - r))
     );
   }
-  public static calcDistance(x1, y1, x2, y2) {
+  public static CalcDistance(x1, y1, x2, y2) {
     return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
   }
-  public static calcAngle(x1, y1, x2, y2) {
+
+  public static CalcAngle(x1, y1, x2, y2) {
     return 90 - (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
   }
+
+  
   public static BuildBezier(
     ctrlPosXArry,
     ctrlPosYArry,
@@ -34,9 +49,11 @@ export default class BezierHelp {
     var tfDis = fdistance;
     var tempValue = 0;
     var tPos = cc.v2(0, 0);
+
     while (t < 1) {
       tPos = cc.v2(0, 0);
       index = 0;
+
       while (index <= count) {
         tempValue =
           Math.pow(t, index) *
@@ -51,12 +68,15 @@ export default class BezierHelp {
         var backPos = TraceVector[TraceVector.length - 1];
         fSpace = this.CalcDistance(backPos.x, backPos.y, tPos.x, tPos.y);
       }
+
       if (fSpace >= tfDis || TraceVector.length == 0) {
         TraceVector.push(tPos);
       }
       t += 0.001;
     }
   }
+
+  
   public static BuildBezierWithAngle(
     ctrlPosXArry,
     ctrlPosYArry,
@@ -69,10 +89,16 @@ export default class BezierHelp {
     var count = initCount - 1;
     var tfDis = fdistance;
     var tempValue = 0;
-    var tPos = { x: 0, y: 0, angle: 0 };
+    var tPos = {
+      x: 0,
+      y: 0,
+      angle: 0,
+    };
+
     while (t < 1) {
       tPos = cc.v2(0, 0);
       index = 0;
+
       while (index <= count) {
         tempValue =
           Math.pow(t, index) *
@@ -90,6 +116,7 @@ export default class BezierHelp {
         TraceVector.push(tPos);
         continue;
       }
+
       if (fSpace >= tfDis) {
         tPos.angle = this.CalcAngle(backPos.x, backPos.y, tPos.x, tPos.y);
         TraceVector.push(tPos);
@@ -97,10 +124,12 @@ export default class BezierHelp {
       t += 0.001;
     }
   }
+
   public static BuildBezierByPointArr(CtrlPointArr, ResultPointArr) {
     let marr = CtrlPointArr;
-    let pointlength = marr.length;
-    let linenumber = Math.floor((pointlength - 3) / 2) + 1;
+    let pointlength = marr.length; 
+    let linenumber = Math.floor((pointlength - 3) / 2) + 1; 
+
     for (let i = 0; i < linenumber; ++i) {
       let p0 = marr[i * 2];
       let p1 = marr[i * 2 + 1];

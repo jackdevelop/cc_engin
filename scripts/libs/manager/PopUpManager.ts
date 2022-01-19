@@ -1,29 +1,245 @@
+
+
+import BaseCache from "../base/BaseCache";
+
 const { ccclass, property } = cc._decorator;
+
 @ccclass
-export default class PopUpManager extends cc.Component {
+export default class PopUpManager extends BaseCache {
+  
   private static instance: PopUpManager = null;
-  @property([cc.Prefab]) Prefab_arr: Array<cc.Prefab> = [];
-  private _Prefab_hash: any = null;
+
+  
+  
+  
+
+  @property({ type: [cc.Prefab], override: true })
+  obj_arr: Array<cc.Prefab> = [];
+
+  
+  
+  
+
   onLoad() {
     PopUpManager.instance = this;
-    this._Prefab_hash = new Object();
-    for (var i = 0; i < this.Prefab_arr.length; i++) {
-      var one = this.Prefab_arr[i];
-      this._Prefab_hash[one.name] = one;
-    }
+    super.onLoad();
   }
-  public static getPrefab(name: string) {
-    var self = PopUpManager.instance;
-    if (self && self._Prefab_hash) {
-      var currentprefab = self._Prefab_hash[name];
-      return currentprefab;
-    }
-  }
-  public static removePrefab(name: string) {
-    var self = PopUpManager.instance;
-    if (self && self._Prefab_hash) {
-      self._Prefab_hash[name] = null;
-      delete self._Prefab_hash[name];
-    }
-  }
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }

@@ -1,5 +1,7 @@
-import { AudioManager } from "./AudioManager";
+import { AudioManager } from './AudioManager';
+
 const { ccclass, property } = cc._decorator;
+
 var radix = 12;
 var base = 128 - radix;
 function crypto(value) {
@@ -8,6 +10,7 @@ function crypto(value) {
   var l = (value % radix) + base;
   return String.fromCharCode(h) + String.fromCharCode(l);
 }
+
 var encodermap = new Object();
 var decodermap = new Object();
 for (var i = 0; i < 256; ++i) {
@@ -18,11 +21,13 @@ for (var i = 0; i < 256; ++i) {
   } else {
     code = String.fromCharCode(v);
   }
+
   encodermap[i] = code;
   decodermap[code] = i;
 }
+
 function encode(data) {
-  var content = "";
+  var content = '';
   var len = data.length;
   var a = (len >> 24) & 0xff;
   var b = (len >> 16) & 0xff;
@@ -37,6 +42,7 @@ function encode(data) {
   }
   return content;
 }
+
 function getCode(content, index) {
   var c = content.charCodeAt(index);
   if (c >= base) {
@@ -55,6 +61,7 @@ function decode(content) {
     var v = decodermap[c];
     len |= v << ((3 - i) * 8);
   }
+
   var newData = new Uint8Array(len);
   var cnt = 0;
   while (index < content.length) {
@@ -65,12 +72,18 @@ function decode(content) {
   }
   return newData;
 }
+
+
 @ccclass
-export class VoiceManager {
-  private ANDROID_API = "org/cocos2dx/sscq/voice/VoiceRecorder";
-  private ANDROID_API_PLAYER = "org/cocos2dx/sscq/voice/VoicePlayer";
-  private IOS_API = "VoiceSDK";
+export class VoiceManager  {
+  private ANDROID_API = 'org/cocos2dx/sscq/voice/VoiceRecorder';
+  private ANDROID_API_PLAYER = 'org/cocos2dx/sscq/voice/VoicePlayer';
+
+  private IOS_API = 'VoiceSDK';
+
+  
   private _voiceMediaPath = null;
+
   private static instance: VoiceManager = null;
   public static getInstance(): VoiceManager {
     if (this.instance == null) {
@@ -79,54 +92,66 @@ export class VoiceManager {
     }
     return this.instance;
   }
+
   _init() {
     this.init();
   }
+
+  
   init() {
+    
+
     if (cc.sys.isNative) {
-      this._voiceMediaPath = jsb.fileUtils.getWritablePath() + "/voicemsgs/";
+      this._voiceMediaPath = jsb.fileUtils.getWritablePath() + '/voicemsgs/';
       this.setStorageDir(this._voiceMediaPath);
     }
   }
+
   prepare(filename) {
     if (!cc.sys.isNative) {
       return;
     }
+    
     AudioManager.getInstance().pauseOrResume(true);
     this.clearCache(filename);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(
         this.ANDROID_API,
-        "prepare",
-        "(Ljava/lang/String;)V",
+        'prepare',
+        '(Ljava/lang/String;)V',
         filename
       );
     } else if (cc.sys.os == cc.sys.OS_IOS) {
-      jsb.reflection.callStaticMethod("VoiceSDK", "prepareRecord:", filename);
+      jsb.reflection.callStaticMethod('VoiceSDK', 'prepareRecord:', filename);
     }
   }
+
   release() {
     if (!cc.sys.isNative) {
       return;
     }
+    
     AudioManager.getInstance().pauseOrResume(false);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
-      jsb.reflection.callStaticMethod(this.ANDROID_API, "release", "()V");
+      jsb.reflection.callStaticMethod(this.ANDROID_API, 'release', '()V');
     } else if (cc.sys.os == cc.sys.OS_IOS) {
-      jsb.reflection.callStaticMethod("VoiceSDK", "finishRecord");
+      jsb.reflection.callStaticMethod('VoiceSDK', 'finishRecord');
     }
   }
+
   cancel() {
     if (!cc.sys.isNative) {
       return;
     }
+    
     AudioManager.getInstance().pauseOrResume(false);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
-      jsb.reflection.callStaticMethod(this.ANDROID_API, "cancel", "()V");
+      jsb.reflection.callStaticMethod(this.ANDROID_API, 'cancel', '()V');
     } else if (cc.sys.os == cc.sys.OS_IOS) {
-      jsb.reflection.callStaticMethod("VoiceSDK", "cancelRecord");
+      jsb.reflection.callStaticMethod('VoiceSDK', 'cancelRecord');
     }
   }
+
   writeVoice(filename, voiceData) {
     if (!cc.sys.isNative) {
       return;
@@ -138,71 +163,91 @@ export class VoiceManager {
       jsb.fileUtils.writeDataToFile(fileData, url);
     }
   }
+
   clearCache(filename) {
     if (cc.sys.isNative) {
       var url = this._voiceMediaPath + filename;
+      
       if (jsb.fileUtils.isFileExist(url)) {
+        
         jsb.fileUtils.removeFile(url);
       }
-      if (jsb.fileUtils.isFileExist(url + ".wav")) {
-        jsb.fileUtils.removeFile(url + ".wav");
+      if (jsb.fileUtils.isFileExist(url + '.wav')) {
+        
+        jsb.fileUtils.removeFile(url + '.wav');
       }
     }
   }
+
   play(filename) {
     if (!cc.sys.isNative) {
       return;
     }
+    
     AudioManager.getInstance().pauseOrResume(true);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(
         this.ANDROID_API_PLAYER,
-        "play",
-        "(Ljava/lang/String;)V",
+        'play',
+        '(Ljava/lang/String;)V',
         filename
       );
     } else if (cc.sys.os == cc.sys.OS_IOS) {
-      jsb.reflection.callStaticMethod("VoiceSDK", "play:", filename);
+      jsb.reflection.callStaticMethod('VoiceSDK', 'play:', filename);
+    } else {
     }
   }
+
   stop() {
     if (!cc.sys.isNative) {
       return;
     }
+    
     AudioManager.getInstance().pauseOrResume(false);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
-      jsb.reflection.callStaticMethod(this.ANDROID_API_PLAYER, "stop", "()V");
+      jsb.reflection.callStaticMethod(this.ANDROID_API_PLAYER, 'stop', '()V');
     } else if (cc.sys.os == cc.sys.OS_IOS) {
-      jsb.reflection.callStaticMethod("VoiceSDK", "stopPlay");
+      jsb.reflection.callStaticMethod('VoiceSDK', 'stopPlay');
+    } else {
     }
   }
+
   getVoiceLevel(maxLevel) {
     return Math.floor(Math.random() * maxLevel + 1);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       return jsb.reflection.callStaticMethod(
         this.ANDROID_API,
-        "getVoiceLevel",
-        "(I)I",
+        'getVoiceLevel',
+        '(I)I',
         maxLevel
       );
+    } else if (cc.sys.os == cc.sys.OS_IOS) {
     } else {
       return Math.floor(Math.random() * maxLevel + 1);
     }
   }
+
   getVoiceData(filename) {
     if (cc.sys.isNative) {
       var url = this._voiceMediaPath + filename;
+      
       var fileData = jsb.fileUtils.getDataFromFile(url);
       if (fileData) {
         var content = encode(fileData);
         return content;
       }
     }
-    return "";
+    return '';
   }
+
   download() {
     return true;
   }
+  
+  
+
+  
+
   setStorageDir(dir) {
     if (!cc.sys.isNative) {
       return;
@@ -210,12 +255,12 @@ export class VoiceManager {
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(
         this.ANDROID_API,
-        "setStorageDir",
-        "(Ljava/lang/String;)V",
+        'setStorageDir',
+        '(Ljava/lang/String;)V',
         dir
       );
     } else if (cc.sys.os == cc.sys.OS_IOS) {
-      jsb.reflection.callStaticMethod("VoiceSDK", "setStorageDir:", dir);
+      jsb.reflection.callStaticMethod('VoiceSDK', 'setStorageDir:', dir);
       if (!jsb.fileUtils.isDirectoryExist(dir)) {
         jsb.fileUtils.createDirectory(dir);
       }

@@ -1,1 +1,113 @@
-import{GameConstants}from '../../../../cc_own/constants/GameConstants';import{GameNotify}from '../utils/GameNotify';var _ = require('Underscore');const{ccclass,property,menu}= cc._decorator;@ccclass @menu('engin/BaseComponent') export default class BaseComponent extends cc.Component{@property({tooltip:'隐藏是否监听事件',type:cc.Boolean}) hide_is_handleEvent:Boolean = false;@property({tooltip:'指定哪个node隐藏，控制监听事件',type:cc.Node}) node_handleEvent:cc.Node = null;@property({type:cc.Boolean,tooltip:'是否自动销毁 ImageLoader 资源'}) GAME_AUTO_CLEAN:cc.Boolean = true;private __eventHandle = null;private m_ref_ImageLoader = null;m__addEventHandle(event_name_all:Array<string>,priority){let event_name_hash = event_name_all;if(!event_name_hash){return}var self = this;if(self.__eventHandle == null){self.__eventHandle =(data) =>{let curr_node = self.node_handleEvent || self.node;if(curr_node){if(curr_node.active){self.m__eventHandle(data)}else{if(self.hide_is_handleEvent){self.m__eventHandle(data)}}}else{self.m__eventHandle(data)}};GameNotify.getInstance().removeAllEventListenersForHandle(self.__eventHandle);for(let i = 0;i < event_name_hash.length;i++){let one_name = event_name_hash[i];GameNotify.getInstance().addEventListener(one_name,self.__eventHandle,null,priority)}}}m__eventHandle(event){var self = this;var data = event.data}onRefAdd_ImageLoader(arr){}onRefDec_ImageLoader(){}onDestroy(){this.onRefDec_ImageLoader();this.node.stopAllActions();this.unschedule(null);this.unscheduleAllCallbacks();GameNotify.getInstance().removeAllEventListenersForHandle(this.__eventHandle);this.__eventHandle = null;this.node_handleEvent = null}}
+
+
+
+
+
+
+
+
+
+
+
+import { GameNotify } from '../utils/GameNotify';
+
+
+const { ccclass, property, menu } = cc._decorator;
+
+@ccclass
+@menu('engin/BaseComponent')
+export default class BaseComponent extends cc.Component {
+	@property({ tooltip: '隐藏是否监听事件' })
+	hide_is_handleEvent: boolean = false;
+	
+	
+
+	
+	
+
+	
+	private __eventHandle = null;
+	
+	
+
+	
+	m__addEventHandle(event_name_all: Array<string>, priority: number) {
+		console.log('BaseComponent > m__addEventHandle ');
+
+		let event_name_hash = event_name_all;
+		if (!event_name_hash) {
+			return;
+		}
+		var self = this;
+		if (self.__eventHandle == null) {
+			self.__eventHandle = (data: any) => {
+				let curr_node = self.node;
+				
+				if (curr_node) {
+					if (curr_node.active) {
+						self.m__eventHandle(data);
+					} else {
+						if (self.hide_is_handleEvent) {
+							self.m__eventHandle(data);
+						}
+					}
+				} else {
+					self.m__eventHandle(data);
+				}
+			};
+
+			GameNotify.getInstance().removeAllEventListenersForHandle(
+				self.__eventHandle
+			);
+			for (let i = 0; i < event_name_hash.length; i++) {
+				let one_name = event_name_hash[i];
+				GameNotify.getInstance().addEventListener(
+					one_name,
+					self.__eventHandle,
+					null,
+					priority
+				);
+			}
+		}
+	}
+
+	m__eventHandle(event: { name: string; data?: any; target?: any }) {
+		var self = this;
+		var data = event.data;
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	onDestroy() {
+		
+
+		this.node.stopAllActions();
+		this.unschedule(null);
+		this.unscheduleAllCallbacks();
+
+		
+		
+		
+		GameNotify.getInstance().removeAllEventListenersForHandle(
+			this.__eventHandle
+		);
+		this.__eventHandle = null;
+		
+	}
+}

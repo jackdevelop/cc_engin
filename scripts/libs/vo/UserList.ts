@@ -1,1 +1,54 @@
-import{User}from '../../../../cc_own/vo/User';export class UserList{public static className = 'UserList';public static users = new Object();public static meUserCode:number = null;public static setUser(user_code,opts):User{let user = this.getUserByUsercode(user_code);if(!user){user = new User(user_code,opts);user_code = user_code+'';this.users[user_code] = user}else{user.merge(opts)}return user}public static deleteUser(user_code):User{user_code = user_code+'';var user = this.users[user_code];this.users[user_code] = null;return user}public static deleteAllUser(){}public static getUserByUsercode(user_code):User{user_code = user_code+'';var user = this.users[user_code];return user}}
+import { User } from '../../../../cc_own/vo/User';
+
+export class UserList {
+	public static className = 'UserList';
+
+	
+	public static users = new Object();
+	
+	public static meUserId: number = null;
+
+	
+	public static setUser(user_id, opts): User {
+		let user = this.getUserByUserid(user_id);
+		if (!user) {
+			user = new User(user_id, opts);
+			user_id = user_id + '';
+			this.users[user_id] = user;
+		} else {
+			user.merge(opts);
+		}
+
+		return user;
+	}
+
+	
+	public static deleteUser(user_id): User {
+		user_id = user_id + '';
+
+		var user = this.users[user_id];
+		this.users[user_id] = null;
+
+		return user;
+	}
+
+	
+	public static deleteAllUser() {
+		this.users = {};
+	}
+
+	
+	
+	
+	
+
+	
+	
+	
+	public static getUserByUserid(user_id): User {
+		user_id = user_id + '';
+		var user = this.users[user_id];
+
+		return user;
+	}
+}
