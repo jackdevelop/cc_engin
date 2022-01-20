@@ -28,7 +28,7 @@ export default class BaseSprite extends cc.Component {
 	
 	private m_behaviorObjects_ = null;
 	
-	private m_bindingMethods_ = null;
+	
 
 	
 	protected __init(m_vo) {
@@ -53,6 +53,19 @@ export default class BaseSprite extends cc.Component {
 		
 		let behaviors = m_vo.get_m_config_data().behaviors;
 		this.__init_behaviors(behaviors);
+	}
+
+
+
+	
+	public un_init() {
+		this.__un_init()
+	}
+	private __un_init() {
+		this.unschedule(null);
+		this.unscheduleAllCallbacks();
+
+		this.__unbind_behavior();
 	}
 
 	
@@ -150,12 +163,13 @@ export default class BaseSprite extends cc.Component {
 	private __unbind_behavior() {
 		let self = this;
 
+		cc.log("当前的behavior:", self.m_behaviorObjects_)
 		_.each(self.m_behaviorObjects_, function (v, k) {
 			self.node.removeComponent(v);
 		});
 		self.m_behaviorObjects_ = null;
 
-		this.un_bind_all_method();
+		
 	}
 
 	
@@ -226,19 +240,21 @@ export default class BaseSprite extends cc.Component {
 	
 
 	
-	public un_bind_all_method() {
-		let self = this;
+	
+	
+	
+	
 
-		
-		
+	
+	
 
-		_.each(self.m_bindingMethods_, function (v, k) {
-			self[k] = null;
-		});
+	
+	
+	
 
-		self.m_bindingMethods_ = null;
+	
 
-		
-		
-	}
+	
+	
+	
 }

@@ -39,11 +39,13 @@ export default class SpineUtil {
 		});
 		if (!is_find) {
 			console.log('当前没有动画', animName, is_find, all_AnimationNames);
+			if (callback) {
+				callback();
+			}
 			return;
 		}
 
 		spine.armatureName = armatureName;
-
 		if (callback) {
 			await this._playAnimation(spine, animName, playTimes);
 			callback();
