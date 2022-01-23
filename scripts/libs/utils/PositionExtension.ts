@@ -112,14 +112,14 @@ export default class PositionExtension {
 	
 
 	
-	static dist(ax, ay, bx, by) {
+	public static dist(ax, ay, bx, by) {
 		var dx = bx - ax;
 		var dy = by - ay;
 		return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	
-	static dist_v3(p0, p1) {
+	public static dist_v3(p0, p1) {
 		return p0.add(p1).divSelf(2);
 	}
 
@@ -158,14 +158,6 @@ export default class PositionExtension {
 	}
 
 	
-	static pointAtCircle(px, py, radians, radius) {
-		return cc.v2(
-			px + Math.cos(radians) * radius,
-			py + Math.sin(radians) * radius
-		);
-	}
-
-	
 	static get_p_p_rotation(startpos: cc.Vec2, endPos: cc.Vec2) {
 		let dir = endPos.sub(startpos);
 		
@@ -173,5 +165,13 @@ export default class PositionExtension {
 		
 		var degree = this.trans_radian_to_angle(angle); 
 		return degree;
+	}
+
+	
+	static pointAtCircle(px, py, radians, radius) {
+		return cc.v2(
+			px + Math.cos(radians) * radius,
+			py + Math.sin(radians) * radius
+		);
 	}
 }

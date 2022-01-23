@@ -15,6 +15,7 @@ export default class SpineUtil {
 			try {
 				
 				spine.once(dragonBones.EventObject.COMPLETE, function (e) {
+					
 					res({});
 				});
 				spine.playAnimation(animName, playTimes);
@@ -48,6 +49,7 @@ export default class SpineUtil {
 		spine.armatureName = armatureName;
 		if (callback) {
 			await this._playAnimation(spine, animName, playTimes);
+			
 			callback();
 		} else {
 			spine.playAnimation(animName, playTimes);

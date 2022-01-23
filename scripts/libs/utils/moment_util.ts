@@ -1,7 +1,7 @@
 export class moment_util {
 	
 	
-	private static miao_jishu = 1;
+	public static miao_jishu = 1;
 	public static m_server_time = null;
 	private static m_client_time = null;
 

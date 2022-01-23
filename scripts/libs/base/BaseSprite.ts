@@ -55,11 +55,9 @@ export default class BaseSprite extends cc.Component {
 		this.__init_behaviors(behaviors);
 	}
 
-
-
 	
 	public un_init() {
-		this.__un_init()
+		this.__un_init();
 	}
 	private __un_init() {
 		this.unschedule(null);
@@ -163,7 +161,11 @@ export default class BaseSprite extends cc.Component {
 	private __unbind_behavior() {
 		let self = this;
 
-		cc.log("当前的behavior:", self.m_behaviorObjects_)
+		
+		
+		
+
+		cc.log('当前的behavior:', self.m_behaviorObjects_);
 		_.each(self.m_behaviorObjects_, function (v, k) {
 			self.node.removeComponent(v);
 		});
