@@ -6,7 +6,7 @@ const { ccclass, property, menu } = cc._decorator;
 @ccclass
 export default class BaseCache extends cc.Component {
 
-    
+    //需要存储的 object 
     @property({tooltip:"需要存储的东西",type:[cc.Object]})
     obj_arr: Array<cc.Object> = [];
 
@@ -21,7 +21,10 @@ export default class BaseCache extends cc.Component {
       }
     }
 
-    
+    /**
+     *  获取 
+     * @param name
+     */
     public static getOne(name: string) {
       var self = this.instance;
 
@@ -32,12 +35,15 @@ export default class BaseCache extends cc.Component {
     }
 
 
-    
+    /**
+     *  删除 
+     * @param name
+     */
     public static removeOne(name: string) {
       var self = this.instance;
 
       if (self && self.m_hash) {
-        
+        // var currentprefab = self._Prefab_hash[name];
         self.m_hash[name] = null;
         delete self.m_hash[name];
       }

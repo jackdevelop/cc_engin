@@ -8,7 +8,13 @@ enum TYPE_AXIS {
   y,
 }
 
-
+/**
+ * [T] 跟随工具
+ * - 使得一个节点跟随另一个节点
+ * - cc.follow()方法有bug，已经向creator反馈了issue（https://github.com/cocos-creator/engine/issues/3747）
+ * - 使用update更新位置的方式，可能会造成一定程度的性能损耗，慎用
+ * @todo 跟随的边缘限制
+ */
 const { ccclass, property, menu } = cc._decorator;
 
 @ccclass
@@ -37,7 +43,7 @@ export class TFollow extends cc.Component {
   @property({ tooltip: '是否直接跟随' })
   is_following: boolean = false;
 
-  
+  /** relative模式下的偏移量 */
   offset: cc.Vec2 = null;
 
   start() {
@@ -74,7 +80,7 @@ export class TFollow extends cc.Component {
     }
   }
 
-  
+  /** 计算target */
   get_offset() {
     if (!this.target) {
       return;
@@ -84,7 +90,7 @@ export class TFollow extends cc.Component {
     );
   }
 
-  
+  /** 更改目标 */
   change_target(new_target: cc.Node) {
     this.pause_follow();
     this.target = new_target;

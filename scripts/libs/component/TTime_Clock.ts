@@ -52,10 +52,14 @@ export class TTime_Clock extends cc.Component {
 
     this.onStop();
 
-    
+    // this.init(5, null)
   }
 
-  
+  /**
+  *  初始化 
+  * @param repeat  秒数  
+  * @param end_callback  回调 
+  */
   init(
     repeat: number,
     end_callback: Function
@@ -73,13 +77,13 @@ export class TTime_Clock extends cc.Component {
     this._endFunc = end_callback;
   }
 
-  
+  //销毁
   onDestroy() {
     this.onStop();
-    
+    // this.unscheduleAllCallbacks();
   }
 
-  
+  //关闭
   onStop() {
     this._isRuning = false;
     this._endFunc = null
@@ -93,9 +97,9 @@ export class TTime_Clock extends cc.Component {
 
 
 
-  
-  
-  
+  ///////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////
 
   update(dt) {
     if (!this._isRuning) {
@@ -103,9 +107,9 @@ export class TTime_Clock extends cc.Component {
     }
 
     this._nowTime += dt;
-    
+    // cc.log(this._nowTime)
 
-    
+    // 将时间转换为百分比，设置给this.sprite的FillRange属性
     let per = this._nowTime / this.actionTime;
     if (per > 1) {
       per = 1;
@@ -119,7 +123,7 @@ export class TTime_Clock extends cc.Component {
       per = 1 - per;
     }
 
-    
+    //  方向
     if (this.wise) {
       per = -per;
     }

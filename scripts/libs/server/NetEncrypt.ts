@@ -1,4 +1,6 @@
-
+/**
+ *  网络加密解密
+ */
 export class NetEncrypt {
   private static sendByteMap = [
     0x30,
@@ -518,7 +520,10 @@ export class NetEncrypt {
     0x17,
   ];
 
-  
+  /**
+   *  加密包
+   * @param packet
+   */
   private static encryptBuffer = function (packet) {
     let sLen = packet.length;
     let pcbDataBuffer = new Uint8Array(sLen);
@@ -534,7 +539,11 @@ export class NetEncrypt {
     };
   };
 
-  
+  /**
+   *  解密包
+   * @param packet
+   * @param code
+   */
   private static decryptBuffer = function (packet, code) {
     let sLen = packet.byteLength;
     let pcbDataBuffer = new Uint8Array(sLen);

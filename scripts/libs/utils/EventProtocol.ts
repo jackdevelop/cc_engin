@@ -1,12 +1,26 @@
+/**
+ * 事件触发器
 
+    使用方法：
+
+    var EventProtocol = require("EventProtocol");
+    EventProtocol.extend(NetNotify);
+
+ 
+ */
 export class EventProtocol {
-  
+  /**
+   * 添加事件
+   * @param
+   * @param
+   * @param
+   */
   public static extend = function (object) {
-    object.listeners_ = new Object(); 
+    object.listeners_ = new Object(); //最后的结构就是 {eventName:[handle,handle,handle]}
     object.listenerHandleIndex_ = 0;
 
     object.addEventListener = function (eventName, listener, target) {
-      
+      //        eventName = string.upper(eventName)
       if (object.listeners_[eventName] == null) {
         object.listeners_[eventName] = [];
       }
@@ -35,7 +49,7 @@ export class EventProtocol {
     };
 
     object.removeEventListener = function (eventName, key) {
-      
+      //        eventName = eventName.toUpperCase();
       if (object.listeners_[eventName] == null) return;
       var allListener = object.listeners_[eventName];
       for (var handle in allListener) {
@@ -66,4 +80,4 @@ export class EventProtocol {
   };
 }
 
-
+// if (module) module.exports = EventProtocol;

@@ -1,12 +1,12 @@
-
-
-
-
-
-
-
-
-
+// Learn TypeScript:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { HallService } from '../../app/hall/scripts/HallService';
 import GameManger from '../gamemanager/GameManger';
@@ -32,31 +32,31 @@ export default class node_gm extends cc.Component {
 	onLoad() {
 		this.node.active = GameConfig.debug;
 
-		
+		//gm 命令
 		this.txt_action_type.string = 'game_gm_command';
 		this.txt_action_json_param.string = '{"next_card": "101"}';
 	}
 
-	
+	//显示
 	onClickShow() {
 		this.node_gm.active = !this.node_gm.active;
 	}
 
-	
-	
-	
-	
-	
-	
-	
+	//发送gm命令
+	// onClickok(){
+	//     let txt_channelType = Number(this.txt_action_type.string);
+	//     let txt_action_json_param = this.txt_action_json_param.string;
+	//
+	//     // HallService.getInstance().game_gm_action(txt_channelType,txt_action_json_param)
+	// }
 
-	
+	//发送gm命令
 	async onClickAll() {
 		let cmd = this.txt_action_type.string;
 		let txt_action_json_param = this.txt_action_json_param.string;
 		let action_card = JSON.parse(txt_action_json_param);
-		
-		
+		//TODO
+		//这里获取当前还剩下多少底牌   然后弹出来
 		let ret = await HallService.getInstance().game_cmd(cmd, null);
 		if (ret) {
 			await MWindow.show(GMSelectPanel, {
@@ -66,11 +66,11 @@ export default class node_gm extends cc.Component {
 		}
 	}
 
-	
+	//断线
 	onClickCloseNet() {
 		NetWork.getInstance().close(false);
 	}
-	
+	//重连
 	onClickResetNet() {
 		NetWork.getInstance().init(null, null);
 	}

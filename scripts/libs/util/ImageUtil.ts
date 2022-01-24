@@ -1,7 +1,14 @@
-
+/**
+ * 图像工具
+ * @see ImageUtil.ts https://gitee.com/ifaswind/eazax-ccc/blob/master/utils/ImageUtil.ts
+ */
 export default class ImageUtil {
 
-    
+    /**
+     * 将图像转为 Base64 字符（仅 png、jpg 或 jpeg 格式资源）
+     * @param url 图像地址
+     * @param callback 完成回调
+     */
     public static imageToBase64(url: string, callback?: (dataURL: string) => void): Promise<string> {
         return new Promise(res => {
             let extname = /\.png|\.jpg|\.jpeg/.exec(url)?.[0];
@@ -28,7 +35,10 @@ export default class ImageUtil {
         });
     }
 
-    
+    /**
+     * 将 Base64 字符转为 cc.Texture2D 资源
+     * @param base64 Base64 字符
+     */
     public static base64ToTexture(base64: string): cc.Texture2D {
         let image = document.createElement('img');
         image.src = base64;
@@ -38,7 +48,10 @@ export default class ImageUtil {
         return texture;
     }
 
-    
+    /**
+     * 将 Base64 字符转为二进制数据
+     * @param base64 Base64 字符
+     */
     public static base64ToBlob(base64: string): Blob {
         const strings = base64.split(',');
         const type = /image\/\w+|;/.exec(strings[0])[0];

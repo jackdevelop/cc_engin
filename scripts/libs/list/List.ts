@@ -1,4 +1,9 @@
-
+/******************************************
+ * @author kL <klk0@qq.com>
+ * @date 2019/6/6
+ * @doc 列表组件.
+ * @end
+ ******************************************/
 const {
   ccclass,
   property,
@@ -16,28 +21,28 @@ enum TemplateType {
 }
 
 enum SlideType {
-  NORMAL = 1, 
-  ADHERING = 2, 
-  PAGE = 3, 
+  NORMAL = 1, //普通
+  ADHERING = 2, //粘附模式，将强制关闭滚动惯性
+  PAGE = 3, //页面模式，将强制关闭滚动惯性
 }
 
 enum SelectedType {
   NONE = 0,
-  SINGLE = 1, 
-  MULT = 2, 
+  SINGLE = 1, //单选
+  MULT = 2, //多选
 }
 
 @ccclass
 @disallowMultiple()
 @menu('自定义组件/List')
 @requireComponent(cc.ScrollView)
-
+//脚本生命周期回调的执行优先级。小于 0 的脚本将优先执行，大于 0 的脚本将最后执行。该优先级只对 onLoad, onEnable, start, update 和 lateUpdate 有效，对 onDisable 和 onDestroy 无效。
 @executionOrder(-5000)
 export default class List extends cc.Component {
-  
+  //模板类型
   @property({ type: cc.Enum(TemplateType), tooltip: CC_DEV && '模板类型' })
   private templateType: TemplateType = TemplateType.NODE;
-  
+  //模板Item（Node）
   @property({
     type: cc.Node,
     tooltip: CC_DEV && '模板Item',
@@ -46,7 +51,7 @@ export default class List extends cc.Component {
     },
   })
   tmpNode: cc.Node = null;
-  
+  //模板Item（Prefab）
   @property({
     type: cc.Prefab,
     tooltip: CC_DEV && '模板Item',
@@ -55,7 +60,7 @@ export default class List extends cc.Component {
     },
   })
   tmpPrefab: cc.Prefab = null;
-  
+  //滑动模式
   @property()
   private _slideMode: SlideType = SlideType.NORMAL;
   @property({
@@ -68,7 +73,7 @@ export default class List extends cc.Component {
   get slideMode() {
     return this._slideMode;
   }
-  
+  //翻页作用距离
   @property({
     type: cc.Float,
     range: [0, 1, 0.1],
@@ -79,7 +84,7 @@ export default class List extends cc.Component {
     },
   })
   public pageDistance: number = 0.3;
-  
+  //页面改变事件
   @property({
     type: cc.Component.EventHandler,
     tooltip: CC_DEV && '页面改变事件',
@@ -88,7 +93,7 @@ export default class List extends cc.Component {
     },
   })
   private pageChangeEvent: cc.Component.EventHandler = new cc.Component.EventHandler();
-  
+  //是否为虚拟列表（动态列表）
   @property()
   private _virtual: boolean = true;
   @property({
@@ -103,7 +108,7 @@ export default class List extends cc.Component {
   get virtual() {
     return this._virtual;
   }
-  
+  //是否为循环列表
   @property({
     tooltip: CC_DEV && '是否为循环列表',
     visible() {
@@ -113,7 +118,7 @@ export default class List extends cc.Component {
     },
   })
   public cyclic: boolean = false;
-  
+  //缺省居中
   @property({
     tooltip:
       CC_DEV &&
@@ -123,7 +128,7 @@ export default class List extends cc.Component {
     },
   })
   public lackCenter: boolean = false;
-  
+  //缺省可滑动
   @property({
     tooltip: CC_DEV && 'Item数量不足以填满Content时，是否可滑动',
     visible() {
@@ -133,7 +138,7 @@ export default class List extends cc.Component {
     },
   })
   public lackSlide: boolean = false;
-  
+  //刷新频率
   @property({ type: cc.Integer })
   private _updateRate: number = 0;
   @property({
@@ -150,7 +155,7 @@ export default class List extends cc.Component {
   get updateRate() {
     return this._updateRate;
   }
-  
+  //分帧渲染（每帧渲染的Item数量（<=0时关闭分帧渲染））
   @property({
     type: cc.Integer,
     range: [0, 12, 1],
@@ -158,13 +163,13 @@ export default class List extends cc.Component {
     slide: true,
   })
   public frameByFrameRenderNum: number = 0;
-  
+  //渲染事件（渲染器）
   @property({
     type: cc.Component.EventHandler,
     tooltip: CC_DEV && '渲染事件（渲染器）',
   })
   private renderEvent: cc.Component.EventHandler = new cc.Component.EventHandler();
-  
+  //选择模式
   @property({
     type: cc.Enum(SelectedType),
     tooltip: CC_DEV && '选择模式',
@@ -177,7 +182,7 @@ export default class List extends cc.Component {
     },
   })
   public repeatEventSingle: boolean = false;
-  
+  //触发选择事件
   @property({
     type: cc.Component.EventHandler,
     tooltip: CC_DEV && '触发选择事件',
@@ -185,8 +190,8 @@ export default class List extends cc.Component {
       return this.selectedMode > SelectedType.NONE;
     },
   })
-  private selectedEvent: cc.Component.EventHandler = null; 
-  
+  private selectedEvent: cc.Component.EventHandler = null; //new cc.Component.EventHandler();
+  //当前选择id
   private _selectedId: number = -1;
   private _lastSelectedId: number;
   private multSelected: number[];
@@ -197,11 +202,11 @@ export default class List extends cc.Component {
       case SelectedType.SINGLE: {
         if (!t.repeatEventSingle && val == t._selectedId) return;
         item = t.getItemByListId(val);
-        
-        
+        // if (!item && val >= 0)
+        //     return;
         let listItem: ListItem;
         if (t._selectedId >= 0) t._lastSelectedId = t._selectedId;
-        
+        //如果＜0则取消选择，把_lastSelectedId也置空吧，如果以后有特殊需求再改吧。
         else t._lastSelectedId = null;
         t._selectedId = val;
         if (item) {
@@ -273,7 +278,7 @@ export default class List extends cc.Component {
   private _cyclicNum: number;
   private _cyclicPos1: number;
   private _cyclicPos2: number;
-  
+  //列表数量
   @property({
     serializable: false,
   })
@@ -305,7 +310,7 @@ export default class List extends cc.Component {
 
       t.firstListId = 0;
       if (t.frameByFrameRenderNum > 0) {
-        
+        //先渲染几个出来
         let len: number =
           t.frameByFrameRenderNum > t._numItems
             ? t._numItems
@@ -389,9 +394,9 @@ export default class List extends cc.Component {
   private _allItemSize: number;
   private _allItemSizeNoEdge: number;
 
-  private _scrollItem: any; 
+  private _scrollItem: any; //当前控制 ScrollView 滚动的 Item
 
-  
+  //----------------------------------------------------------------------------
 
   onLoad() {
     this._init();
@@ -401,26 +406,26 @@ export default class List extends cc.Component {
     let t: any = this;
     if (t._itemTmp && t._itemTmp.isValid) t._itemTmp.destroy();
     if (t.tmpNode && t.tmpNode.isValid) t.tmpNode.destroy();
-    
+    // let total = t._pool.size();
     while (t._pool.size()) {
       let node = t._pool.get();
       node.destroy();
     }
-    
-    
+    // if (total)
+    //     cc.log('-----------------' + t.node.name + '<List> destroy node total num. =>', total);
   }
 
   onEnable() {
-    
+    // if (!CC_EDITOR)
     this._registerEvent();
     this._init();
   }
 
   onDisable() {
-    
+    // if (!CC_EDITOR)
     this._unregisterEvent();
   }
-  
+  //注册事件
   _registerEvent() {
     let t: any = this;
     t.node.on(cc.Node.EventType.TOUCH_START, t._onTouchStart, t, true);
@@ -431,7 +436,7 @@ export default class List extends cc.Component {
     t.node.on('scrolling', t._onScrolling, t, true);
     t.node.on(cc.Node.EventType.SIZE_CHANGED, t._onSizeChanged, t);
   }
-  
+  //卸载事件
   _unregisterEvent() {
     let t: any = this;
     t.node.off(cc.Node.EventType.TOUCH_START, t._onTouchStart, t, true);
@@ -442,7 +447,7 @@ export default class List extends cc.Component {
     t.node.off('scrolling', t._onScrolling, t, true);
     t.node.off(cc.Node.EventType.SIZE_CHANGED, t._onSizeChanged, t);
   }
-  
+  //初始化各种..
   _init() {
     let t: any = this;
     if (t._inited) return;
@@ -457,22 +462,22 @@ export default class List extends cc.Component {
 
     t._layout = t.content.getComponent(cc.Layout);
 
-    t._align = t._layout.type; 
-    t._resizeMode = t._layout.resizeMode; 
+    t._align = t._layout.type; //排列模式
+    t._resizeMode = t._layout.resizeMode; //自适应模式
     t._startAxis = t._layout.startAxis;
 
-    t._topGap = t._layout.paddingTop; 
-    t._rightGap = t._layout.paddingRight; 
-    t._bottomGap = t._layout.paddingBottom; 
-    t._leftGap = t._layout.paddingLeft; 
+    t._topGap = t._layout.paddingTop; //顶边距
+    t._rightGap = t._layout.paddingRight; //右边距
+    t._bottomGap = t._layout.paddingBottom; //底边距
+    t._leftGap = t._layout.paddingLeft; //左边距
 
-    t._columnGap = t._layout.spacingX; 
-    t._lineGap = t._layout.spacingY; 
+    t._columnGap = t._layout.spacingX; //列距
+    t._lineGap = t._layout.spacingY; //行距
 
-    t._colLineNum; 
+    t._colLineNum; //列数或行数（非GRID模式则=1，表示单列或单行）;
 
-    t._verticalDir = t._layout.verticalDirection; 
-    t._horizontalDir = t._layout.horizontalDirection; 
+    t._verticalDir = t._layout.verticalDirection; //垂直排列子节点的方向
+    t._horizontalDir = t._layout.horizontalDirection; //水平排列子节点的方向
 
     t.setTemplateItem(
       cc.instantiate(
@@ -480,7 +485,7 @@ export default class List extends cc.Component {
       )
     );
 
-    
+    // 特定的滑动模式处理
     if (t._slideMode == SlideType.ADHERING || t._slideMode == SlideType.PAGE) {
       t._scrollView.inertia = false;
       t._scrollView._onMouseWheel = function () {
@@ -488,26 +493,26 @@ export default class List extends cc.Component {
       };
     }
     if (!t.virtual)
-      
+      // lackCenter 仅支持 Virtual 模式
       t.lackCenter = false;
 
-    t._lastDisplayData = []; 
-    t.displayData = []; 
-    t._pool = new cc.NodePool(); 
-    t._forceUpdate = false; 
-    t._updateCounter = 0; 
-    t._updateDone = true; 
+    t._lastDisplayData = []; //最后一次刷新的数据
+    t.displayData = []; //当前数据
+    t._pool = new cc.NodePool(); //这是个池子..
+    t._forceUpdate = false; //是否强制更新
+    t._updateCounter = 0; //当前分帧渲染帧数
+    t._updateDone = true; //分帧渲染是否完成
 
-    t.curPageNum = 0; 
+    t.curPageNum = 0; //当前页数
 
     if (t.cyclic || 0) {
       t._scrollView._processAutoScrolling = this._processAutoScrolling.bind(t);
       t._scrollView._startBounceBackIfNeeded = function () {
         return false;
       };
-      
-      
-      
+      // t._scrollView._scrollChildren = function () {
+      //     return false;
+      // }
     }
 
     switch (t._align) {
@@ -559,20 +564,23 @@ export default class List extends cc.Component {
         break;
       }
     }
-    
-    
-    
-    
-    
-    
-    
+    // 清空 content
+    // t.content.children.forEach((child: cc.Node) => {
+    //     child.removeFromParent();
+    //     if (child != t.tmpNode && child.isValid)
+    //         child.destroy();
+    // });
+    // t.content.removeAllChildren();
     t.content.destroyAllChildren();
 
     t._inited = true;
   }
-  
+  /**
+   * 为了实现循环列表，必须覆写cc.ScrollView的某些函数
+   * @param {Number} dt
+   */
   _processAutoScrolling(dt: number) {
-    
+    // let isAutoScrollBrake = this._scrollView._isNecessaryAutoScrollBrake();
     let brakingFactor: number = 1;
     this._scrollView['_autoScrollAccumulatedTime'] += dt * (1 / brakingFactor);
 
@@ -591,7 +599,7 @@ export default class List extends cc.Component {
     );
     let EPSILON: number = this._scrollView['getScrollEndedEventTiming']();
     let reachedEnd: boolean = Math.abs(percentage - 1) <= EPSILON;
-    
+    // cc.log(reachedEnd, Math.abs(percentage - 1), EPSILON)
 
     let fireEvent: boolean =
       Math.abs(percentage - 1) <=
@@ -604,41 +612,41 @@ export default class List extends cc.Component {
       this._scrollView['_isScrollEndedWithThresholdEventFired'] = true;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // if (this._scrollView.elastic && !reachedEnd) {
+    //     let brakeOffsetPosition = newPosition.sub(this._scrollView._autoScrollBrakingStartPosition);
+    //     if (isAutoScrollBrake) {
+    //         brakeOffsetPosition = brakeOffsetPosition.mul(brakingFactor);
+    //     }
+    //     newPosition = this._scrollView._autoScrollBrakingStartPosition.add(brakeOffsetPosition);
+    // } else {
+    //     let moveDelta = newPosition.sub(this._scrollView.getContentPosition());
+    //     let outOfBoundary = this._scrollView._getHowMuchOutOfBoundary(moveDelta);
+    //     if (!outOfBoundary.fuzzyEquals(cc.v2(0, 0), EPSILON)) {
+    //         newPosition = newPosition.add(outOfBoundary);
+    //         reachedEnd = true;
+    //     }
+    // }
 
     if (reachedEnd) {
       this._scrollView['_autoScrolling'] = false;
     }
 
     let deltaMove: any = newPosition.sub(this._scrollView.getContentPosition());
-    
+    // cc.log(deltaMove)
     this._scrollView['_moveContent'](
       this._scrollView['_clampDelta'](deltaMove),
       reachedEnd
     );
     this._scrollView['_dispatchEvent']('scrolling');
 
-    
+    // scollTo API controll move
     if (!this._scrollView['_autoScrolling']) {
       this._scrollView['_isBouncing'] = false;
       this._scrollView['_scrolling'] = false;
       this._scrollView['_dispatchEvent']('scroll-ended');
     }
   }
-  
+  //设置模板Item
   setTemplateItem(item: any) {
     if (!item) return;
     let t: any = this;
@@ -648,15 +656,15 @@ export default class List extends cc.Component {
       t._itemSize = t._layout.cellSize;
     else t._itemSize = cc.size(item.width, item.height);
 
-    
+    //获取ListItem，如果没有就取消选择模式
     let com = item.getComponent(ListItem);
     let remove = false;
     if (!com) remove = true;
-    
-    
-    
-    
-    
+    // if (com) {
+    //     if (!com._btnCom && !item.getComponent(cc.Button)) {
+    //         remove = true;
+    //     }
+    // }
     if (remove) {
       t.selectedMode = SelectedType.NONE;
     }
@@ -678,7 +686,7 @@ export default class List extends cc.Component {
       case cc.Layout.Type.GRID:
         switch (t._startAxis) {
           case cc.Layout.AxisDirection.HORIZONTAL:
-            
+            //计算列数
             let trimW: number = t.content.width - t._leftGap - t._rightGap;
             t._colLineNum = Math.floor(
               (trimW + t._columnGap) / (t._itemSize.width + t._columnGap)
@@ -686,7 +694,7 @@ export default class List extends cc.Component {
             t._sizeType = true;
             break;
           case cc.Layout.AxisDirection.VERTICAL:
-            
+            //计算行数
             let trimH: number = t.content.height - t._topGap - t._bottomGap;
             t._colLineNum = Math.floor(
               (trimH + t._lineGap) / (t._itemSize.height + t._lineGap)
@@ -697,7 +705,11 @@ export default class List extends cc.Component {
         break;
     }
   }
-  
+  /**
+   * 检查是否初始化
+   * @param {Boolean} printLog 是否打印错误信息
+   * @returns
+   */
   checkInited(printLog: boolean = true) {
     if (!this._inited) {
       if (printLog) cc.error('List initialization not completed!');
@@ -705,7 +717,7 @@ export default class List extends cc.Component {
     }
     return true;
   }
-  
+  //禁用 Layout 组件，自行计算 Content Size
   _resizeContent() {
     let t: any = this;
     let result: number;
@@ -748,7 +760,7 @@ export default class List extends cc.Component {
         break;
       }
       case cc.Layout.Type.GRID: {
-        
+        //网格模式不支持居中
         if (t.lackCenter) t.lackCenter = false;
         switch (t._startAxis) {
           case cc.Layout.AxisDirection.HORIZONTAL:
@@ -794,7 +806,7 @@ export default class List extends cc.Component {
         spacing * (t._cyclicNum - 1);
       t._cycilcAllItemSizeNoEdge = t._allItemSizeNoEdge * t._cyclicNum;
       t._cycilcAllItemSizeNoEdge += spacing * (t._cyclicNum - 1);
-      
+      // cc.log('_cyclicNum ->', t._cyclicNum, t._allItemSizeNoEdge, t._allItemSize, t._cyclicPos1, t._cyclicPos2);
     }
 
     t._lack =
@@ -816,10 +828,10 @@ export default class List extends cc.Component {
       t.content.width = targetWH;
     }
 
-    
+    // cc.log('_resizeContent()  numItems =', t._numItems, '，content =', t.content);
   }
 
-  
+  //滚动进行时...
   _onScrolling(ev: cc.Event = null) {
     if (this.frameCount == null) this.frameCount = this._updateRate;
     if (
@@ -834,7 +846,7 @@ export default class List extends cc.Component {
 
     if (this._aniDelRuning) return;
 
-    
+    //循环列表处理
     if (this.cyclic) {
       let scrollPos: any = this.content.getPosition();
       scrollPos = this._sizeType ? scrollPos.y : scrollPos.x;
@@ -845,7 +857,7 @@ export default class List extends cc.Component {
       let add: any = this._sizeType ? cc.v2(0, addVal) : cc.v2(addVal, 0);
 
       switch (this._alignCalcType) {
-        case 1: 
+        case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
           if (scrollPos > -this._cyclicPos1) {
             this.content.x = -this._cyclicPos2;
             if (this._scrollView.isAutoScrolling()) {
@@ -853,9 +865,9 @@ export default class List extends cc.Component {
                 '_autoScrollStartPosition'
               ].sub(add);
             }
-            
-            
-            
+            // if (this._beganPos) {
+            //     this._beganPos += add;
+            // }
           } else if (scrollPos < -this._cyclicPos2) {
             this.content.x = -this._cyclicPos1;
             if (this._scrollView.isAutoScrolling()) {
@@ -863,12 +875,12 @@ export default class List extends cc.Component {
                 '_autoScrollStartPosition'
               ].add(add);
             }
-            
-            
-            
+            // if (this._beganPos) {
+            //     this._beganPos -= add;
+            // }
           }
           break;
-        case 2: 
+        case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
           if (scrollPos < this._cyclicPos1) {
             this.content.x = this._cyclicPos2;
             if (this._scrollView.isAutoScrolling()) {
@@ -885,7 +897,7 @@ export default class List extends cc.Component {
             }
           }
           break;
-        case 3: 
+        case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
           if (scrollPos < this._cyclicPos1) {
             this.content.y = this._cyclicPos2;
             if (this._scrollView.isAutoScrolling()) {
@@ -902,7 +914,7 @@ export default class List extends cc.Component {
             }
           }
           break;
-        case 4: 
+        case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
           if (scrollPos > -this._cyclicPos1) {
             this.content.y = -this._cyclicPos2;
             if (this._scrollView.isAutoScrolling()) {
@@ -942,7 +954,7 @@ export default class List extends cc.Component {
 
       if (this._customSize) {
         let breakFor: boolean = false;
-        
+        //如果该item的位置在可视区域内，就推入displayData
         for (; curId <= endId && !breakFor; curId++) {
           itemPos = this._calcItemPos(curId);
           switch (this._align) {
@@ -984,19 +996,19 @@ export default class List extends cc.Component {
         let ww: number = this._itemSize.width + this._columnGap;
         let hh: number = this._itemSize.height + this._lineGap;
         switch (this._alignCalcType) {
-          case 1: 
+          case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
             curId = (vLeft + this._leftGap) / ww;
             endId = (vRight + this._rightGap) / ww;
             break;
-          case 2: 
+          case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
             curId = (-vRight - this._rightGap) / ww;
             endId = (-vLeft - this._leftGap) / ww;
             break;
-          case 3: 
+          case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
             curId = (-vTop - this._topGap) / hh;
             endId = (-vBottom - this._bottomGap) / hh;
             break;
-          case 4: 
+          case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
             curId = (vBottom + this._bottomGap) / hh;
             endId = (vTop + this._topGap) / hh;
             break;
@@ -1012,7 +1024,7 @@ export default class List extends cc.Component {
       }
       this._delRedundantItem();
       if (this.displayData.length <= 0 || !this._numItems) {
-        
+        //if none, delete all.
         this._lastDisplayData = [];
         return;
       }
@@ -1023,13 +1035,13 @@ export default class List extends cc.Component {
 
       let haveDataChange: boolean = this.displayItemNum != len;
       if (haveDataChange) {
-        
+        // 如果是逐帧渲染，需要排序
         if (this.frameByFrameRenderNum > 0) {
           this._lastDisplayData.sort((a, b) => {
             return a - b;
           });
         }
-        
+        // 因List的显示数据是有序的，所以只需要判断数组长度是否相等，以及头、尾两个元素是否相等即可。
         haveDataChange =
           this.firstListId != this._lastDisplayData[0] ||
           this.displayData[this.displayItemNum - 1].id !=
@@ -1037,11 +1049,11 @@ export default class List extends cc.Component {
       }
 
       if (this._forceUpdate || haveDataChange) {
-        
+        //如果是强制更新
         if (this.frameByFrameRenderNum > 0) {
-          
-          
-          
+          // if (this._updateDone) {
+          // this._lastDisplayData = [];
+          //逐帧渲染
           if (this._numItems > 0) {
             if (!this._updateDone) {
               this._doneAfterUpdate = true;
@@ -1053,11 +1065,11 @@ export default class List extends cc.Component {
             this._updateCounter = 0;
             this._updateDone = true;
           }
-          
+          // }
         } else {
-          
+          //直接渲染
           this._lastDisplayData = [];
-          
+          // cc.log('List Display Data II::', this.displayData);
           for (let c = 0; c < this.displayItemNum; c++) {
             this._createOrUpdateItem(this.displayData[c]);
           }
@@ -1067,11 +1079,11 @@ export default class List extends cc.Component {
       this._calcNearestItem();
     }
   }
-  
+  //计算可视范围
   _calcViewPos() {
     let scrollPos: any = this.content.getPosition();
     switch (this._alignCalcType) {
-      case 1: 
+      case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
         this.elasticLeft = scrollPos.x > 0 ? scrollPos.x : 0;
         this.viewLeft = (scrollPos.x < 0 ? -scrollPos.x : 0) - this.elasticLeft;
         this.viewRight = this.viewLeft + this.node.width;
@@ -1080,9 +1092,9 @@ export default class List extends cc.Component {
             ? Math.abs(this.viewRight - this.content.width)
             : 0;
         this.viewRight += this.elasticRight;
-        
+        // cc.log(this.elasticLeft, this.elasticRight, this.viewLeft, this.viewRight);
         break;
-      case 2: 
+      case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
         this.elasticRight = scrollPos.x < 0 ? -scrollPos.x : 0;
         this.viewRight =
           (scrollPos.x > 0 ? -scrollPos.x : 0) + this.elasticRight;
@@ -1092,9 +1104,9 @@ export default class List extends cc.Component {
             ? Math.abs(this.viewLeft + this.content.width)
             : 0;
         this.viewLeft -= this.elasticLeft;
-        
+        // cc.log(this.elasticLeft, this.elasticRight, this.viewLeft, this.viewRight);
         break;
-      case 3: 
+      case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
         this.elasticTop = scrollPos.y < 0 ? Math.abs(scrollPos.y) : 0;
         this.viewTop = (scrollPos.y > 0 ? -scrollPos.y : 0) + this.elasticTop;
         this.viewBottom = this.viewTop - this.node.height;
@@ -1103,9 +1115,9 @@ export default class List extends cc.Component {
             ? Math.abs(this.viewBottom + this.content.height)
             : 0;
         this.viewBottom += this.elasticBottom;
-        
+        // cc.log(this.elasticTop, this.elasticBottom, this.viewTop, this.viewBottom);
         break;
-      case 4: 
+      case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
         this.elasticBottom = scrollPos.y > 0 ? Math.abs(scrollPos.y) : 0;
         this.viewBottom =
           (scrollPos.y < 0 ? -scrollPos.y : 0) - this.elasticBottom;
@@ -1115,11 +1127,11 @@ export default class List extends cc.Component {
             ? Math.abs(this.viewTop - this.content.height)
             : 0;
         this.viewTop -= this.elasticTop;
-        
+        // cc.log(this.elasticTop, this.elasticBottom, this.viewTop, this.viewBottom);
         break;
     }
   }
-  
+  //计算位置 根据id
   _calcItemPos(id: number) {
     let width: number,
       height: number,
@@ -1352,7 +1364,7 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  //计算已存在的Item的位置
   _calcExistItemPos(id: number) {
     let item: any = this.getItemByListId(id);
     if (!item) return null;
@@ -1370,7 +1382,7 @@ export default class List extends cc.Component {
     }
     return data;
   }
-  
+  //获取Item位置
   getItemPos(id: number) {
     if (this._virtual) return this._calcItemPos(id);
     else {
@@ -1378,7 +1390,7 @@ export default class List extends cc.Component {
       else return this._calcExistItemPos(id);
     }
   }
-  
+  //获取固定尺寸
   _getFixedSize(listId: number) {
     if (!this._customSize) return null;
     if (listId == null) listId = this._numItems;
@@ -1395,11 +1407,11 @@ export default class List extends cc.Component {
       count: count,
     };
   }
-  
+  //滚动结束时..
   _onScrollBegan() {
     this._beganPos = this._sizeType ? this.viewTop : this.viewLeft;
   }
-  
+  //滚动结束时..
   _onScrollEnded() {
     let t: any = this;
     if (t.scrollToListId != null) {
@@ -1410,9 +1422,9 @@ export default class List extends cc.Component {
           cc.sequence(
             cc.scaleTo(0.1, 1.06),
             cc.scaleTo(0.1, 1)
-            
+            //new cc.callFunc(function (runNode) {
 
-            
+            // })
           )
         );
       }
@@ -1420,7 +1432,7 @@ export default class List extends cc.Component {
     t._onScrolling();
 
     if (t._slideMode == SlideType.ADHERING && !t.adhering) {
-      
+      //cc.log(t.adhering, t._scrollView.isAutoScrolling(), t._scrollView.isScrolling());
       t.adhere();
     } else if (t._slideMode == SlideType.PAGE) {
       if (t._beganPos != null) {
@@ -1430,7 +1442,7 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  // 触摸时
   _onTouchStart(ev, captureListeners) {
     if (this._scrollView['hasNestedViewGroup'](ev, captureListeners)) return;
     let isMe = ev.eventPhase === cc.Event.AT_TARGET && ev.target === this.node;
@@ -1441,7 +1453,7 @@ export default class List extends cc.Component {
       this._scrollItem = itemNode._listId != null ? itemNode : ev.target;
     }
   }
-  
+  //触摸抬起时..
   _onTouchUp() {
     let t: any = this;
     t._scrollPos = null;
@@ -1479,13 +1491,13 @@ export default class List extends cc.Component {
     }
     this._scrollItem = null;
   }
-  
+  //当尺寸改变
   _onSizeChanged() {
     if (this.checkInited(false)) this._onScrolling();
   }
-  
+  //当Item自适应
   _onItemAdaptive(item) {
-    
+    // if (this.checkInited(false)) {
     if (
       (!this._sizeType && item.width != this._itemSize.width) ||
       (this._sizeType && item.height != this._itemSize.height)
@@ -1495,11 +1507,11 @@ export default class List extends cc.Component {
       if (this._customSize[item._listId] != val) {
         this._customSize[item._listId] = val;
         this._resizeContent();
-        
-        
-        
+        // this.content.children.forEach((child: cc.Node) => {
+        //     this._updateItemPos(child);
+        // });
         this.updateAll();
-        
+        // 如果当前正在运行 scrollTo，肯定会不准确，在这里做修正
         if (this._scrollToListId != null) {
           this._scrollPos = null;
           this.unschedule(this._scrollToSo);
@@ -1510,9 +1522,9 @@ export default class List extends cc.Component {
         }
       }
     }
-    
+    // }
   }
-  
+  //PAGE粘附
   _pageAdhere() {
     let t = this;
     if (
@@ -1529,18 +1541,18 @@ export default class List extends cc.Component {
     if (canSkip) {
       let timeInSecond = 0.5;
       switch (t._alignCalcType) {
-        case 1: 
-        case 4: 
+        case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
+        case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
           if (t._beganPos > curPos) {
             t.prePage(timeInSecond);
-            
+            // cc.log('_pageAdhere   PPPPPPPPPPPPPPP');
           } else {
             t.nextPage(timeInSecond);
-            
+            // cc.log('_pageAdhere   NNNNNNNNNNNNNNN');
           }
           break;
-        case 2: 
-        case 3: 
+        case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
+        case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
           if (t._beganPos < curPos) {
             t.prePage(timeInSecond);
           } else {
@@ -1558,7 +1570,7 @@ export default class List extends cc.Component {
     }
     t._beganPos = null;
   }
-  
+  //粘附
   adhere() {
     let t: any = this;
     if (!t.checkInited()) return;
@@ -1577,10 +1589,10 @@ export default class List extends cc.Component {
     let timeInSecond: number = 0.7;
     t.scrollTo(t.nearestListId, timeInSecond, offset);
   }
-  
+  //Update..
   update() {
     if (this.frameByFrameRenderNum <= 0 || this._updateDone) return;
-    
+    // cc.log(this.displayData.length, this._updateCounter, this.displayData[this._updateCounter]);
     if (this._virtual) {
       let len: number =
         this._updateCounter + this.frameByFrameRenderNum > this.displayItemNum
@@ -1594,11 +1606,11 @@ export default class List extends cc.Component {
       }
 
       if (this._updateCounter >= this.displayItemNum - 1) {
-        
+        //最后一个
         if (this._doneAfterUpdate) {
           this._updateCounter = 0;
           this._updateDone = false;
-          
+          // if (!this._scrollView.isScrolling())
           this._doneAfterUpdate = false;
         } else {
           this._updateDone = true;
@@ -1629,18 +1641,21 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  /**
+   * 创建或更新Item（虚拟列表用）
+   * @param {Object} data 数据
+   */
   _createOrUpdateItem(data: any) {
     let item: any = this.getItemByListId(data.id);
     if (!item) {
-      
+      //如果不存在
       let canGet: boolean = this._pool.size() > 0;
       if (canGet) {
         item = this._pool.get();
-        
+        // cc.log('从池中取出::   旧id =', item['_listId'], '，新id =', data.id, item);
       } else {
         item = cc.instantiate(this._itemTmp);
-        
+        // cc.log('新建::', data.id, item);
       }
 
       if (!item.isValid) {
@@ -1676,10 +1691,10 @@ export default class List extends cc.Component {
         );
       }
     } else if (this._forceUpdate && this.renderEvent) {
-      
+      //强制更新
       item.setPosition(cc.v2(data.x, data.y));
       this._resetItemSize(item);
-      
+      // cc.log('ADD::', data.id, item);
       if (this.renderEvent) {
         cc.Component.EventHandler.emitEvents(
           [this.renderEvent],
@@ -1695,12 +1710,12 @@ export default class List extends cc.Component {
       this._lastDisplayData.push(data.id);
     }
   }
-  
+  //创建或更新Item（非虚拟列表用）
   _createOrUpdateItem2(listId: number) {
     let item: any = this.content.children[listId];
     let listItem: ListItem;
     if (!item) {
-      
+      //如果不存在
       item = cc.instantiate(this._itemTmp);
       item._listId = listId;
       this.content.addChild(item);
@@ -1715,7 +1730,7 @@ export default class List extends cc.Component {
         cc.Component.EventHandler.emitEvents([this.renderEvent], item, listId);
       }
     } else if (this._forceUpdate && this.renderEvent) {
-      
+      //强制更新
       item._listId = listId;
       if (listItem) listItem.listId = listId;
       if (this.renderEvent) {
@@ -1742,7 +1757,7 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  //仅虚拟列表用
   _resetItemSize(item: any) {
     return;
     let size: number;
@@ -1757,7 +1772,10 @@ export default class List extends cc.Component {
       else item.width = size;
     }
   }
-  
+  /**
+   * 更新Item位置
+   * @param {Number||Node} listIdOrItem
+   */
   _updateItemPos(listIdOrItem: any) {
     let item: any = isNaN(listIdOrItem)
       ? listIdOrItem
@@ -1765,7 +1783,11 @@ export default class List extends cc.Component {
     let pos: any = this.getItemPos(item._listId);
     item.setPosition(pos.x, pos.y);
   }
-  
+  /**
+   * 设置多选
+   * @param {Array} args 可以是单个listId，也可是个listId数组
+   * @param {Boolean} bool 值，如果为null的话，则直接用args覆盖
+   */
   setMultSelected(args: any, bool: boolean) {
     let t: any = this;
     if (!t.checkInited()) return;
@@ -1797,7 +1819,11 @@ export default class List extends cc.Component {
     t._forceUpdate = true;
     t._onScrolling();
   }
-  
+  /**
+   * 更新指定的Item
+   * @param {Array} args 单个listId，或者数组
+   * @returns
+   */
   updateItem(args: any) {
     if (!this.checkInited()) return;
     if (!Array.isArray(args)) {
@@ -1814,12 +1840,18 @@ export default class List extends cc.Component {
         );
     }
   }
-  
+  /**
+   * 更新全部
+   */
   updateAll() {
     if (!this.checkInited()) return;
     this.numItems = this.numItems;
   }
-  
+  /**
+   * 根据ListID获取Item
+   * @param {Number} listId
+   * @returns
+   */
   getItemByListId(listId: number) {
     if (this.content) {
       for (let n: number = this.content.childrenCount - 1; n >= 0; n--) {
@@ -1828,7 +1860,10 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  /**
+   * 获取在显示区域外的Item
+   * @returns
+   */
   _getOutsideItem() {
     let item: any;
     let result: any[] = [];
@@ -1840,7 +1875,7 @@ export default class List extends cc.Component {
     }
     return result;
   }
-  
+  //删除显示区域以外的Item
   _delRedundantItem() {
     if (this._virtual) {
       let arr: any[] = this._getOutsideItem();
@@ -1856,7 +1891,7 @@ export default class List extends cc.Component {
           }
         }
       }
-      
+      // cc.log('存入::', str, '    pool.length =', this._pool.length);
     } else {
       while (this.content.childrenCount > this._numItems) {
         this._delSingleItem(
@@ -1865,15 +1900,18 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  //删除单个Item
   _delSingleItem(item: any) {
-    
+    // cc.log('DEL::', item['_listId'], item);
     if (item.destroy) item.destroy();
     item.removeFromParent();
 
     item = null;
   }
-  
+  /**
+   * 动效删除Item（此方法只适用于虚拟列表，即_virtual=true）
+   * 一定要在回调函数里重新设置新的numItems进行刷新，毕竟本List是靠数据驱动的。
+   */
   aniDelItem(listId: number, callFunc: Function, aniType: number) {
     let t: any = this;
 
@@ -1897,7 +1935,7 @@ export default class List extends cc.Component {
     listItem.showAni(
       aniType,
       () => {
-        
+        //判断有没有下一个，如果有的话，创建粗来
         let newId: number;
         if (curLastId < t._numItems - 2) {
           newId = curLastId + 1;
@@ -1922,7 +1960,7 @@ export default class List extends cc.Component {
           if (sub >= 0) {
             t.multSelected.splice(sub, 1);
           }
-          
+          //多选的数据，在其后的全部减一
           for (let n: number = t.multSelected.length - 1; n >= 0; n--) {
             let id: number = t.multSelected[n];
             if (id >= listId) t.multSelected[n]--;
@@ -1939,7 +1977,7 @@ export default class List extends cc.Component {
           }
           t._customSize = newCustomSize;
         }
-        
+        //后面的Item向前怼的动效
         let sec: number = 0.2333;
         let acts: any[], haveCB: boolean;
         for (
@@ -1972,7 +2010,13 @@ export default class List extends cc.Component {
       true
     );
   }
-  
+  /**
+   * 滚动到..
+   * @param {Number} listId 索引（如果<0，则滚到首个Item位置，如果>=_numItems，则滚到最末Item位置）
+   * @param {Number} timeInSecond 时间
+   * @param {Number} offset 索引目标位置偏移，0-1
+   * @param {Boolean} overStress 滚动后是否强调该Item（这只是个实验功能）
+   */
   scrollTo(
     listId: number,
     timeInSecond: number = 0.5,
@@ -1981,39 +2025,39 @@ export default class List extends cc.Component {
   ) {
     let t = this;
     if (!t.checkInited(false)) return;
-    
+    // t._scrollView.stopAutoScroll();
     if (timeInSecond == null)
-      
+      //默认0.5
       timeInSecond = 0.5;
     else if (timeInSecond < 0) timeInSecond = 0;
     if (listId < 0) listId = 0;
     else if (listId >= t._numItems) listId = t._numItems - 1;
-    
+    // 以防设置了numItems之后layout的尺寸还未更新
     if (!t._virtual && t._layout && t._layout.enabled) t._layout.updateLayout();
 
     let pos = t.getItemPos(listId);
     let targetX: number, targetY: number;
 
     switch (t._alignCalcType) {
-      case 1: 
+      case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
         targetX = pos.left;
         if (offset != null) targetX -= t.node.width * offset;
         else targetX -= t._leftGap;
         pos = cc.v2(targetX, 0);
         break;
-      case 2: 
+      case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
         targetX = pos.right - t.node.width;
         if (offset != null) targetX += t.node.width * offset;
         else targetX += t._rightGap;
         pos = cc.v2(targetX + t.content.width, 0);
         break;
-      case 3: 
+      case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
         targetY = pos.top;
         if (offset != null) targetY += t.node.height * offset;
         else targetY += t._topGap;
         pos = cc.v2(0, -targetY);
         break;
-      case 4: 
+      case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
         targetY = pos.bottom + t.node.height;
         if (offset != null) targetY -= t.node.height * offset;
         else targetY -= t._bottomGap;
@@ -2027,22 +2071,22 @@ export default class List extends cc.Component {
     let runScroll =
       Math.abs((t._scrollPos != null ? t._scrollPos : viewPos) - comparePos) >
       0.5;
-    
+    // cc.log(runScroll, t._scrollPos, viewPos, comparePos)
 
-    
+    // t._scrollView.stopAutoScroll();
     if (runScroll) {
       t._scrollView.scrollToOffset(pos, timeInSecond);
       t._scrollToListId = listId;
       t._scrollToEndTime = new Date().getTime() / 1000 + timeInSecond;
-      
+      // cc.log(listId, t.content.width, t.content.getPosition(), pos);
       t._scrollToSo = t.scheduleOnce(() => {
         if (!t._adheringBarrier) {
           t.adhering = t._adheringBarrier = false;
         }
         t._scrollPos = t._scrollToListId = t._scrollToEndTime = t._scrollToSo = null;
-        
+        //cc.log('2222222222', t._adheringBarrier)
         if (overStress) {
-          
+          // t.scrollToListId = listId;
           let item = t.getItemByListId(listId);
           if (item) {
             item.runAction(
@@ -2057,7 +2101,9 @@ export default class List extends cc.Component {
       }
     }
   }
-  
+  /**
+   * 计算当前滚动窗最近的Item
+   */
   _calcNearestItem() {
     let t: any = this;
     t.nearestListId = null;
@@ -2083,28 +2129,28 @@ export default class List extends cc.Component {
           ? (data.top + data.bottom) / 2
           : (center = (data.left + data.right) / 2);
         switch (t._alignCalcType) {
-          case 1: 
+          case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
             if (data.right >= vLeft) {
               t.nearestListId = data.id;
               if (vLeft > center) t.nearestListId += t._colLineNum;
               breakFor = true;
             }
             break;
-          case 2: 
+          case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
             if (data.left <= vRight) {
               t.nearestListId = data.id;
               if (vRight < center) t.nearestListId += t._colLineNum;
               breakFor = true;
             }
             break;
-          case 3: 
+          case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
             if (data.bottom <= vTop) {
               t.nearestListId = data.id;
               if (vTop < center) t.nearestListId += t._colLineNum;
               breakFor = true;
             }
             break;
-          case 4: 
+          case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
             if (data.top >= vBottom) {
               t.nearestListId = data.id;
               if (vBottom > center) t.nearestListId += t._colLineNum;
@@ -2114,7 +2160,7 @@ export default class List extends cc.Component {
         }
       }
     }
-    
+    //判断最后一个Item。。。（哎，这些判断真心恶心，判断了前面的还要判断最后一个。。。一开始呢，就只有一个布局（单列布局），那时候代码才三百行，后来就想着完善啊，艹..这坑真深，现在这行数都一千五了= =||）
     data = t._virtual
       ? t.displayData[t.displayItemNum - 1]
       : t._calcExistItemPos(t._numItems - 1);
@@ -2123,35 +2169,35 @@ export default class List extends cc.Component {
         ? (data.top + data.bottom) / 2
         : (center = (data.left + data.right) / 2);
       switch (t._alignCalcType) {
-        case 1: 
+        case 1: //单行HORIZONTAL（LEFT_TO_RIGHT）、网格VERTICAL（LEFT_TO_RIGHT）
           if (vRight > center) t.nearestListId = data.id;
           break;
-        case 2: 
+        case 2: //单行HORIZONTAL（RIGHT_TO_LEFT）、网格VERTICAL（RIGHT_TO_LEFT）
           if (vLeft < center) t.nearestListId = data.id;
           break;
-        case 3: 
+        case 3: //单列VERTICAL（TOP_TO_BOTTOM）、网格HORIZONTAL（TOP_TO_BOTTOM）
           if (vBottom < center) t.nearestListId = data.id;
           break;
-        case 4: 
+        case 4: //单列VERTICAL（BOTTOM_TO_TOP）、网格HORIZONTAL（BOTTOM_TO_TOP）
           if (vTop > center) t.nearestListId = data.id;
           break;
       }
     }
-    
+    // cc.log('t.nearestListId =', t.nearestListId);
   }
-  
+  //上一页
   prePage(timeInSecond: number = 0.5) {
-    
+    // cc.log('👈');
     if (!this.checkInited()) return;
     this.skipPage(this.curPageNum - 1, timeInSecond);
   }
-  
+  //下一页
   nextPage(timeInSecond: number = 0.5) {
-    
+    // cc.log('👉');
     if (!this.checkInited()) return;
     this.skipPage(this.curPageNum + 1, timeInSecond);
   }
-  
+  //跳转到第几页
   skipPage(pageNum: number, timeInSecond: number) {
     let t: any = this;
     if (!t.checkInited()) return;
@@ -2161,14 +2207,14 @@ export default class List extends cc.Component {
       );
     if (pageNum < 0 || pageNum >= t._numItems) return;
     if (t.curPageNum == pageNum) return;
-    
+    // cc.log(pageNum);
     t.curPageNum = pageNum;
     if (t.pageChangeEvent) {
       cc.Component.EventHandler.emitEvents([t.pageChangeEvent], pageNum);
     }
     t.scrollTo(pageNum, timeInSecond);
   }
-  
+  //计算 CustomSize（这个函数还是保留吧，某些罕见的情况的确还是需要手动计算customSize的）
   calcCustomSize(numItems: number) {
     let t: any = this;
     if (!t.checkInited()) return;

@@ -1,12 +1,19 @@
-
+/**
+ *   AnimationUtil
+ * @see AnimationUtil.ts https://gitee.com/ifaswind/eazax-ccc/blob/master/utils/NodeUtil.ts
+ */
 export default class AnimationUtil {
-	
+	/**
+	 *  // 停在动画的第一帧   https://blog.csdn.net/weixin_43297573/article/details/115258793
+	 * @param anim 节点
+	 * @param name 目标节点（容器）
+	 */
 	public static animationGoToStart(
 		anim: cc.Animation,
 		name: string | number
 	): void {
 		if (anim == null) {
-			
+			//anim = this.node.getComponent(cc.Animation);
 			cc.log('当前缺少动画参数！');
 			return;
 		}
@@ -15,19 +22,24 @@ export default class AnimationUtil {
 		if (typeof name === 'number') {
 			anim_name = anim.getClips()[name].name;
 		}
-		
+		// anim.play(String(anim_name), 0);
 		anim.setCurrentTime(0, anim_name.toString());
-		anim.sample(anim_name.toString()); 
+		anim.sample(anim_name.toString()); //采样
 		anim.stop();
 	}
 
-	
+	/**
+	 * 震屏效果
+	 *
+	 * @param duration  震屏时间
+	 * @param componet
+	 */
 	public static shakeEffect(duration, componet) {
 		let self = this;
-		let x = 0; 
-		let y = 0; 
+		let x = 0; //componet.x;
+		let y = 0; //componet.y
 
-		var shakeY = 10; 
+		var shakeY = 10; //初始震动距离
 		var sv = cc.v2(x, y + shakeY);
 		componet.stopAllActions();
 		componet.runAction(

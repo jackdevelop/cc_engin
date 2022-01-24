@@ -4,7 +4,9 @@ export type LinkListNode<T> = {
   next: LinkListNode<T>;
 };
 
-
+/**
+ *  链表
+ */
 export class LinkList<T> {
   private pool: LinkListNode<T>[];
   private _head: LinkListNode<T>;
@@ -37,7 +39,7 @@ export class LinkList<T> {
 
   append(key: number, data: T): number {
     let node: LinkListNode<T> = this.spawn_node(key, data);
-    
+    //将node加到linklist末尾
     if (this._tail) {
       this._tail.next = node;
       this._tail = node;
@@ -60,18 +62,18 @@ export class LinkList<T> {
       prev = curr;
       curr = curr.next;
     }
-    
+    //没找到
     if (!curr) {
       return null;
     }
     if (!prev) {
-      
+      //curr为头节点(要区分curr是否同时为尾节点)
       this._head = curr.next;
       if (!curr.next) {
         this._tail = null;
       }
     } else {
-      
+      //curr非头节点(要区分curr是否为尾节点)
       prev.next = curr.next;
       if (!curr.next) {
         this._tail = prev;

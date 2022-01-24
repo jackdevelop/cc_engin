@@ -1,7 +1,14 @@
-
+/**
+ * 调试工具
+ * @see DebugUtil.ts https://gitee.com/ifaswind/eazax-ccc/blob/master/utils/TimeUtil.ts
+ */
 export default class DebugUtil {
 
-    
+    /**
+     * 打出光彩夺目的日志（黑蓝白配色）
+     * @param title 标题
+     * @param msg 信息
+     */
     public static log(title: any, msg?: any): void {
         if (msg) {
             console.log(
@@ -17,25 +24,34 @@ export default class DebugUtil {
         }
     }
 
-    
+    /**
+     * 展示动态图集
+     * @param status 状态
+     */
     public static showDynamicAtlas(status: boolean = true): cc.Node {
         return cc.dynamicAtlasManager.showDebug(status);
     }
 
-    
+    /**
+     * 展示左下角的统计面板
+     * @param status 状态
+     */
     public static showStats(status: boolean = true): void {
         cc.debug.setDisplayStats(status);
     }
 
-    
+    /**
+     * 更改统计面板的文本颜色
+     * @param font 文本颜色
+     */
     public static setStatsColor(font: cc.Color = cc.Color.WHITE, background: cc.Color = cc.color(0, 0, 0, 150)) {
         const profiler = cc.find('PROFILER-NODE');
         if (!profiler) return cc.warn('未找到统计面板节点！');
 
-        
+        // 文字
         profiler.children.forEach(node => node.color = font);
 
-        
+        // 背景
         let node = profiler.getChildByName('BACKGROUND');
         if (!node) {
             node = new cc.Node('BACKGROUND');
@@ -50,7 +66,9 @@ export default class DebugUtil {
         graphics.fill();
     }
 
-    
+    /**
+     * 上一次渲染帧所提交的渲染批次总数
+     */
     public static getDrawCalls(): number {
         return cc.renderer.drawCalls;
     }

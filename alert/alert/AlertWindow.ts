@@ -1,4 +1,11 @@
-
+/**
+ *  AlertManager 文件
+ *
+ *  使用方法：
+ *      var value = LanguageManager.getValueByKey("id_1");
+        Alert.show(value);
+ *
+ */
 
 import GameManger from '../../gamemanager/GameManger';
 import PoolManager from '../../scripts/libs/pool/PoolManager';
@@ -7,22 +14,24 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class AlertWindow extends cc.Component {
-	
+	/**单例实例**/
 	private static instance: AlertWindow = null;
 
-	
+	// @property(cc.Prefab)
 	@property({ type: cc.Prefab, tooltip: 'toolTipPrefable' })
 	private toolTipPrefable: cc.Prefab = null;
 
 	@property({ type: cc.Prefab, tooltip: 'toolTipPrefable_2' })
 	toolTipPrefable_2: cc.Prefab = null;
 
-	
+	// use this for initialization
 	onLoad() {
 		AlertWindow.instance = this;
 	}
 
-	
+	/**
+	 * 显示
+	 */
 	public static show(
 		title,
 		tip,
@@ -42,7 +51,7 @@ export default class AlertWindow extends cc.Component {
 		}
 
 		var toolTipPrefable = instance.toolTipPrefable;
-		
+		// var toolTipPrefable = Alert.instance.toolTipPrefable_2;
 		if (toolTipPrefable == null) {
 			return;
 		}
@@ -53,21 +62,21 @@ export default class AlertWindow extends cc.Component {
 		}
 		let game_font = gameManger_instance.game_font;
 
-		
-		var canvas = cc.find('Canvas'); 
+		//动态的找到内存
+		var canvas = cc.find('Canvas'); //cc.director.getScene().getChildByName('Canvas');
 		let current_node_parent =
 			parent_layer || canvas.getChildByName('uiLayer_top');
 		if (!current_node_parent) return;
 
-		
+		// var betUIPrefab = cc.instantiate(toolTipPrefable);
 		let retobj = PoolManager.requestPoolObj('AlertPrefab', toolTipPrefable);
-		
+		// betUIPrefab.removeFromParent()
 		if (!retobj.getParent()) {
 			current_node_parent.addChild(retobj);
 		}
 
 		var node_parent = retobj.getChildByName('node_parent');
-		
+		//Title_txt
 		if (node_parent.getChildByName('txt_title')) {
 			var txt_title = node_parent
 				.getChildByName('txt_title')
@@ -78,7 +87,7 @@ export default class AlertWindow extends cc.Component {
 			}
 		}
 
-		
+		//Tips_txt
 		var txt_tips = node_parent
 			.getChildByName('txt_tips')
 			.getComponent(cc.RichText);
@@ -87,7 +96,7 @@ export default class AlertWindow extends cc.Component {
 			txt_tips.font = game_font;
 		}
 
-		
+		//确定按钮
 		var btn_confirm = node_parent
 			.getChildByName('node_layout')
 			.getChildByName('btn_confirm')
@@ -97,11 +106,11 @@ export default class AlertWindow extends cc.Component {
 			cc.Node.EventType.TOUCH_END,
 			function (event) {
 				cc.log('点击了确定按钮');
-				
-				
-				
+				//cc.Node.EventType.MOUSE_DOWN   // 使用枚举类型来注册
+				//这里的 event 是一个 EventCustom 对象，你可以通过 event.detail 获取 Button 组件
+				//另外，注意这种方式注册的事件，也无法传递 customEventData
 				var button = event.detail;
-				
+				// tipsLayer.removeChild(retobj);
 				PoolManager.returnPoolObj('AlertPrefab', retobj);
 
 				if (confirmfun) confirmfun();
@@ -118,7 +127,7 @@ export default class AlertWindow extends cc.Component {
 			}
 		}
 
-		
+		//取消按钮
 		let btn_cancel;
 		if (
 			node_parent.getChildByName('node_layout').getChildByName('btn_cancel')
@@ -131,11 +140,11 @@ export default class AlertWindow extends cc.Component {
 			btn_cancel.node.on(
 				cc.Node.EventType.TOUCH_END,
 				function (event) {
-					
+					//这里的 event 是一个 EventCustom 对象，你可以通过 event.detail 获取 Button 组件
 					var button = event.detail;
-					
-					
-					
+					//do whatever you want with button
+					//另外，注意这种方式注册的事件，也无法传递 customEventData
+					// tipsLayer.removeChild(retobj);
 					PoolManager.returnPoolObj('AlertPrefab', retobj);
 
 					if (canclefun) canclefun();
@@ -144,7 +153,7 @@ export default class AlertWindow extends cc.Component {
 			);
 		}
 
-		
+		//关闭按钮
 		var ui_mask = retobj.getChildByName('ui_mask');
 		if (ui_mask) {
 			ui_mask = ui_mask.getComponent(cc.Button);
@@ -153,11 +162,11 @@ export default class AlertWindow extends cc.Component {
 				ui_mask.node.on(
 					cc.Node.EventType.TOUCH_END,
 					function (event) {
-						
+						//这里的 event 是一个 EventCustom 对象，你可以通过 event.detail 获取 Button 组件
 						var button = event.detail;
-						
-						
-						
+						//do whatever you want with button
+						//另外，注意这种方式注册的事件，也无法传递 customEventData
+						// tipsLayer.removeChild(retobj);
 						PoolManager.returnPoolObj('AlertPrefab', retobj);
 
 						if (closefun) closefun();
@@ -174,11 +183,11 @@ export default class AlertWindow extends cc.Component {
 			btn_close.node.on(
 				cc.Node.EventType.TOUCH_END,
 				function (event) {
-					
+					//这里的 event 是一个 EventCustom 对象，你可以通过 event.detail 获取 Button 组件
 					var button = event.detail;
-					
-					
-					
+					//do whatever you want with button
+					//另外，注意这种方式注册的事件，也无法传递 customEventData
+					// tipsLayer.removeChild(retobj);
 					PoolManager.returnPoolObj('AlertPrefab', retobj);
 
 					if (closefun) closefun();
@@ -187,17 +196,17 @@ export default class AlertWindow extends cc.Component {
 			);
 		}
 
-		
+		//排列按钮
 		var _btn_confirm_positon = btn_confirm.node.getPosition();
 		var _btn_cancel_positon = btn_cancel.node.getPosition();
 
 		if (btnArr && btnArr.length == 1) {
-			
+			// btn_confirm.node.setPosition(0, _btn_confirm_positon.y);
 			btn_confirm.node.active = true;
 			btn_cancel.node.active = false;
 		} else {
-			
-			
+			// btn_confirm.node.setPosition(-160, _btn_confirm_positon.y);
+			// btn_cancel.node.setPosition(160,  _btn_confirm_positon.y);
 
 			btn_confirm.node.active = true;
 			btn_cancel.node.active = true;

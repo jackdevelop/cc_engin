@@ -1,12 +1,12 @@
-
-
-
-
-
-
-
-
-
+// Learn cc.Class:
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/class.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/class.html
+// Learn Attribute:
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
 import { LoginService } from '../../app/login/scripts/LoginService';
 
@@ -30,10 +30,10 @@ export default class Notice extends cc.Component {
   @property({ tooltip: '当公告显示完，是否自动隐藏起来 ' })
   auto_hide: boolean = true;
 
-  
+  //所有的 当前的data
   private _data = [];
 
-  
+  //单例
   private static instance: Notice = null;
 
   onLoad() {
@@ -48,7 +48,7 @@ export default class Notice extends cc.Component {
 
       if (self.txt_notice.node.x < -width / 2 - self.txt_notice.node.width) {
         self.show();
-        self.txt_notice.node.x = width / 2; 
+        self.txt_notice.node.x = width / 2; //+ self.txt_notice.node.width;
       }
     }, this.time);
   }
@@ -59,7 +59,7 @@ export default class Notice extends cc.Component {
     }
 
     let self = this;
-    
+    // let m_marquee = LoginService.getInstance().m_marquee;
     let data = self._data.shift();
 
     if (!data) {
@@ -81,12 +81,14 @@ export default class Notice extends cc.Component {
     Notice.instance = null;
   }
 
-  
-  
-  
-  
+  //////////////////////////////////////////////////////////////////////////////////////
+  ///////////// static 方法 /////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////
 
-  
+  /**
+   * 显示
+   */
   public static show(info) {
     if (!info) {
       return;

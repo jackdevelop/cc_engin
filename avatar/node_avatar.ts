@@ -1,12 +1,12 @@
-
-
-
-
-
-
-
-
-
+// Learn TypeScript:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { ImageLoader } from '../scripts/libs/utils/ImageLoader';
 import { GameMath } from '../scripts/libs/utils/GameMath';
@@ -47,7 +47,7 @@ export default class node_avatar extends BaseComponent {
 	@property({ tooltip: '是否可以点击' })
 	is_touch: boolean = false;
 
-	
+	//user 信息
 	private m_user = null;
 
 	onLoad() {
@@ -87,25 +87,25 @@ export default class node_avatar extends BaseComponent {
 			}
 		}
 		if (this.txt_user_code) {
-			this.txt_user_code.string = (user.user_code || '') + ''; 
+			this.txt_user_code.string = (user.user_code || '') + ''; //user.bag.getItemByItemid_GOLD();
 		}
 		if (this.spt_vip) {
 			let vip: number = user.vip || 0;
 			this.spt_vip.spriteFrame = this.sptframe_vip[vip];
 		}
-		
-		
-		
+		// if(this.txt_nickname) {
+		//     this.txt_nickname.string =   (user.nickname || "") + "" //|| "游客账号";
+		// }
 		this.setTxtNickname(user.nickname);
 
-		
+		// ImageLoader.load(null)
 	}
 
-	
+	//设置头像
 	public async setAvatar(avatar) {
-		
+		//头像
 		if (this.spt_avatar) {
-			
+			// cc.log(avatar, 'aaaa');
 			if (avatar || _.isNumber(avatar)) {
 				let spriteFrame = await ImageLoader.load(
 					avatar,
@@ -113,17 +113,17 @@ export default class node_avatar extends BaseComponent {
 					this.spt_avatar,
 					this.GAME_AUTO_CLEAN
 				);
-				
-				
+				// if (this.spt_avatar) {
+				// this.spt_avatar.spriteFrame = spriteFrame;
 				this.spt_avatar.node.active = true;
-				
+				// }
 			} else {
 				this.spt_avatar.node.active = false;
 			}
 		}
 	}
 
-	
+	//设置名称
 	public setTxtNickname(nickname) {
 		if (this.txt_nickname) {
 			if (nickname == null) {
@@ -131,28 +131,28 @@ export default class node_avatar extends BaseComponent {
 			} else {
 				this.txt_nickname.node.active = true;
 				this.txt_nickname.string = nickname;
-				
+				// this.txt_nickname.string = '游客账号';
 			}
 		}
 	}
 	public setTxtGold(num) {
 		if (this.txt_gold) {
-			
+			// cc.log('=================================', num);
 			let str = GameMath.toNumShort(num);
-			
+			// cc.log('====222=============================', str);
 			this.txt_gold.string = str + '';
 		}
 	}
 
-	
+	//点击用户头像
 	private async onClickAwatar(event, eventdata) {
 		if (eventdata == null) {
 			eventdata = new Object();
 		}
-		
+		// await MWindow.show(InfoPanel, eventdata)
 	}
 
-	
+	//复制剪贴板
 	private onClickcopyTextToClipboard() {
 		if (this.m_user) {
 			let user_code = this.m_user.user_code + '';

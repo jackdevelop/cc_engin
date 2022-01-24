@@ -1,12 +1,15 @@
 import { code_constants } from '../../../../cc_own/constants/code_constants';
 
 var _ = require('Underscore');
-
+// import Map = dragonBones.Map;
 
 export class NetWorkHandle_NoNet {
-  
+  ///////////////////////////////////////  私有方法 (主要处理服务器的返回 )  ////////////////////////////////////////////////////////////////////////////
 
-  
+  /**处理 处理返回消息
+   * @param data
+   * @private
+   */
   public static hanlde(param, agars) {
     var cmd = param.cmd || param.p || param.n || param.name;
     let ret = {
@@ -16,7 +19,7 @@ export class NetWorkHandle_NoNet {
     };
 
     cc.log('NetWorkHandle_NoNet > ', cmd);
-    
+    //过滤公共接口
     switch (cmd) {
       case 'login_by_mobilephone':
         ret.user = {

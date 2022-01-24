@@ -3,19 +3,25 @@ import { GameLoader } from "./GameLoader";
 var _ = require('Underscore');
 
 export class DownUtil {
-  
+  // 请求标记,递增
   private static _seq: number = 1;
 
 
-  
+  /**
+   *  判断 resources 目录下 是否有这个文件  
+   * @param url 
+   * @returns 
+   */
   public static async getInfoWithPath(url){
-    
+    // let is_hav = cc.resources.getInfoWithPath(url);
     let is_hav = await GameLoader.load(url,null);
 
     return is_hav
   }
 
-  
+  /**
+   * 下载文件
+   */
   public static HttpDownload(
     url: string,
     fileName: string,
@@ -24,9 +30,9 @@ export class DownUtil {
   ) {
     if (CC_JSB) {
       fileName = jsb.fileUtils.getWritablePath() + fileName;
-      
+      // 文件保存路径
       if (jsb.fileUtils.isFileExist(fileName) && !overwrite) {
-        
+        // 是否需要重复下载
         handler && handler(null, fileName);
         return;
       }
@@ -60,7 +66,9 @@ export class DownUtil {
     CC_DEBUG && cc.log(`[C->S] [Download.${seq}] -> ${url}`);
   }
 
-  
+  /**
+   * 下载文件 In Native
+   */
   public static saveFileInNative(
     arrayBuffer: ArrayBuffer,
     fullPath: string,
@@ -83,7 +91,9 @@ export class DownUtil {
     }
   }
 
-  
+  /**
+   * 下载文件 In Browser
+   */
   public static saveFileInBrowser(blob: Blob, fileName: string) {
     if (typeof window.navigator.msSaveBlob !== 'undefined') {
       window.navigator.msSaveBlob(blob, fileName);

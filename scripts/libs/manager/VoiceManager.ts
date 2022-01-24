@@ -73,15 +73,17 @@ function decode(content) {
   return newData;
 }
 
-
+/**
+ *  录音并播放
+ */
 @ccclass
-export class VoiceManager  {
+export class VoiceManager /* extends cc.Component */ {
   private ANDROID_API = 'org/cocos2dx/sscq/voice/VoiceRecorder';
   private ANDROID_API_PLAYER = 'org/cocos2dx/sscq/voice/VoicePlayer';
 
   private IOS_API = 'VoiceSDK';
 
-  
+  //录音的地址
   private _voiceMediaPath = null;
 
   private static instance: VoiceManager = null;
@@ -97,9 +99,28 @@ export class VoiceManager  {
     this.init();
   }
 
-  
+  // use this for initialization
   init() {
-    
+    /*
+        var url = cc.url.raw("resources/test.amr");
+        var fileData = jsb.fileUtils.getDataFromFile(url);
+        var content = "";
+        var sep = "";
+        for(var i = 0; i < fileData.length; ++i){
+            content += sep + fileData[i];
+            sep = ",";
+        }
+
+        var url = cc.url.raw("resources/test.txt");
+        jsb.fileUtils.writeStringToFile(content,url);
+
+        var url = cc.url.raw("resources/test2.amrs");
+        var content = encode(fileData);
+        jsb.fileUtils.writeStringToFile(content,url);
+
+        var url = cc.url.raw("resources/test2.amr");
+        jsb.fileUtils.writeDataToFile(decode(content),url);
+        */
 
     if (cc.sys.isNative) {
       this._voiceMediaPath = jsb.fileUtils.getWritablePath() + '/voicemsgs/';
@@ -111,7 +132,7 @@ export class VoiceManager  {
     if (!cc.sys.isNative) {
       return;
     }
-    
+    //cc.vv.audioMgr.pauseAll();
     AudioManager.getInstance().pauseOrResume(true);
     this.clearCache(filename);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
@@ -130,7 +151,7 @@ export class VoiceManager  {
     if (!cc.sys.isNative) {
       return;
     }
-    
+    // cc.vv.audioMgr.resumeAll();
     AudioManager.getInstance().pauseOrResume(false);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(this.ANDROID_API, 'release', '()V');
@@ -143,7 +164,7 @@ export class VoiceManager  {
     if (!cc.sys.isNative) {
       return;
     }
-    
+    // cc.vv.audioMgr.resumeAll();
     AudioManager.getInstance().pauseOrResume(false);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(this.ANDROID_API, 'cancel', '()V');
@@ -167,13 +188,13 @@ export class VoiceManager  {
   clearCache(filename) {
     if (cc.sys.isNative) {
       var url = this._voiceMediaPath + filename;
-      
+      //console.log("check file:" + url);
       if (jsb.fileUtils.isFileExist(url)) {
-        
+        //console.log("remove:" + url);
         jsb.fileUtils.removeFile(url);
       }
       if (jsb.fileUtils.isFileExist(url + '.wav')) {
-        
+        //console.log("remove:" + url + ".wav");
         jsb.fileUtils.removeFile(url + '.wav');
       }
     }
@@ -183,7 +204,7 @@ export class VoiceManager  {
     if (!cc.sys.isNative) {
       return;
     }
-    
+    // cc.vv.audioMgr.pauseAll();
     AudioManager.getInstance().pauseOrResume(true);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(
@@ -202,7 +223,7 @@ export class VoiceManager  {
     if (!cc.sys.isNative) {
       return;
     }
-    
+    // cc.vv.audioMgr.resumeAll();
     AudioManager.getInstance().pauseOrResume(false);
     if (cc.sys.os == cc.sys.OS_ANDROID) {
       jsb.reflection.callStaticMethod(this.ANDROID_API_PLAYER, 'stop', '()V');
@@ -230,7 +251,7 @@ export class VoiceManager  {
   getVoiceData(filename) {
     if (cc.sys.isNative) {
       var url = this._voiceMediaPath + filename;
-      
+      // cc.log('getVoiceData:' + url);
       var fileData = jsb.fileUtils.getDataFromFile(url);
       if (fileData) {
         var content = encode(fileData);
@@ -243,10 +264,10 @@ export class VoiceManager  {
   download() {
     return true;
   }
-  
-  
+  // called every frame, uncomment this function to activate update callback
+  // update: function (dt) {
 
-  
+  // },
 
   setStorageDir(dir) {
     if (!cc.sys.isNative) {

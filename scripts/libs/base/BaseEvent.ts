@@ -1,20 +1,28 @@
+/**
+ * 事件触发器
 
+    使用方法：
+
+    var EventProtocol = require("EventProtocol");
+    EventProtocol.extend(NetNotify);
+
+ */
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export class BaseEvent {
-  private listeners_: any = new Object(); 
+  private listeners_: any = new Object(); //最后的结构就是 {eventName:[handle,handle,handle]}
   private listenerHandleIndex_: number = 0;
 
   public addEventListener(eventName: string, listener: any, target: any, priority: number) {
-    
+    //        eventName = string.upper(eventName)
     if (this.listeners_[eventName] == null) {
       this.listeners_[eventName] = [];
     }
 
-    
+    // var _ = require('Underscore');
 
-    
+    // priority = _.random(0, 100);
     if (!priority) {
       priority = 1;
     }
@@ -22,21 +30,21 @@ export class BaseEvent {
     var handle = priority + '_' + 'HANDLE_' + this.listenerHandleIndex_;
     this.listeners_[eventName][handle] = listener;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    // // 做一个优先级排序 start
+    // let allkeys = _.allKeys(this.listeners_[eventName]);
+    // let new_allkeys = _.sortBy(allkeys, function (v, k) {
+    //   let one_k = v.split('_');
+    //   let one_priority = _.first(one_k);
+    //   return Number(one_priority);
+    // });
+    //展示
+    // let old_all = this.listeners_[eventName];
+    // console.log(old_all);
+    // let new_all = old_all.sort(function (a, b) {
+    //   return b - a;
+    // });
+    // console.log(new_all);
+    // 做一个优先级排序 end
 
     return handle;
   }
@@ -61,7 +69,7 @@ export class BaseEvent {
 
   public removeEventListener(eventName: string, key: any) {
     var self = this;
-    
+    //        eventName = eventName.toUpperCase();
     if (this.listeners_[eventName] == null) return;
     var allListener = this.listeners_[eventName];
     for (var handle in allListener) {
@@ -92,4 +100,4 @@ export class BaseEvent {
   }
 }
 
-
+// if (module) module.exports = EventProtocol;

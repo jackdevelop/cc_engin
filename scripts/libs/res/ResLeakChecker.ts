@@ -1,5 +1,16 @@
 
-
+/**
+ * 资源泄露检查类，可以用于跟踪
+ * 
+ * 1. 实例化ResLeakChecker之后，需要先绑定到resLoader中
+ * 2. 设置resFilter过滤器可以过滤不需要检测的资源，可用于专门跟踪某资源的使用情况
+ * 3. 设置startCheck和stopCheck可动态开启、关闭检测，可用于跟踪某时间段内分配了未释放的资源
+ * 4. dump方法可以将收集到的未释放资源打印到控制台
+ * 5. getLog可以获取收集到的泄露日志，自己进行打印、上传或存档
+ * 6. resetLog方法可以清空泄露日志
+ * 
+ * 2020-1-20 by 宝爷
+ */
 
 export type FilterCallback = (url: string) => boolean;
 
@@ -23,7 +34,14 @@ export class ResLeakChecker {
     }
 
     static getCallStack(popCount: number): string {
-        
+        /*let caller = arguments.callee.caller;
+        let count = Math.min(arguments.callee.caller.length - popCount, 10);
+        let ret = "";
+        do {
+            ret = `${ret}${caller.toString()}`;
+            caller = caller && caller.caller;
+            --count;
+        } while (caller && count > 0)*/
         let ret = (new Error()).stack;
         let pos = ResLeakChecker.findCharPos(ret, '\n', popCount);
         if (pos > 0) {

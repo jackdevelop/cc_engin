@@ -5,15 +5,15 @@ var _ = require('Underscore');
 export class System_Vo {
   public static className = 'System_Vo';
 
-  
+  //最近登录的服务器
   public static server_list_last_login = null;
-  
+  //服务器列表
   private static server_list = null;
 
-  
+  //当前选中的服务器
   public static server_selected = null;
 
-  
+  //设置服务器列表
   public static set_server_list(server_list) {
     this.server_list = server_list;
   }
@@ -25,7 +25,7 @@ export class System_Vo {
     return one;
   }
 
-  
+  //设置当前选中的服务器
   public static set_server_selected_idx(default_server) {
     if (default_server) {
       GameConfigUrl.hall_server_id = default_server.sid;
@@ -40,7 +40,7 @@ export class System_Vo {
     return this.server_selected;
   }
 
-  
+  //获取最近登录的服务器 如果没有则获取第一个sid的
   public static get_last_server() {
     let server_list_last_login = this.server_list_last_login;
 

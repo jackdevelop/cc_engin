@@ -16,7 +16,7 @@ const ShaderEnum = cc.Enum({
 @ccclass
 @executeInEditMode
 export default class ShaderHelper extends cc.Component {
-  
+  //枚举Shader程序
   @property
   _program = 0;
   @property({ type: ShaderEnum })
@@ -31,7 +31,7 @@ export default class ShaderHelper extends cc.Component {
     this.applyEffect();
   }
 
-  
+  //shader参数
   @property({ type: [ShaderProperty] })
   _props: ShaderProperty[] = [];
 
@@ -45,10 +45,10 @@ export default class ShaderHelper extends cc.Component {
     this.applyEffect();
   }
 
-  
+  //材质对象
   material: cc.Material = null;
 
-  
+  //effect的数组
   static effectAssets: any[] = null;
 
   start() {
@@ -59,21 +59,21 @@ export default class ShaderHelper extends cc.Component {
     } else {
       this.applyEffect();
     }
-    
+    //this.node.on(cc.Node.EventType.TOUCH_END, this.next, this);
   }
 
   applyEffect() {
-    
+    //获取精灵组件
     let sprite = this.node.getComponent(cc.Sprite);
     if (!sprite) {
       return;
     }
 
     let effectAsset = ShaderHelper.effectAssets[this.program];
-    
+    //实例化一个材质对象
     let material = new cc.Material();
 
-    
+    //在材质对象上开启USE_TEXTURE定义
     let defineUserTexture = !!effectAsset.shaders.find((shader) =>
       shader.defines.find((def) => def.name === 'USE_TEXTURE')
     );
@@ -81,15 +81,15 @@ export default class ShaderHelper extends cc.Component {
       material.define('USE_TEXTURE', true);
     }
 
-    
+    //为材质设置effect，也是就绑定Shader了
     material.effectAsset = effectAsset;
     material.name = effectAsset.name;
 
-    
-    
+    //将材质绑定到精灵组件上，精灵可以绑定多个材质
+    //这里我们替换0号默认材质
     sprite.setMaterial(0, material);
 
-    
+    //从精灵组件上获取材质，这步很重要，不然没效果
     this.material = sprite.getMaterial(0);
     this.setProperty(effectAsset);
     this.node.emit('effect-changed', this, this.material);
@@ -101,7 +101,7 @@ export default class ShaderHelper extends cc.Component {
       this._props = [];
 
       let keys = Object.keys(effectAsset._effect._properties);
-      
+      //@ts-ignore
       let values = Object.values(effectAsset._effect._properties);
 
       for (let i = 0; i < values.length; i++) {
@@ -120,13 +120,13 @@ export default class ShaderHelper extends cc.Component {
         }
       }
 
-      
+      // setTimeout(() => {
       let shaderTimer = this.getComponent('ShaderTime');
-      
+      //cc.log(shaderTimer.max);
       if (shaderTimer) {
         shaderTimer.max = shaderTimer.max;
       }
-      
+      //}, 1000);
     }
 
     if (this._props.length) {
@@ -135,7 +135,7 @@ export default class ShaderHelper extends cc.Component {
           item.key && this.material.setProperty(item.key, item.value || 0)
       );
     }
-    
+    // @ts-ignore
     cc.Class.Attr.setClassAttr(
       ShaderHelper,
       'props',
@@ -160,14 +160,14 @@ export default class ShaderHelper extends cc.Component {
 cc.game.on(cc.game.EVENT_ENGINE_INITED, () => {
   cc.dynamicAtlasManager.enabled = false;
 
-  
-  
-  
-  
-  
-  
+  // cc.loader.loadResDir
+  // cc.loader.loadResDir('effect', cc.EffectAsset, (error, res) => {
+  //   ShaderHelper.effectAssets = res;
+  //   let array = ShaderHelper.effectAssets.map((item, i) => {
+  //     return { name: item._name, value: i };
+  //   });
 
-  
-  
-  
+  //   //@ts-ignore
+  //   cc.Class.Attr.setClassAttr(ShaderHelper, 'program', 'enumList', array);
+  // });
 });

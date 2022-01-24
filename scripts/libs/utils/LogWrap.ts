@@ -46,31 +46,31 @@ export class LogWrap {
   }
 
   public static log(...args) {
-    var backLog = console.log || cc.log; 
+    var backLog = console.log || cc.log; // || log;
     if (OPENLOGFLAG) {
-      
+      // backLog.call(this,"%s%s:"+cc.js.formatStr.apply(cc,arguments),LogWrap.stack(2),LogWrap.getDateString());
     }
   }
 
   public static info(...args) {
-    var backLog = console.log || cc.log; 
+    var backLog = console.log || cc.log; // || log;
     if (OPENLOGFLAG) {
-      
+      // backLog.call(this,"%c%s%s:"+cc.js.formatStr.apply(cc,arguments),"color:#00CD00;",LogWrap.stack(2),LogWrap.getDateString());
     }
   }
 
   public static warn(...args) {
-    var backLog = console.log || cc.log; 
+    var backLog = console.log || cc.log; // || log;
     if (OPENLOGFLAG) {
-      
-      
+      // backLog.call(this,"%c%s%s:"+cc.js.formatStr.apply(cc,arguments),"color:#ee7700;",LogWrap.stack(2),LogWrap.getDateString());
+      //cc.warn
     }
   }
 
   public static err(...args) {
-    var backLog = console.log || cc.log; 
+    var backLog = console.log || cc.log; // || log;
     if (OPENLOGFLAG) {
-      
+      // backLog.call(this,"%c%s%s:"+cc.js.formatStr.apply(cc,arguments),"color:red",LogWrap.stack(2),LogWrap.getDateString());
     }
   }
 }

@@ -1,12 +1,12 @@
-
-
-
-
-
-
-
-
-
+// Learn TypeScript:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
 
@@ -35,7 +35,14 @@ export default class BezierHelp {
     return 90 - (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
   }
 
-  
+  /**
+   * 将贝塞尔曲线变成点
+   * @param {*贝塞尔控制点X坐标数组} ctrlPosXArry
+   * @param {*贝塞尔控制点Y坐标数组} ctrlPosYArry
+   * @param {*贝塞尔控制点数量,二阶或者三阶} initCount
+   * @param {*存放分割的点} traceVector
+   * @param {*切割曲线的距离 像素} fdistance
+   */
   public static BuildBezier(
     ctrlPosXArry,
     ctrlPosYArry,
@@ -76,7 +83,14 @@ export default class BezierHelp {
     }
   }
 
-  
+  /**
+   * 将贝塞尔曲线变成点,生成的结果中包含了角度
+   * @param {*} ctrlPosXArry
+   * @param {*} ctrlPosYArry
+   * @param {*} initCount
+   * @param {*} TraceVector
+   * @param {*} fdistance
+   */
   public static BuildBezierWithAngle(
     ctrlPosXArry,
     ctrlPosYArry,
@@ -127,8 +141,8 @@ export default class BezierHelp {
 
   public static BuildBezierByPointArr(CtrlPointArr, ResultPointArr) {
     let marr = CtrlPointArr;
-    let pointlength = marr.length; 
-    let linenumber = Math.floor((pointlength - 3) / 2) + 1; 
+    let pointlength = marr.length; //总的点数
+    let linenumber = Math.floor((pointlength - 3) / 2) + 1; //要画几次,计算几个贝塞尔曲线
 
     for (let i = 0; i < linenumber; ++i) {
       let p0 = marr[i * 2];
