@@ -17,4 +17,7 @@ export default class BaseBHandle extends cc.Component {
 		this.m_vo = m_vo;
 		this.m_obj = obj;
 	}
+
+	
+	public un_init() {}
 }

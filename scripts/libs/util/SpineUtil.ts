@@ -6,6 +6,21 @@ var _ = require('Underscore');
 
 export default class SpineUtil {
 	
+	public static active(m_spine: dragonBones.ArmatureDisplay) {
+		if (m_spine) {
+			m_spine.unscheduleAllCallbacks();
+			m_spine.armatureName = null;
+			m_spine.timeScale = 1;
+
+			let m_node = m_spine.node;
+			m_node.active = false;
+			m_node.scale = 1;
+			m_node.angle = 0;
+			m_node.position = cc.Vec3.ZERO;
+		}
+	}
+
+	
 	static async _playAnimation(
 		spine: dragonBones.ArmatureDisplay,
 		animName: string,

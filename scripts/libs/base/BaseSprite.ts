@@ -166,10 +166,17 @@ export default class BaseSprite extends cc.Component {
 		
 
 		cc.log('当前的behavior:', self.m_behaviorObjects_);
-		_.each(self.m_behaviorObjects_, function (v, k) {
-			self.node.removeComponent(v);
-		});
-		self.m_behaviorObjects_ = null;
+
+		if (self.m_behaviorObjects_) {
+			let m_behaviorObjects_ = self.m_behaviorObjects_;
+			self.m_behaviorObjects_ = null;
+			_.each(m_behaviorObjects_, function (v, k) {
+				v.un_init();
+			});
+			_.each(m_behaviorObjects_, function (v, k) {
+				self.node.removeComponent(v);
+			});
+		}
 
 		
 	}
@@ -259,4 +266,5 @@ export default class BaseSprite extends cc.Component {
 	
 	
 	
+	onFireEnd() {}
 }
