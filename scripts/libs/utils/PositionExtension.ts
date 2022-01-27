@@ -123,11 +123,13 @@ export default class PositionExtension {
 	// }
 
 	/**
-	 *  获取两点之间的距离
-	 * @param {*} ax
-	 * @param {*} ay
-	 * @param {*} bx
-	 * @param {*} by
+	 * 获取两点之间的距离
+	 *
+	 * @param ax
+	 * @param ay
+	 * @param bx
+	 * @param by
+	 * @returns
 	 */
 	public static dist(ax, ay, bx, by) {
 		var dx = bx - ax;
@@ -199,10 +201,17 @@ export default class PositionExtension {
 		var angle = dir.signAngle(cc.v2(1, 0));
 		//将弧度转换为欧拉角
 		var degree = this.trans_radian_to_angle(angle); //angle / Math.PI * 180;
-		return degree;
+		return { angle, degree };
 	}
 
-	//-- 求圆上一个点的位置  弧度
+	/**
+	 * -- 求圆上一个点的位置
+	 * @param px
+	 * @param py
+	 * @param radians  弧度
+	 * @param radius  半径
+	 * @returns
+	 */
 	static pointAtCircle(px, py, radians, radius) {
 		return cc.v2(
 			px + Math.cos(radians) * radius,

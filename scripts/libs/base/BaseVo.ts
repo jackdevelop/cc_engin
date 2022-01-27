@@ -3,6 +3,9 @@
 // Learn Attribute:
 //  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
 // Learn life-cycle callbacks:
+
+import BaseTempData from './BaseTempData';
+
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 var _ = require('Underscore');
 
@@ -27,6 +30,9 @@ export default class BaseVo {
 
 	/** 当前的静态配置数据 */
 	protected m_config_data;
+
+	/** 临时数据 主要为了在游戏中 可以去动态设置，而且可能经常改变 比如应用于buff */
+	protected m_temp_data: BaseTempData;
 
 	/**
 	 *  初始化数据
@@ -72,6 +78,8 @@ export default class BaseVo {
 		}
 
 		this.m_data.hp = hp;
+
+		return hp;
 	}
 
 	/**
@@ -139,6 +147,15 @@ export default class BaseVo {
 	}
 
 	/**
+	 *  获取 临时的数据
+	 *  这种数据为了方便 用户随时的动态设置
+	 * @returns
+	 */
+	get_m_temp_data() {
+		return this.m_temp_data;
+	}
+
+	/**
 	 *  获取出当前是否激活生效
 	 */
 	get_m_active() {
@@ -146,6 +163,20 @@ export default class BaseVo {
 		let is_active2 = this.m_data.active;
 
 		if (is_active2 && is_active) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 *  获取当前是否可以移动
+	 */
+	get_m_ismove() {
+		let is_move = this.m_config_data.is_move;
+		let is_move2 = this.m_temp_data.is_move;
+
+		if (is_move2 && is_move) {
 			return true;
 		} else {
 			return false;

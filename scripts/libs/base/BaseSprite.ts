@@ -22,6 +22,9 @@ export default class BaseSprite extends cc.Component {
 	@property({ type: cc.Label, tooltip: '调试显示的 no 序号' })
 	txt_debug_no: cc.Label = null;
 
+	@property({ type: cc.Node, tooltip: 'buff的显示' })
+	node_buff: cc.Node = null;
+
 	/** 所引用的数据实体 */
 	private m_vo = null;
 
@@ -51,6 +54,10 @@ export default class BaseSprite extends cc.Component {
 		//显示当前的 no  序号
 		if (this.txt_debug_no) {
 			this.txt_debug_no.string = '' + this.get_m_vo().get_no();
+		}
+
+		if (this.node_buff) {
+			this.node_buff.removeAllChildren();
 		}
 
 		//先删除组件

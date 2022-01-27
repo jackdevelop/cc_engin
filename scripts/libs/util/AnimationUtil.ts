@@ -61,4 +61,19 @@ export default class AnimationUtil {
 			componet.setPosition(x, y);
 		}, duration * 1000);
 	}
+
+	/**
+	 *  执行 tween 动画
+	 * @param node
+	 * @param props
+	 */
+	public static async doTween(node, time, props) {
+		return new Promise((res) => {
+			cc.tween(node)
+				.to(time, props)
+				// 当前面的动作都执行完毕后才会调用这个回调函数
+				.call(res)
+				.start();
+		});
+	}
 }
