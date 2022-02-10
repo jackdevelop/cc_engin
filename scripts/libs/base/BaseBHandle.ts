@@ -26,6 +26,13 @@ export default class BaseBHandle extends cc.Component {
 	}
 
 	/**
+	 *  onStarted 启动方法 ，在 init之后调用
+	 * @param obj
+	 * @param m_vo
+	 */
+	public onStarted(obj, m_vo) {}
+
+	/**
 	 *  销毁的操作
 	 *
 	 */

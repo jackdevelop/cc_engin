@@ -249,6 +249,23 @@ export default class BaseSprite extends cc.Component {
 		}
 	}
 
+	/**
+	 *  所有的 behavior 都调用的方法
+	 * @param methodName
+	 * @param param
+	 */
+	protected all_call_method(methodName, ...param) {
+		let self = this;
+
+		_.each(self.m_behaviorObjects_, function (script, k) {
+			if (script) {
+				if (script[methodName]) {
+					return script[methodName](self, self.m_vo, ...param);
+				}
+			}
+		});
+	}
+
 	// /**
 	//  *  开始绑定
 	//  * @param behaviorComponent
