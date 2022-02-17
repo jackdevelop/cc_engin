@@ -24,7 +24,7 @@ export default class PositionExtension {
 	 *  将 source 坐标转化为  traget 的目标坐标系
 	 *  @return
 	 */
-	static convertToNodeSpaceAR(source, traget, x, y) {
+	static convertToNodeSpaceAR(source: cc.Node, traget: cc.Node, x, y) {
 		var newVec1 = source.parent.convertToWorldSpaceAR(cc.v2(x || 0, y || 0));
 		var newVec2 = traget.convertToNodeSpaceAR(newVec1);
 

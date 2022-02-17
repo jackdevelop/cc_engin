@@ -150,7 +150,7 @@ export default class SpineUtil {
 			dragonBones.DragonBonesAsset
 		);
 
-		console.log('切换动作');
+		// console.log('切换动作');
 		spine.dragonAtlasAsset = dbAtlas; //设置骨骼数据所需Atlas
 		spine.dragonAsset = dbAsset; //设置骨骼数据
 		spine.armatureName = armature;

@@ -26,7 +26,7 @@ export default class BaseSprite extends cc.Component {
 	node_buff: cc.Node = null;
 
 	/** 所引用的数据实体 */
-	private m_vo = null;
+	protected m_vo = null;
 
 	/** 所有的 bind对象  */
 	private m_behaviorObjects_ = null;
@@ -218,7 +218,7 @@ export default class BaseSprite extends cc.Component {
 		// 	return;
 		// }
 
-		cc.log('当前的behavior:', self.m_behaviorObjects_);
+		// cc.log('当前的behavior:', self.m_behaviorObjects_);
 
 		if (self.m_behaviorObjects_) {
 			let m_behaviorObjects_ = self.m_behaviorObjects_;

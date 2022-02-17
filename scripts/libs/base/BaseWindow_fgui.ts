@@ -52,6 +52,8 @@ export class BaseWindow_fgui extends MWindowExtends_gui {
 
 	//当前的参数
 	protected m_param: any = null;
+
+	// protected contentPane: custo;
 	//j渐隐动画
 	// async on_open() {
 	//     await MWindow.in_fade_move(this.node, "down", null, { time: C.FADE_TIME })
@@ -105,7 +107,8 @@ export class BaseWindow_fgui extends MWindowExtends_gui {
 			panelConfig.FGUI_pkgName,
 			panelConfig.FGUI_resName
 		).asCom;
-		// this.m_view = fgui.UIPackage.createObject('Main', 'MainWindow').asCom;
+
+		// this.contentPane = fgui.UIPackage.createObject('Main', 'MainWindow').asCom;
 		// this.m_view.makeFullScreen();
 		// fgui.GRoot.inst.addChild(this.contentPane);
 		this.center();

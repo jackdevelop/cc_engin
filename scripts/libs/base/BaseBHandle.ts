@@ -8,7 +8,7 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class BaseBHandle extends cc.Component {
+export default class BaseBHandle {
 	protected m_vo;
 	protected m_obj;
 
