@@ -24,7 +24,7 @@ export default class BaseBehavior extends cc.Component {
 	 * @param obj
 	 * @param m_vo
 	 */
-	public onStarted(obj, m_vo) { }
+	public onStarted() { }
 
 	/**
 	 *  销毁的操作

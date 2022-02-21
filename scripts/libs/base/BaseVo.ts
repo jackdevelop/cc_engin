@@ -1,13 +1,6 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-
 import { moment_util } from '../utils/moment_util';
 import BaseTempData from './BaseTempData';
 
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 var _ = require('Underscore');
 
 /**
@@ -19,7 +12,7 @@ var _ = require('Underscore');
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class BaseVo {
+export default abstract class BaseVo {
 	/**  状态 比如死忙 活着等 ,状态机的状态 ,这个状态,每个实体对象定义不一样 */
 	protected m_entity_state: number;
 
@@ -217,4 +210,6 @@ export default class BaseVo {
 
 		return true;
 	}
+
+	abstract is_dead(): boolean;
 }

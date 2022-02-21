@@ -81,12 +81,17 @@ export default class SpineUtil {
 		}
 
 		spine.armatureName = armatureName;
+		// if (callback) {
+		// 	await this._playAnimation(spine, animName, playTimes);
+		// 	// console.log('xxxxxxxx');
+		// 	callback();
+		// } else {
+		// 	spine.playAnimation(animName, playTimes);
+		// }
+
+		await this._playAnimation(spine, animName, playTimes);
 		if (callback) {
-			await this._playAnimation(spine, animName, playTimes);
-			// console.log('xxxxxxxx');
 			callback();
-		} else {
-			spine.playAnimation(animName, playTimes);
 		}
 	}
 

@@ -1,12 +1,4 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
 
-import BaseVo from './BaseVo';
-
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 var _ = require('Underscore');
 
 const { ccclass, property } = cc._decorator;
@@ -100,12 +92,10 @@ export default class BaseSprite extends cc.Component {
 		y?: number,
 		z?: number
 	): void {
-		if (v) {
-			this.node.setPosition(v);
-		}
+		this.node.setPosition(v, y, z);
 	}
 	getPosition(out?: cc.Vec2 | cc.Vec3): cc.Vec2 {
-		return this.node.getPosition();
+		return this.node.getPosition(out);
 	}
 
 	/**
@@ -340,5 +330,5 @@ export default class BaseSprite extends cc.Component {
 	// 	//删除后
 	// 	// cc.log("删除后:", self.m_bindingMethods_, self);
 	// }
-	onFireEnd() {}
+	onFireEnd() { }
 }

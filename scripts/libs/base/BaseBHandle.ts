@@ -1,9 +1,3 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
 
@@ -27,14 +21,21 @@ export default class BaseBHandle {
 
 	/**
 	 *  onStarted 启动方法 ，在 init之后调用
-	 * @param obj
-	 * @param m_vo
 	 */
-	public onStarted(obj, m_vo) {}
+	public onStarted() { }
 
 	/**
-	 *  销毁的操作
-	 *
+	 * 结束方法
 	 */
-	public un_init() {}
+	public handStoped() { }
+
+	/**
+	 * 每帧更新操作
+	 */
+	public handleUpdate(dt: number) { }
+
+	/**
+	 * 销毁的操作
+	 */
+	public un_init() { }
 }
