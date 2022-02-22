@@ -15,7 +15,9 @@ export class PromiseUtil {
 
 	/**
 	 * 异步函数中等待一段时间
-	 * @param time 单位s
+	 * @param time
+	 * @param node 挂载在什么node上
+	 * @returns
 	 */
 	static wait_time(time: number, node: cc.Component) {
 		if (node) {
@@ -28,7 +30,7 @@ export class PromiseUtil {
 
 	/**
 	 *  间隔1一帧后执行
-	 * @param node
+	 * @param node 挂载在什么node上
 	 * @returns
 	 */
 	static wait_frame(node: cc.Component) {

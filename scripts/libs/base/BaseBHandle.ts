@@ -25,11 +25,6 @@ export default class BaseBHandle {
 	public onStarted() { }
 
 	/**
-	 * 结束方法
-	 */
-	public handStoped() { }
-
-	/**
 	 * 每帧更新操作
 	 */
 	public handleUpdate(dt: number) { }
