@@ -55,7 +55,7 @@ export class MWindow_fgui {
 		cc.log('新打开了窗口:', panel.name);
 
 		// 获取key,value,z_index
-		let key = panel.CONFIG.PATH;
+		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
 		let value = MWindow_fgui.instance.map_ins.get(key);
 		let panel_script = null;
 		if (!value) {
@@ -98,7 +98,7 @@ export class MWindow_fgui {
 		cc.log('新销毁了窗口:', panel);
 
 		// 获取key,value
-		let key = panel.CONFIG.PATH;
+		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
 		let value = MWindow_fgui.instance.map_ins.get(key);
 		if (value) {
 			let panel_script: BaseWindow_fgui = value.panel_script;
