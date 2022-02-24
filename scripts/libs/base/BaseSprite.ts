@@ -94,18 +94,25 @@ export default class BaseSprite extends cc.Component {
 	): void {
 		this.node.setPosition(v, y, z);
 	}
-	getPosition(out?: cc.Vec2 | cc.Vec3): cc.Vec2 {
+
+	public getPosition(out?: cc.Vec2 | cc.Vec3): cc.Vec2 {
 		return this.node.getPosition(out);
 	}
 
 	/**
 	 *  设置角度
-	 * @param v
+	 * @param angle
 	 */
-	public setAngle(v) {
-		if (_.isNaN(v)) return;
+	public setRotation(angle: number) {
+		if (_.isNaN(angle)) {
+			return;
+		}
+		this.node.angle = angle - 90;
+	}
 
-		this.node.angle = v;
+	public getRotation() {
+		let angle = this.node.angle;
+		return angle + 90;
 	}
 
 	/**
