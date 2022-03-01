@@ -73,7 +73,7 @@ export default class SpineUtil {
 			return num == animName;
 		});
 		if (!is_find) {
-			console.log('当前没有动画', animName, is_find, all_AnimationNames);
+			console.log('当前没有动画', armatureName, animName, is_find, all_AnimationNames);
 			if (callback) {
 				callback();
 			}
@@ -81,15 +81,13 @@ export default class SpineUtil {
 		}
 
 		spine.armatureName = armatureName;
-		// if (callback) {
-		// 	await this._playAnimation(spine, animName, playTimes);
-		// 	// console.log('xxxxxxxx');
-		// 	callback();
-		// } else {
-		// 	spine.playAnimation(animName, playTimes);
-		// }
+		if (playTimes > 0) {
+			await this._playAnimation(spine, animName, playTimes);
+		} else {
+			// 无限循环动画没有完成的时候 直接触发回调
+			spine.playAnimation(animName, playTimes);
+		}
 
-		await this._playAnimation(spine, animName, playTimes);
 		if (callback) {
 			callback();
 		}

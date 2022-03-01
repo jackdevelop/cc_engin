@@ -37,9 +37,7 @@ export default class BaseSprite extends cc.Component {
 		}
 
 		this.set_m_vo(m_vo);
-		// async init(fish_data, path_data, fish_no, ts, parent) {
 
-		// let fish_data = monsterBaseVo.get_m_data()
 		let m_config_data = m_vo.get_m_config_data();
 		this.ITEM_TYPE = m_config_data.item_type;
 
@@ -50,6 +48,16 @@ export default class BaseSprite extends cc.Component {
 
 		if (this.node_buff) {
 			this.node_buff.removeAllChildren();
+		}
+
+		// 先禁用碰撞体
+		let boxCollider = this.getComponent(cc.BoxCollider);
+		if (boxCollider) {
+			boxCollider.enabled = false;
+		}
+		let polygonCollider = this.getComponent(cc.PolygonCollider);
+		if (polygonCollider) {
+			polygonCollider.enabled = false;
 		}
 
 		//先删除组件
@@ -241,7 +249,7 @@ export default class BaseSprite extends cc.Component {
 		let script = this.getComponent(behaviorComponent);
 		if (script) {
 			if (script[methodName]) {
-				return script[methodName](self, self.m_vo, ...param);
+				return script[methodName](...param);
 			}
 		}
 	}

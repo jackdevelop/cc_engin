@@ -20,9 +20,7 @@ export default class BaseBehavior extends cc.Component {
 	}
 
 	/**
-	 *  onStarted 启动方法 ，在 init之后调用
-	 * @param obj
-	 * @param m_vo
+	 * onStarted 启动方法 ，在 init之后调用
 	 */
 	public onStarted() { }
 
