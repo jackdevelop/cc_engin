@@ -1,10 +1,11 @@
+import BaseTempData from "./BaseTempData";
 
 var _ = require('Underscore');
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class BaseSprite extends cc.Component {
+export default abstract class BaseSprite extends cc.Component {
 	@property({ type: cc.Integer, tooltip: '当前的类型 ' })
 	ITEM_TYPE: number = 0;
 
@@ -14,16 +15,20 @@ export default class BaseSprite extends cc.Component {
 	@property({ type: cc.Label, tooltip: '调试显示的 no 序号' })
 	txt_debug_no: cc.Label = null;
 
+	@property({ type: cc.Node, tooltip: '发射子弹的位置' })
+	node_startpos: cc.Node = null;
+
 	@property({ type: cc.Node, tooltip: 'buff的显示' })
 	node_buff: cc.Node = null;
+
+	@property({ type: cc.ProgressBar, tooltip: '血量条' })
+	progress_hp: cc.ProgressBar = null;
 
 	/** 所引用的数据实体 */
 	protected m_vo = null;
 
 	/** 所有的 bind对象  */
 	private m_behaviorObjects_ = null;
-	/** 所有 bind 的方法 */
-	// private m_bindingMethods_ = null;
 
 	/**
 	 *  父类的 __init 方法
@@ -92,7 +97,80 @@ export default class BaseSprite extends cc.Component {
 	}
 
 	/**
-	 *  坐标
+	 * 通过 prefab_name 获取当前的 prefab
+	 * @param name
+	 * @returns
+	 */
+	public get_prefable_by_name(name: string) {
+		let find_obj = _.find(this.prefable_arr, function (v, k) {
+			if (v.name == name) {
+				return v;
+			}
+		});
+
+		return find_obj;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	////////////////////////////子类的一些方法形式///////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	/** 准备 */
+	handleReady() { }
+
+	/** 待机 */
+	handleStand() { }
+
+	/**
+	 * 碰撞
+	 * @param target 碰撞目标
+	 */
+	handleHit(target: any) { }
+
+	/** 死亡 */
+	handleDead() { }
+
+	/**
+	 * 开始攻击
+	 * @param angle 攻击角度
+	 */
+	onFire(angle: number) { }
+
+	/** 结束攻击 */
+	onFireEnd() { }
+
+	/**
+	 * 血量变化
+	 * @param change_num 变化值
+	 */
+	changeHP(change_num: number) {
+		this.call_method("HpBehavior", "bd_hp_change", change_num);
+	}
+
+	/**
+	 * 设置一次移动行为 是否移动以返回值为准
+	 */
+	setMoveActive(active: boolean): boolean {
+		let m_vo = this.m_vo;
+		let temp_data: BaseTempData = m_vo.get_m_temp_data();
+		let stop_move_num = temp_data.stop_move_num;
+		if (active) {
+			stop_move_num--;
+			if (stop_move_num < 0) {
+				stop_move_num = 0;
+			}
+		} else {
+			stop_move_num++;
+		}
+		temp_data.stop_move_num = stop_move_num;
+		let is_move = m_vo.get_m_ismove();
+		return is_move;
+	}
+
+	///////////////////////////////////////////////////////////////////////////
+	////////////////////////////节点属性设置////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	/**
+	 * 坐标
 	 * @param v
 	 */
 	public setPosition(
@@ -130,9 +208,6 @@ export default class BaseSprite extends cc.Component {
 		if (!visible) {
 			this.node.active = false;
 		} else {
-			// this.get_m_vo().set_m_entity_state(
-			// 	game_constants_planewar.BULLET_STATE.IDEL
-			// );
 			this.node.active = true;
 		}
 	}
@@ -146,22 +221,6 @@ export default class BaseSprite extends cc.Component {
 	 */
 	public setScale(x: number | cc.Vec2 | cc.Vec3, y?: number, z?: number): void {
 		this.node.setScale(x, y, z);
-	}
-
-	/**
-	 *  通过 prefab_name 获取当前的 prefab
-	 *
-	 * @param name
-	 * @returns
-	 */
-	public get_prefable_by_name(name: string) {
-		let find_obj = _.find(this.prefable_arr, function (v, k) {
-			if (v.name == name) {
-				return v;
-			}
-		});
-
-		return find_obj;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -271,79 +330,4 @@ export default class BaseSprite extends cc.Component {
 		});
 	}
 
-	// /**
-	//  *  开始绑定
-	//  * @param behaviorComponent
-	//  * @param methodName
-	//  * @param method
-	//  * @param callOriginMethodLast  优先级 暂时无用
-	//  * @returns
-	//  */
-	// public bind_method(behaviorComponent, methodName, method, callOriginMethodLast) {
-	//     let self = this
-	//     if (!method) return
-
-	//     //获取出当前的所有绑定 methodName 的方法
-	//     if (!self.m_bindingMethods_) self.m_bindingMethods_ = {}
-	//     if (!self.m_bindingMethods_[methodName]) self.m_bindingMethods_[methodName] = []
-
-	//     // 全部存储起来  原始方法
-	//     self.m_bindingMethods_[methodName].push({ method: method, behaviorComponent: behaviorComponent });
-
-	//     // 组合调用
-	//     // 注意 尽量少使用 return 返回参数来接受,因为当多个行为树组件的时候,他只会返回最后一个的 return  结果
-	//     let all_method_fun = function (...param) {
-	//         let ret = null
-	//         _.each(self.m_bindingMethods_[methodName], function (v, k) {
-
-	//             let current_behaviorComponent = v.behaviorComponent
-	//             let current_method = v.method
-	//             ret = current_method(current_behaviorComponent, self, self.m_vo, ...param)
-
-	//         });
-
-	//         return ret
-	//     }
-	//     self[methodName] = all_method_fun;
-	// }
-
-	// /**
-	//  *  卸载绑定的方法
-	//  * @param behaviorComponent
-	//  * @param methodName
-	//  */
-	// public un_bind_method(behaviorComponent, methodName) {
-	//     let self = this
-	//     if (!self.m_bindingMethods_) return
-	//     if (!self.m_bindingMethods_[methodName]) return
-
-	//     self.m_bindingMethods_[methodName] = null
-
-	//     //直接先清除方法
-	//     let originMethod = self[methodName]
-	//     if (!originMethod) {
-	//         return
-	//     }
-	//     self[methodName] = null
-	// }
-
-	// /**
-	//  *  粗暴直接全部删除绑定的方法
-	//  */
-	// public un_bind_all_method() {
-	// 	let self = this;
-
-	// 	//删除前
-	// 	// cc.log("删除前:", self.m_bindingMethods_, self);
-
-	// 	_.each(self.m_bindingMethods_, function (v, k) {
-	// 		self[k] = null;
-	// 	});
-
-	// 	self.m_bindingMethods_ = null;
-
-	// 	//删除后
-	// 	// cc.log("删除后:", self.m_bindingMethods_, self);
-	// }
-	onFireEnd() { }
 }

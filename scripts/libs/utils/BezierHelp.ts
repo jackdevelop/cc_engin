@@ -32,7 +32,7 @@ export default class BezierHelp {
   }
 
   public static CalcAngle(x1, y1, x2, y2) {
-    return 90 - (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+    return (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
   }
 
   /**
@@ -110,7 +110,11 @@ export default class BezierHelp {
     };
 
     while (t < 1) {
-      tPos = cc.v2(0, 0);
+      tPos = {
+        x: 0,
+        y: 0,
+        angle: 0
+      };
       index = 0;
 
       while (index <= count) {
@@ -127,6 +131,7 @@ export default class BezierHelp {
         var backPos = TraceVector[TraceVector.length - 1];
         fSpace = this.CalcDistance(backPos.x, backPos.y, tPos.x, tPos.y);
       } else {
+        tPos.angle = this.CalcAngle(ctrlPosXArry[0], ctrlPosYArry[0], ctrlPosXArry[1], ctrlPosYArry[1]);
         TraceVector.push(tPos);
         continue;
       }

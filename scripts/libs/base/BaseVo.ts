@@ -1,3 +1,4 @@
+import { game_constants_planewar } from '../../../../app/game_sns/planewar/fight/scripts/config/game_constants_planewar';
 import { moment_util } from '../utils/moment_util';
 import BaseTempData from './BaseTempData';
 
@@ -55,15 +56,15 @@ export default abstract class BaseVo {
 	 * @returns
 	 */
 	get_m_hp() {
-		return this.m_data.hp;
+		return this.m_data.hp || this.m_config_data.hp;
 	}
 	get_m_max_hp() {
-		return this.m_data.max_hp || 100;
+		return this.m_data.max_hp || this.m_config_data.hp;
 	}
 	set_m_hp(change_num) {
 		let max_hp = this.get_m_max_hp();
 
-		let hp = this.m_data.hp;
+		let hp = this.m_data.hp || this.m_config_data.hp;
 		hp = hp + change_num;
 		if (hp < 0) {
 			hp = 0;
@@ -175,9 +176,8 @@ export default abstract class BaseVo {
 	 */
 	get_m_ismove() {
 		let is_move = this.m_config_data.is_move;
-		let is_move2 = this.m_temp_data.is_move;
-
-		if (is_move2 && is_move) {
+		let stop_move_num = this.m_temp_data.stop_move_num;
+		if (is_move && stop_move_num <= 0) {
 			return true;
 		} else {
 			return false;
@@ -192,24 +192,20 @@ export default abstract class BaseVo {
 	public m_last_fire_time = 0; //上次攻击的时间
 
 	is_out_cdtime() {
-		// let m_vo = this.get_m_vo();
-
 		//首先判断是否在cd内
 		let cd_time = this.get_m_config_data().cd_time;
 		if (cd_time > 0) {
-			//判断时间是否有效
+			//判断时间是否有效毫秒数 除以1000得到秒数
 			let distance =
 				moment_util.get_interval_distance(this.m_last_fire_time) / 1000;
-			// console.log(distance, m_vo.m_last_fire_time);
-
-			//除以1000 得到毫秒数
-			if (distance < cd_time) {
-				return false;
+			if (distance > cd_time) {
+				return true;
 			}
 		}
-
-		return true;
+		return false;
 	}
 
-	abstract is_dead(): boolean;
+	is_dead(): boolean {
+		return this.m_entity_state == game_constants_planewar.GAME_OBJ_STATE.DEAD;
+	}
 }
