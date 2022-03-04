@@ -142,7 +142,7 @@ export default abstract class BaseSprite extends cc.Component {
 	 * 血量变化
 	 * @param change_num 变化值
 	 */
-	changeHP(change_num: number) {
+	changeHp(change_num: number) {
 		this.call_method("HpBehavior", "bd_hp_change", change_num);
 	}
 
@@ -164,6 +164,17 @@ export default abstract class BaseSprite extends cc.Component {
 		temp_data.stop_move_num = stop_move_num;
 		let is_move = m_vo.get_m_ismove();
 		return is_move;
+	}
+
+	/**
+	 * 是否存活
+	 */
+	isAlive(): boolean {
+		let m_vo = this.get_m_vo();
+		if (m_vo && m_vo.get_m_active() && !m_vo.is_dead()) {
+			return true;
+		}
+		return false;
 	}
 
 	///////////////////////////////////////////////////////////////////////////

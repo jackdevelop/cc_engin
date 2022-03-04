@@ -99,6 +99,14 @@ export default abstract class BaseVo {
 	}
 
 	/**
+	 * 获取当前实体所属的队伍
+	 * @returns
+	 */
+	get_team() {
+		return this.m_data.item_team;
+	}
+
+	/**
 	 *  获取该对象的 item_id  这个不是唯一  而是配置表中配置的 item_id
 	 * @returns
 	 */
