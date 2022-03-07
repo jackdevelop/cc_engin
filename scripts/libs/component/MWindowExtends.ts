@@ -63,8 +63,8 @@ export interface WindowConfig {
 	TYPE_CLOSE?: 'HIDE' | 'REMOVE';
 	TYPE_MASK?: 0 | 1; // 0 没有遮罩  1有遮罩
 
-	FGUI_pkgName: string;
-	FGUI_resName: string;
+	FGUI_pkgName?: string;
+	FGUI_resName?: string;
 }
 /** panel-instance,panel实例 */
 export interface WindowInstance {

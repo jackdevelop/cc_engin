@@ -89,7 +89,7 @@ export default class TMapTouch extends cc.Component {
 
   start() {
     //左右最多能滑动的距离
-    let dis = 200;
+    let dis = 300;
 
     let self = this;
     this.targetMap.on(

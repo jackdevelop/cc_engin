@@ -2,6 +2,8 @@ import { GameConfig } from '../../../../cc_own/config/GameConfig';
 import FGUIManager from '../../../fguilib/FGUIManager';
 import LoadingChrysanthemum from '../../../loadingchrysanthemum/LoadingChrysanthemum';
 import { BaseScene } from '../base/BaseScene';
+import { MWindow } from '../component/MWindow';
+import { MWindow_fgui } from '../component/MWindow_fgui';
 import { GameEventConstants } from '../constants/GameEventConstants';
 import { GameNotify } from '../utils/GameNotify';
 
@@ -86,12 +88,12 @@ export class SceneManager {
 					onprogress(completedCount, totalCount, item);
 				}
 			},
-			(error: Error, asset: cc.SceneAsset) => {
+			(error: Error) => {
 				if (error) {
-					cc.log('preloadScene 加载出错:', error, asset);
+					cc.log('preloadScene 加载出错:', error);
 					self.preloadScene(sceneName, onprogress, onLoaded);
 				} else {
-					cc.log('preloadScene 加载完毕:', error, asset);
+					cc.log('preloadScene 加载完毕:', error);
 
 					if (onLoaded) {
 						onLoaded();
@@ -129,7 +131,7 @@ export class SceneManager {
 		}
 
 		//上一个的加载场景
-		this._lastSceneName = this._currSceneName;
+		// this._lastSceneName = this._currSceneName;
 		this._loadingSceneName = sceneName;
 		// this.preloadScene(sceneName);
 		// return await new Promise((resolve, reject) => {
@@ -193,8 +195,6 @@ export class SceneManager {
 				onLoaded();
 			}
 			cc.log('加载场景完毕：', cc.sys.now());
-			//隐藏所有的 fgui
-			FGUIManager.getInstance().onDestory();
 
 			//加载新场景完毕
 			var event = {
@@ -208,6 +208,11 @@ export class SceneManager {
 
 		//onPreLoadedCallback 加载完成
 		let onPreLoadedCallback = function () {
+			//隐藏所有的 fgui
+			FGUIManager.getInstance().onDestory();
+			// 清空已经销毁的数据
+			MWindow_fgui.init();
+			MWindow.init();
 			cc.log('加载场景开始：', cc.sys.now());
 			self._loadScene(sceneName, onLoadedCallback, ...params);
 		};
