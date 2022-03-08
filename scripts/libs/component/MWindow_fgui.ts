@@ -23,7 +23,15 @@ export class MWindow_fgui {
 		let old_instance = MWindow_fgui.instance;
 		if (old_instance) {
 			let old_map_ins = old_instance.map_ins;
-			_.each(old_map_ins, function (v, k) {});
+			old_map_ins.forEach(function (v, k) {
+				if (v) {
+					let panel_script: BaseWindow_fgui = v.panel_script;
+					if (panel_script) {
+						panel_script.__onCloseed__(null);
+						panel_script.hide();
+					}
+				}
+			});
 
 			old_instance.map_ins = null;
 			MWindow_fgui.instance = null;
@@ -95,7 +103,7 @@ export class MWindow_fgui {
 		panel: T,
 		params: T['CLOSE_PARAMS']
 	) {
-		cc.log('新销毁了窗口:', panel);
+		cc.log('新销毁了窗口:', panel.name);
 
 		// 获取key,value
 		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
@@ -142,5 +150,32 @@ export class MWindow_fgui {
 		params: T['OPEN_PARAMS']
 	) {
 		this.close(panel, params);
+	}
+
+	static async hideAllOpenLater<T extends typeof BaseWindow_fgui>(
+		panel: T,
+		params: T['OPEN_PARAMS']
+	) {
+		// 获取key,value
+		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
+		let arr_ins = MWindow_fgui.instance.arr_ins;
+		let index = _.findIndex(arr_ins, function (v) { return v == key; });
+		if (index >= 0) {
+			_.findIndex(arr_ins, function (v, k) {
+				let key = v;
+				let value = MWindow_fgui.instance.map_ins.get(key);
+				if (value) {
+					let panel_script: BaseWindow_fgui = value.panel_script;
+					if (panel_script) {
+						panel_script.__onCloseed__(params);
+						panel_script.hide();
+					}
+				}
+				return v == k;
+			});
+			arr_ins = arr_ins.slice(index + 1);
+			arr_ins = _.uniq(arr_ins);
+			MWindow_fgui.instance.arr_ins = arr_ins;
+		}
 	}
 }
