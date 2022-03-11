@@ -60,7 +60,7 @@ export class Bag {
 	private _init_one_info(item) {
 		var item_id = item.item_id;
 
-		let EquipConfig = GameHelp.getFromFileBy_EXCEL_TO_DB('EquipConfig');
+		// let EquipConfig = GameHelp.getFromFileBy_EXCEL_TO_DB('EquipConfig');
 		let ItemConfig = GameHelp.getFromFileBy_EXCEL_TO_DB('ItemConfig');
 		// EquipQqualityAddConfig
 
@@ -74,13 +74,13 @@ export class Bag {
 			}
 		}
 
-		if (EquipConfig) {
-			let one_EquipConfig = EquipConfig[item_id];
-			if (one_EquipConfig) {
-				item.is_recast = one_EquipConfig.is_recast;
-				item.is_grade = one_EquipConfig.is_grade;
-			}
-		}
+		// if (EquipConfig) {
+		// 	let one_EquipConfig = EquipConfig[item_id];
+		// 	if (one_EquipConfig) {
+		// 		item.is_recast = one_EquipConfig.is_recast;
+		// 		item.is_grade = one_EquipConfig.is_grade;
+		// 	}
+		// }
 		return item;
 	}
 
