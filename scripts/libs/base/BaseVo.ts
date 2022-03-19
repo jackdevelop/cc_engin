@@ -107,12 +107,12 @@ export default abstract class BaseVo {
 	}
 
 	/**
-	 *  获取该对象的 item_id  这个不是唯一  而是配置表中配置的 item_id
+	 *  获取该对象的 config_id  这个不是唯一  而是配置表中配置的 id
 	 * @returns
 	 */
-	get_m_item_id() {
-		let item_id = this.m_config_data.item_id || this.m_config_data.id;
-		return item_id;
+	get_m_config_id() {
+		let config_id = this.m_config_data.id;
+		return config_id;
 	}
 
 	/**

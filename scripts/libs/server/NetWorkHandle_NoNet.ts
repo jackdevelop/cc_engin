@@ -12,7 +12,7 @@ export class NetWorkHandle_NoNet {
    */
   public static hanlde(param, agars) {
     var cmd = param.cmd || param.p || param.n || param.name;
-    let ret = {
+    let ret:any = {
       code_str: 'SUCCESS',
       code: code_constants.SUCCESS,
       cmd: cmd,
@@ -26,9 +26,9 @@ export class NetWorkHandle_NoNet {
           avatar: '0',
           devices: '101_chrome_78.0.3904.108_null_13333333333',
           items: [
-            { item_id: 100, item_num: 9148 },
-            { item_id: 130, item_num: 0 },
-            { item_id: 900, item_num: 0 },
+            { id: 100, num: 9148 },
+            { id: 130, num: 0 },
+            { id: 900, num: 0 },
           ],
           gender: 1,
           mobilephone: '13333333333',

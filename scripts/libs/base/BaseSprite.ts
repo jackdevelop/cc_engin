@@ -43,8 +43,7 @@ export default abstract class BaseSprite extends cc.Component {
 
 		this.set_m_vo(m_vo);
 
-		let m_config_data = m_vo.get_m_config_data();
-		this.ITEM_TYPE = m_config_data.item_type;
+		this.ITEM_TYPE = m_vo.get_m_item_type();;
 
 		//显示当前的 no  序号
 		if (this.txt_debug_no) {
