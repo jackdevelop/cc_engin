@@ -80,7 +80,7 @@ export default class PoolManager {
         let retobj = objs.get();
         if (!retobj) {
             if (prefab) {
-                cc.log("requestPoolObj instantiate object");
+                // cc.log("requestPoolObj instantiate object");
                 let oneobj = cc.instantiate(prefab);
                 objs.put(oneobj);
                 instance.objPools_free[name] = objs;

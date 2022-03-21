@@ -55,14 +55,7 @@ export default abstract class BaseSprite extends cc.Component {
 		}
 
 		// 先禁用碰撞体
-		let boxCollider = this.getComponent(cc.BoxCollider);
-		if (boxCollider) {
-			boxCollider.enabled = false;
-		}
-		let polygonCollider = this.getComponent(cc.PolygonCollider);
-		if (polygonCollider) {
-			polygonCollider.enabled = false;
-		}
+		this.closeCollider();
 
 		//先删除组件
 		this.__unbind_behavior();
@@ -110,6 +103,18 @@ export default abstract class BaseSprite extends cc.Component {
 		return find_obj;
 	}
 
+	/** 禁用碰撞体 */
+	closeCollider() {
+		let boxCollider = this.getComponent(cc.BoxCollider);
+		if (boxCollider) {
+			boxCollider.enabled = false;
+		}
+		let polygonCollider = this.getComponent(cc.PolygonCollider);
+		if (polygonCollider) {
+			polygonCollider.enabled = false;
+		}
+	}
+
 	///////////////////////////////////////////////////////////////////////////
 	////////////////////////////子类的一些方法形式///////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -126,7 +131,10 @@ export default abstract class BaseSprite extends cc.Component {
 	handleHit(target: any) { }
 
 	/** 死亡 */
-	handleDead() { }
+	handleDead() {
+		// 先禁用碰撞体
+		this.closeCollider();
+	}
 
 	/**
 	 * 开始攻击

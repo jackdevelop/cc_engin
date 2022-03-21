@@ -120,7 +120,9 @@ export default abstract class BaseVo {
 	 * @returns
 	 */
 	get_m_item_type() {
+		// item_type为0时这里会出出现直接取第二个值的问题
 		let item_type = this.m_config_data.item_type || this.m_config_data.type;
+		item_type = item_type || 0;
 		return item_type;
 	}
 
