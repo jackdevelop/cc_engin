@@ -64,7 +64,7 @@ export class MWindow_fgui {
 
 		// 获取key,value,z_index
 		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
-		let value = MWindow_fgui.instance.map_ins.get(key);
+		let value: any = MWindow_fgui.instance.map_ins.get(key);
 		let panel_script = null;
 		if (!value) {
 			panel_script = new panel();
@@ -152,17 +152,25 @@ export class MWindow_fgui {
 		this.close(panel, params);
 	}
 
-	static async hideAllOpenLater<T extends typeof BaseWindow_fgui>(
+	static async hideAllOpenBefore<T extends typeof BaseWindow_fgui>(
 		panel: T,
-		params: T['OPEN_PARAMS']
+		params: T['OPEN_PARAMS'],
+		includePanel?: boolean
 	) {
 		// 获取key,value
 		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
 		let arr_ins = MWindow_fgui.instance.arr_ins;
 		let index = _.findIndex(arr_ins, function (v) { return v == key; });
-		if (index >= 0) {
-			_.findIndex(arr_ins, function (v, k) {
-				let key = v;
+		if (index < 0) {
+			return;
+		}
+		if (!includePanel) {
+			index = index + 1;
+		}
+		let len = arr_ins.length;
+		if (index < len) {
+			for (let i = index; i < len; i++) {
+				let key = arr_ins[i];
 				let value = MWindow_fgui.instance.map_ins.get(key);
 				if (value) {
 					let panel_script: BaseWindow_fgui = value.panel_script;
@@ -171,11 +179,55 @@ export class MWindow_fgui {
 						panel_script.hide();
 					}
 				}
-				return v == k;
-			});
+			}
+			arr_ins = arr_ins.slice(0, index);
+			arr_ins = _.uniq(arr_ins);
+			MWindow_fgui.instance.arr_ins = arr_ins;
+		}
+	}
+
+	static async hideAllOpenLater<T extends typeof BaseWindow_fgui>(
+		panel: T,
+		params: T['OPEN_PARAMS'],
+		includePanel?: boolean
+	) {
+		// 获取key,value
+		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
+		let arr_ins = MWindow_fgui.instance.arr_ins;
+		let index = _.findIndex(arr_ins, function (v) { return v == key; });
+		if (!includePanel) {
+			index = index - 1;
+		}
+		if (index >= 0) {
+			for (let i = 0; i <= index; i++) {
+				let key = arr_ins[i];
+				let value = MWindow_fgui.instance.map_ins.get(key);
+				if (value) {
+					let panel_script: BaseWindow_fgui = value.panel_script;
+					if (panel_script) {
+						panel_script.__onCloseed__(params);
+						panel_script.hide();
+					}
+				}
+			}
 			arr_ins = arr_ins.slice(index + 1);
 			arr_ins = _.uniq(arr_ins);
 			MWindow_fgui.instance.arr_ins = arr_ins;
 		}
+	}
+
+	static async hideAllWindows() {
+		let map_ins = this.instance.map_ins;
+		map_ins.forEach(function (v, k) {
+			if (v) {
+				let panel_script: BaseWindow_fgui = v.panel_script;
+				if (panel_script) {
+					panel_script.__onCloseed__(null);
+					panel_script.hide();
+				}
+			}
+		});
+		this.instance.map_ins.clear();
+		this.instance.arr_ins = [];
 	}
 }
