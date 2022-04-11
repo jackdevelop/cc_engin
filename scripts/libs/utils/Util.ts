@@ -24,8 +24,8 @@ export class Util {
 					name !== "onLoad" && name !== "onDestroy"
 				) {
 					//父类中的属性，添加到子类的属性中
-					console.log(derivedCtor)
-					console.log(name);
+					// console.log(derivedCtor)
+					// console.log(name);
 					if (derivedCtor && derivedCtor.prototype) {
 						derivedCtor.prototype[name] = null
 						derivedCtor.prototype[name] = baseCtor.prototype[name];

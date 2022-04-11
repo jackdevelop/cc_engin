@@ -22,7 +22,7 @@ export default class BaseBehavior extends cc.Component {
 	/**
 	 * onStarted 启动方法 ，在 init之后调用
 	 */
-	public onStarted() { }
+	public bd_onStarted() { }
 
 	/**
 	 *  销毁的操作

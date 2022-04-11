@@ -1,9 +1,4 @@
-// Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+import BaseSprite from "./BaseSprite";
 
 var _ = require('Underscore');
 
@@ -21,12 +16,18 @@ export default class BaseNodeTable extends cc.Component {
 	 * @returns
 	 */
 	public get_prefable_by_name(name: string) {
-		let find_obj = _.find(this.prefable_arr, function (v, k) {
+		let find_obj = _.find(this.prefable_arr, function (v) {
 			if (v.name == name) {
 				return v;
 			}
 		});
 
 		return find_obj;
+	}
+
+	//创建
+	public async createOneSprite(_one_data?: any, _path_data?: any, _parent?: cc.Node) {
+		let obj: BaseSprite = null;
+		return obj;
 	}
 }

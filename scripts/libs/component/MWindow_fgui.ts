@@ -195,10 +195,10 @@ export class MWindow_fgui {
 		let key = panel.CONFIG.PATH + '/' + panel.CONFIG.FGUI_resName;
 		let arr_ins = MWindow_fgui.instance.arr_ins;
 		let index = _.findIndex(arr_ins, function (v) { return v == key; });
-		if (!includePanel) {
-			index = index - 1;
-		}
 		if (index >= 0) {
+			if (!includePanel) {
+				index = index - 1;
+			}
 			for (let i = 0; i <= index; i++) {
 				let key = arr_ins[i];
 				let value = MWindow_fgui.instance.map_ins.get(key);

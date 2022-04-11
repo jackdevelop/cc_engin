@@ -1,3 +1,6 @@
+import { game_constants_planewar } from "../../../../app/game_sns/planewar/fight/scripts/config/game_constants_planewar";
+import { PromiseUtil } from "../util/PromiseUtil";
+import BaseBehavior from "./BaseBehavior";
 import BaseTempData from "./BaseTempData";
 
 var _ = require('Underscore');
@@ -42,7 +45,7 @@ export default abstract class BaseSprite extends cc.Component {
 		}
 
 		this.set_m_vo(m_vo);
-
+		m_vo.set_m_entity_state(game_constants_planewar.GAME_OBJ_STATE.INIT);
 		this.ITEM_TYPE = m_vo.get_m_item_type();;
 
 		//显示当前的 no  序号
@@ -69,6 +72,7 @@ export default abstract class BaseSprite extends cc.Component {
 	 */
 	public un_init() {
 		this.__un_init();
+		this.m_vo.set_m_entity_state(game_constants_planewar.GAME_OBJ_STATE.UN_INIT);
 	}
 	private __un_init() {
 		this.unschedule(null);
@@ -118,6 +122,29 @@ export default abstract class BaseSprite extends cc.Component {
 	///////////////////////////////////////////////////////////////////////////
 	////////////////////////////子类的一些方法形式///////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
+	/**
+	 * 初始化完成后执行
+	 */
+	onStarted() {
+		let coms = this.getComponents(BaseBehavior);
+		if (coms) {
+			coms.forEach(function (v) {
+				if (v && v.bd_onStarted) {
+					v.bd_onStarted();
+				}
+			});
+		}
+	}
+
+	/**
+	 * 重置 从对象池中取出时需要重置属性
+	 */
+	onReseted(): void {
+		this.node.active = false;
+		this.__un_init();
+		this.set_m_vo(null);
+	}
+
 	/** 准备 */
 	handleReady() { }
 
@@ -178,10 +205,51 @@ export default abstract class BaseSprite extends cc.Component {
 	 */
 	isAlive(): boolean {
 		let m_vo = this.get_m_vo();
-		if (m_vo && m_vo.get_m_active() && !m_vo.is_dead()) {
+		let state = m_vo.get_m_entity_state();
+		if (m_vo &&
+			m_vo.get_m_active() &&
+			state != game_constants_planewar.GAME_OBJ_STATE.DEAD &&
+			state != game_constants_planewar.GAME_OBJ_STATE.INIT &&
+			state != game_constants_planewar.GAME_OBJ_STATE.UN_INIT
+		) {
 			return true;
 		}
 		return false;
+	}
+
+	async rotateAngle(angle) {
+		let m_vo = this.get_m_vo();
+		if (m_vo.get_m_config_data().is_rotate) {
+			let start_angle = ((this.getRotation() % 360) + 360) % 360;
+			let end_angle = ((angle % 360) + 360) % 360;
+			let r_angle = end_angle - start_angle;
+			if (r_angle > 180) {
+				r_angle -= 360;
+			} else if (r_angle < -180) {
+				r_angle += 360;
+			}
+			end_angle = start_angle + r_angle;
+			let total_time = Math.abs(r_angle) / 180;
+			let cur_time = 0;
+
+			this.total_time = total_time;
+			this.cur_time = cur_time;
+			this.start_angle = start_angle;
+			this.end_angle = end_angle;
+			await PromiseUtil.wait_time(total_time, this);
+		}
+	}
+
+	private total_time: number = 0;
+	private cur_time: number = 0;
+	private start_angle: number = 0;
+	private end_angle: number = 0;
+	protected lateUpdate(dt: number): void {
+		if (this.cur_time < this.total_time) {
+			this.cur_time += dt;
+			let angle = cc.misc.lerp(this.start_angle, this.end_angle, this.cur_time / this.total_time);
+			this.setRotation(angle);
+		}
 	}
 
 	///////////////////////////////////////////////////////////////////////////

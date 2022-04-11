@@ -39,7 +39,7 @@ export default class PoolManager {
     private objPools_free: any = null;
 
     _init() {
-        this.objPools_free = new Object();
+        this.objPools_free = {};
     }
 
     /**
@@ -58,9 +58,9 @@ export default class PoolManager {
         let isnew = false;
 
         let instance = PoolManager.getInstance();
-        let objs = instance.objPools_free[name];
+        let objs: cc.NodePool = instance.objPools_free[name];
 
-        if (objs == null) {
+        if (!objs) {
             cc.log("requestPoolObj cc.NodePool,name:" + name);
 
             objs = new cc.NodePool(name);
@@ -81,11 +81,11 @@ export default class PoolManager {
         if (!retobj) {
             if (prefab) {
                 // cc.log("requestPoolObj instantiate object");
-                let oneobj = cc.instantiate(prefab);
-                objs.put(oneobj);
-                instance.objPools_free[name] = objs;
+                retobj = cc.instantiate(prefab);
+                // objs.put(oneobj);
+                // instance.objPools_free[name] = objs;
 
-                retobj = objs.get();
+                // retobj = objs.get();
             }
         }
 
@@ -133,12 +133,16 @@ export default class PoolManager {
     public static returnPoolObj(name: string, obj) {
         let instance = PoolManager.getInstance();
 
-        let free = instance.objPools_free[name];
+        let free: cc.NodePool = instance.objPools_free[name];
+        if (!free) {
+            free = new cc.NodePool(name);
+            instance.objPools_free[name] = free;
+        }
         free.put(obj);
         obj.setPosition(cc.v2(0, 0));
         // obj.removeFromParent()
         obj.active = false;
-        instance.objPools_free[name] = free;
+        // instance.objPools_free[name] = free;
     }
 
     /**
@@ -147,9 +151,13 @@ export default class PoolManager {
     public static clearOnePoolObj(name: string) {
         let instance = PoolManager.getInstance();
 
-        let free = instance.objPools_free[name];
+        let free: cc.NodePool = instance.objPools_free[name];
+        if (!free) {
+            free = new cc.NodePool(name);
+            instance.objPools_free[name] = free;
+        }
         free.clear();
-        instance.objPools_free[name] = free;
+        // instance.objPools_free[name] = free;
     }
 
     /**

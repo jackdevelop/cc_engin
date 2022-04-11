@@ -185,7 +185,7 @@ export default abstract class BaseVo {
 	 *  获取当前是否可以移动
 	 */
 	get_m_ismove() {
-		let is_move = this.m_config_data.is_move;
+		let is_move = this.m_data.move_type > 0;
 		let stop_move_num = this.m_temp_data.stop_move_num;
 		if (is_move && stop_move_num <= 0) {
 			return true;

@@ -1,6 +1,30 @@
-// import { User } from '../../../../cc_own/vo/User';
 
 export class GameMath {
+
+	public static Lerp(start: number, end: number, t: number): number;
+	public static Lerp(start: cc.Vec2, end: cc.Vec2, t: number): cc.Vec2;
+	public static Lerp(start: cc.Vec3, end: cc.Vec3, t: number): cc.Vec3;
+	public static Lerp(start: number | cc.Vec2 | cc.Vec3, end: number | cc.Vec2 | cc.Vec3, t: number) {
+		if (cc.js.isNumber(t)) {
+			if (t < 0) {
+				t = 0;
+			} else if (t > 1) {
+				t = 1;
+			}
+		} else {
+			t = 0;
+		}
+		if (typeof start == "number" && typeof end == "number") {
+			return start * (1 - t) + end * t;
+		} else if (start instanceof cc.Vec2 && end instanceof cc.Vec2) {
+			return start.lerp(end, t);
+		} else if (start instanceof cc.Vec3 && end instanceof cc.Vec3) {
+			return start.lerp(end, t);
+		} else {
+			console.log(`Lerp Error start:${start.toString()},end:${end.toString()},t:${t.toString()}`);
+		}
+	}
+
 	// static cnNum: string[] = [
 	//   '0',
 	//   '一',

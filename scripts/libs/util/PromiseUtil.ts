@@ -35,9 +35,9 @@ export class PromiseUtil {
 	 */
 	static wait_frame(node: cc.Component) {
 		if (node) {
-			return new Promise((res) => node.scheduleOnce(res));
+			return new Promise((res) => node.scheduleOnce(res, 0));
 		} else {
-			return new Promise((res) => cc.Canvas.instance.scheduleOnce(res));
+			return new Promise((res) => cc.Canvas.instance.scheduleOnce(res, 0));
 		}
 	}
 
