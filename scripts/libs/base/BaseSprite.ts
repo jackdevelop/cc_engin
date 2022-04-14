@@ -1,5 +1,6 @@
+import { TaskType } from "../../../../app/game_sns/planewar/fight/prefab/monster/behaviors/task/TaskFactory";
+import TaskMgr from "../../../../app/game_sns/planewar/fight/prefab/monster/behaviors/task/TaskMgr";
 import { game_constants_planewar } from "../../../../app/game_sns/planewar/fight/scripts/config/game_constants_planewar";
-import { PromiseUtil } from "../util/PromiseUtil";
 import BaseBehavior from "./BaseBehavior";
 import BaseTempData from "./BaseTempData";
 
@@ -200,6 +201,14 @@ export default abstract class BaseSprite extends cc.Component {
 		return is_move;
 	}
 
+	/** 检查是否可以移动 */
+	protected getMoveActive() {
+		let m_vo = this.m_vo;
+		if (this.isAlive() && m_vo.get_m_ismove()) {
+			return true;
+		}
+	}
+
 	/**
 	 * 是否存活
 	 */
@@ -218,25 +227,16 @@ export default abstract class BaseSprite extends cc.Component {
 	}
 
 	async rotateAngle(angle) {
-		let m_vo = this.get_m_vo();
-		if (m_vo.get_m_config_data().is_rotate) {
-			let start_angle = ((this.getRotation() % 360) + 360) % 360;
-			let end_angle = ((angle % 360) + 360) % 360;
-			let r_angle = end_angle - start_angle;
-			if (r_angle > 180) {
-				r_angle -= 360;
-			} else if (r_angle < -180) {
-				r_angle += 360;
-			}
-			end_angle = start_angle + r_angle;
-			let total_time = Math.abs(r_angle) / 180;
-			let cur_time = 0;
-
-			this.total_time = total_time;
-			this.cur_time = cur_time;
-			this.start_angle = start_angle;
-			this.end_angle = end_angle;
-			await PromiseUtil.wait_time(total_time, this);
+		let m_obj = this;
+		let m_vo = this.m_vo;
+		let data = {
+			m_obj,
+			m_vo,
+			angle
+		}
+		let ret = await TaskMgr.getInst().addTaskAsync(TaskType.TaskRotate, data);
+		if (!ret && m_vo.get_m_config_data().is_rotate) {
+			m_obj.setRotation(angle);
 		}
 	}
 
