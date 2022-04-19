@@ -1,13 +1,3 @@
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
 const { ccclass, property, menu } = cc._decorator;
 
 @ccclass
@@ -21,84 +11,32 @@ export default class TMapTouch extends cc.Component {
 
   @property({ tooltip: '是否可以拖动 ' })
   is_touch: boolean = false;
+  @property({ tooltip: '左右最小边距' })
+  padding_x: number = 200;
+  @property({ tooltip: '上下最小边距' })
+  padding_y: number = 200;
 
-  // LIFE-CYCLE CALLBACKS:
-
-  // private _originW:number = 0;
-  // private _originH:number = 0;
-
-  // onResizeClicked(){
-  //     var canvas = cc.find('Canvas');
-  //     this.zone.width = Math.random() * (canvas.width - 640) + 640;
-  //     this.zone.height = this.zone.width / 2;
-  // }
-
-  // onLoad(){
-  //     this._originW = this.zone.width;
-  //     this._originH = this.zone.height;
-  // }
-  //
-  // onReset(){
-  //     this.zone.width = this._originW;
-  //     this.zone.height = this._originH;
-  //     this.targetMap.x = 0;
-  //     this.targetMap.y = 0;
-  // }
-  // start () {
-  //     let self = this;
-  //     this.targetMap.on(cc.Node.EventType.TOUCH_MOVE,function(event:cc.Event.EventTouch){
-  //         let pre = event.getPreviousLocation();
-  //         let cur = event.getLocation();
-  //         var dir = cur.sub(pre);
-  //         self.targetMap.x += dir.x;
-  //         self.targetMap.y += dir.y;
-  //         //判断左边距离
-  //         var zoneLeft = self.zone.x - self.zone.width / 2 ;
-  //         var zoneRight = self.zone.x + self.zone.width / 2   ;
-  //         var zoneTop = self.zone.y + self.zone.height / 2;
-  //         var zoneBottom = self.zone.y - self.zone.height / 2;
-  //
-  //         var halfMapWidth = self.targetMap.width / 2   ;
-  //         var halfMapHeight = self.targetMap.height / 2  + 20 ;
-  //
-  //
-  //
-  //
-  //         //左边
-  //         if(self.targetMap.x - halfMapWidth   > zoneLeft){
-  //             self.targetMap.x = zoneLeft + halfMapWidth;
-  //         }
-  //
-  //
-  //         // //右边
-  //         // if(self.targetMap.x + halfMapWidth  < zoneRight){
-  //         //     self.targetMap.x = zoneRight - halfMapWidth  ;
-  //         // }
-  //
-  //
-  //         //上边
-  //         if(self.targetMap.y + halfMapHeight < zoneTop){
-  //             self.targetMap.y = zoneTop - halfMapHeight;
-  //         }
-  //         //下边
-  //         if(self.targetMap.y - halfMapHeight > zoneBottom){
-  //             self.targetMap.y = zoneBottom + halfMapHeight;
-  //         }
-  //     });
-  // }
+  private zoneWidth = 750;
+  private zoneHeight = 1334;
+  private zoneLeft = 0;
+  private zoneRight = 750;
+  private zoneTop = 1334;
+  private zoneBottom = 0;
 
   start() {
-    //左右最多能滑动的距离
-    let dis = 300;
-
     let self = this;
+    this.zoneWidth = self.targetMap.width;
+    this.zoneHeight = self.targetMap.height;
+    this.zoneLeft = this.zone.x - this.zoneWidth + this.padding_x;
+    this.zoneRight = this.zone.x + this.zoneWidth - this.padding_x;
+    this.zoneTop = this.zone.y + this.zoneHeight - this.padding_y;
+    this.zoneBottom = this.zone.y - this.zoneHeight + this.padding_y;
     this.targetMap.on(
       cc.Node.EventType.TOUCH_START,
       function (event) {
         if (!self.is_touch) {
           return;
         }
-
         event.stopPropagation();
       },
       this,
@@ -110,42 +48,23 @@ export default class TMapTouch extends cc.Component {
       if (!self.is_touch) {
         return;
       }
-
       let pre = event.getPreviousLocation();
       let cur = event.getLocation();
       var dir = cur.sub(pre);
-      self.targetMap.x += dir.x;
-      self.targetMap.y += dir.y;
-      //判断左边距离
-      var zoneLeft = self.zone.x - self.zone.width / 2;
-      var zoneRight = self.zone.x + self.zone.width / 2;
-      var zoneTop = self.zone.y + self.zone.height / 2;
-      var zoneBottom = self.zone.y - self.zone.height / 2;
-
-      var halfMapWidth = self.targetMap.width / 2;
-      var halfMapHeight = self.targetMap.height / 2 + dis;
-
-      //左边
-      if (self.targetMap.x > dis) {
-        self.targetMap.x = dis;
+      let x = self.targetMap.x + dir.x;
+      let y = self.targetMap.y + dir.y;
+      if (x < self.zoneLeft) {
+        x = self.zoneLeft;
+      } else if (x > self.zoneRight) {
+        x = self.zoneRight;
       }
-
-      // //右边
-      // if(self.targetMap.x + halfMapWidth  < zoneRight){
-      //     self.targetMap.x = zoneRight - halfMapWidth  ;
-      // }
-      if (self.targetMap.x + self.targetMap.width < self.zone.width - dis) {
-        self.targetMap.x = self.zone.width - dis - self.targetMap.width;
+      if (y < self.zoneBottom) {
+        y = self.zoneBottom;
+      } else if (y > self.zoneTop) {
+        y = self.zoneTop;
       }
-
-      //上边
-      if (self.targetMap.y + halfMapHeight < zoneTop) {
-        self.targetMap.y = zoneTop - halfMapHeight;
-      }
-      //下边
-      if (self.targetMap.y - halfMapHeight > zoneBottom) {
-        self.targetMap.y = zoneBottom + halfMapHeight;
-      }
+      self.targetMap.x = x;
+      self.targetMap.y = y;
     });
   }
 }

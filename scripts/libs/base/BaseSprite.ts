@@ -1,6 +1,7 @@
 import { TaskType } from "../../../../app/game_sns/planewar/fight/prefab/monster/behaviors/task/TaskFactory";
 import TaskMgr from "../../../../app/game_sns/planewar/fight/prefab/monster/behaviors/task/TaskMgr";
 import { game_constants_planewar } from "../../../../app/game_sns/planewar/fight/scripts/config/game_constants_planewar";
+import { GameMath } from "../utils/GameMath";
 import BaseBehavior from "./BaseBehavior";
 import BaseTempData from "./BaseTempData";
 
@@ -247,7 +248,7 @@ export default abstract class BaseSprite extends cc.Component {
 	protected lateUpdate(dt: number): void {
 		if (this.cur_time < this.total_time) {
 			this.cur_time += dt;
-			let angle = cc.misc.lerp(this.start_angle, this.end_angle, this.cur_time / this.total_time);
+			let angle = GameMath.Lerp(this.start_angle, this.end_angle, this.cur_time / this.total_time);
 			this.setRotation(angle);
 		}
 	}
