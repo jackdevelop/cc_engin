@@ -228,13 +228,13 @@ export class MWindow {
 		panel_script.__onStarted__(params);
 		panel_script && (await panel_script.on_open(params));
 
-		let arr_ins = MWindow.instance.arr_ins;
+		// let arr_ins = MWindow.instance.arr_ins;
 		// arr_ins.unshift(key);
 		// arr_ins = _.uniq(arr_ins);
 		// MWindow.instance.arr_ins = arr_ins;
 		this._handleMask();
 
-		cc.log('当前的所有排列 open ：', key, arr_ins);
+		// cc.log('当前的所有排列 open ：', key, arr_ins);
 		return panel_script;
 	}
 	private static _handleMask() {

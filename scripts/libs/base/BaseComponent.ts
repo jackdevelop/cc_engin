@@ -32,7 +32,7 @@ export default class BaseComponent extends cc.Component {
 
 	//监听事件
 	m__addEventHandle(event_name_all: Array<string>, priority: number) {
-		console.log('BaseComponent > m__addEventHandle ');
+		// console.log('BaseComponent > m__addEventHandle ');
 
 		let event_name_hash = event_name_all;
 		if (!event_name_hash) {

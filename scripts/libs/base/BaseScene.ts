@@ -56,7 +56,7 @@ export abstract class BaseScene extends BaseComponent {
 	// public static  __sceneName:string =  null
 
 	onLoad() {
-		cc.log('BaseScene:onLoad()');
+		// cc.log('BaseScene:onLoad()');
 
 		//适配流海
 		var safeArea = cc.sys.getSafeAreaRect();
@@ -200,7 +200,7 @@ export abstract class BaseScene extends BaseComponent {
 	 * 只能由 SceneManager 调用
 	 */
 	async __onStarted__(...params) {
-		cc.log(`scene<${this._name}> __onStarted__`, ...params);
+		// cc.log(`scene<${this._name}> __onStarted__`, ...params);
 		this.onStarted(...params);
 		// GamePluginManager.getInstance().show_plugin_icon()
 		this.enabled = true;
@@ -212,7 +212,7 @@ export abstract class BaseScene extends BaseComponent {
 	 * 只能由 SceneManager 调用
 	 */
 	__beforeDestroy__() {
-		cc.log(`scene<${this._name}> __beforeDestroy__`);
+		// cc.log(`scene<${this._name}> __beforeDestroy__`);
 		this.enabled = false;
 		AudioManager.getInstance().stopAll();
 		// AudioManager.getInstance().pauseOrResume();
@@ -243,7 +243,7 @@ export abstract class BaseScene extends BaseComponent {
 	 * 场景onDestroy方法前调用
 	 */
 	beforeDestroy() {
-		cc.log('beforeDestroy');
+		// cc.log('beforeDestroy');
 		return true;
 	}
 

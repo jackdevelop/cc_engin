@@ -127,16 +127,18 @@ export default class LongTouchComponent extends cc.Component {
    * 通知出去：被点击/触摸了一次，长按时，会连续多次回调这个方法
    */
   private publishOneTouch() {
-    let slef = this;
+    let self = this;
     if (!this._isTouching) {
       return;
     }
     this._touchCounter++;
     this.longTouchEvents.forEach((eventHandler: cc.Component.EventHandler) => {
       eventHandler.emit([
-        this._touchCounter,
-        slef.m_temp_event,
-        this._touchCounter,
+        self.m_temp_event,
+        {
+          touchInterval: self.touchInterval,
+          touchCounter: self._touchCounter
+        }
       ]);
     });
   }

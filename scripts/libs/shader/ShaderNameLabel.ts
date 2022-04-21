@@ -4,7 +4,7 @@ const { ccclass, property, executeInEditMode } = cc._decorator;
 
 @ccclass
 @executeInEditMode
-export default class NewClass extends cc.Component {
+export default class ShaderNameLabel extends cc.Component {
   @property(ShaderHelper)
   shaderHelper = null;
 

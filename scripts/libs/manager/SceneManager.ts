@@ -90,10 +90,10 @@ export class SceneManager {
 			},
 			(error: Error) => {
 				if (error) {
-					cc.log('preloadScene 加载出错:', error);
+					// cc.log('preloadScene 加载出错:', error);
 					self.preloadScene(sceneName, onprogress, onLoaded);
 				} else {
-					cc.log('preloadScene 加载完毕:', error);
+					// cc.log('preloadScene 加载完毕:', error);
 
 					if (onLoaded) {
 						onLoaded();
@@ -135,7 +135,7 @@ export class SceneManager {
 		this._loadingSceneName = sceneName;
 		// this.preloadScene(sceneName);
 		// return await new Promise((resolve, reject) => {
-		cc.log('加载场景：', sceneName);
+		// cc.log('加载场景：', sceneName);
 		cc.director.loadScene(sceneName, (err, scene: cc.Scene) => {
 			this._loadingSceneName = null;
 			if (!cc.isValid(scene)) {
@@ -194,7 +194,7 @@ export class SceneManager {
 			if (onLoaded) {
 				onLoaded();
 			}
-			cc.log('加载场景完毕：', cc.sys.now());
+			// cc.log('加载场景完毕：', cc.sys.now());
 
 			//加载新场景完毕
 			var event = {
@@ -213,7 +213,7 @@ export class SceneManager {
 			// 清空已经销毁的数据
 			MWindow_fgui.init();
 			MWindow.init();
-			cc.log('加载场景开始：', cc.sys.now());
+			// cc.log('加载场景开始：', cc.sys.now());
 			self._loadScene(sceneName, onLoadedCallback, ...params);
 		};
 
@@ -226,7 +226,7 @@ export class SceneManager {
 			}
 		};
 		if (is_preloaded) {
-			cc.log('预加载场景开始：', is_preloaded, cc.sys.now());
+			// cc.log('预加载场景开始：', is_preloaded, cc.sys.now());
 			this.preloadScene(sceneName, onprogress, _temp_onPreloaded);
 		} else {
 			_temp_onPreloaded();

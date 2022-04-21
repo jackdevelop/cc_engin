@@ -1,24 +1,6 @@
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-
-// import { LogWrap } from '../utils/LogWrap';
-// import { GameHelp } from '../utils/GameHelp';
 import PopUpManager from "../manager/PopUpManager";
-import { GameLoader } from "../utils/GameLoader";
-var _ = require("Underscore");
 
-// interface PoolObj {
-//     name: string;
-//     url: string;
-//     prefab:cc.Prefab;
-// }
+var _ = require("Underscore");
 
 /**
  *  PoolManager
@@ -61,8 +43,7 @@ export default class PoolManager {
         let objs: cc.NodePool = instance.objPools_free[name];
 
         if (!objs) {
-            cc.log("requestPoolObj cc.NodePool,name:" + name);
-
+            // cc.log("requestPoolObj cc.NodePool,name:" + name);
             objs = new cc.NodePool(name);
             instance.objPools_free[name] = objs;
         }
