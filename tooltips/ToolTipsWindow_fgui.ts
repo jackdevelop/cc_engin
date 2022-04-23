@@ -54,8 +54,8 @@ export default class ToolTipsWindow_fgui extends BaseWindow_fgui {
 		node_tooltips.active = true;
 
 		cc.tween(node_tooltips)
-			.to(0.5, { position: cc.v2(0, start_pos + 100) })
-			.to(1, { opacity: 0, position: cc.v2(0, start_pos + start_pos * 2) })
+			.to(0.5, { position: cc.v3(0, start_pos + 100) })
+			.to(1, { opacity: 0, position: cc.v3(0, start_pos + start_pos * 2) })
 			.call(() => {
 				MWindow_fgui.hide(ToolTipsWindow_fgui, null);
 				// node_tooltips.active = false;
@@ -63,6 +63,4 @@ export default class ToolTipsWindow_fgui extends BaseWindow_fgui {
 			})
 			.start();
 	}
-	//关闭时候的调用
-	onCloseed(param: any) {}
 }

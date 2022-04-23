@@ -160,8 +160,7 @@ export default class SpineUtil {
 		// let all_AnimationNames = spine.getArmatureNames();
 		// console.log(all_AnimationNames);
 		if (armature) {
-			spine.buildArmature = armature;
-			spine.armatureName = armature; //设置皮肤
+			spine.buildArmature(armature, spine.node);
 		}
 	}
 

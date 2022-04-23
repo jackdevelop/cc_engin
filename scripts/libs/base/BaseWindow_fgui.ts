@@ -86,6 +86,10 @@ export class BaseWindow_fgui extends MWindowExtends_gui {
 		// return true;
 	}
 
+	protected async showWindow(windowPanel: typeof BaseWindow_fgui, params: any = {}) {
+		await MWindow_fgui.show(windowPanel, params);
+	}
+
 	protected async showComeBackWindow(windowPanel: typeof BaseWindow_fgui, params: any = {}) {
 		params.backWindowPanel = this.m_WindowPanel;
 		params.backWindowParam = this.m_param;

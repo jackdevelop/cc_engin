@@ -50,6 +50,4 @@ export default class AlertWindow_fgui extends BaseWindow_fgui {
 		this.contentPane.getChild('n10').text = param.title;
 		this.contentPane.getChild('txt_tip').text = param.tip;
 	}
-	//关闭时候的调用
-	onCloseed(param: any) {}
 }
