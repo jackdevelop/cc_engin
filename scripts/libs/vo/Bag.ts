@@ -1,4 +1,3 @@
-import { GameHelp } from '../utils/GameHelp';
 
 var _ = require('Underscore');
 

@@ -154,12 +154,10 @@ export default class SpineUtil {
 		);
 
 		// console.log('切换动作');
-		spine.dragonAtlasAsset = dbAtlas; //设置骨骼数据所需Atlas
-		spine.dragonAsset = dbAsset; //设置骨骼数据
-		spine.armatureName = armature;
-		// let all_AnimationNames = spine.getArmatureNames();
-		// console.log(all_AnimationNames);
-		if (armature) {
+		if (armature && dbAtlas && dbAsset) {
+			spine.dragonAtlasAsset = dbAtlas; //设置骨骼数据所需Atlas
+			spine.dragonAsset = dbAsset; //设置骨骼数据
+			spine.armatureName = armature;
 			spine.buildArmature(armature, spine.node);
 		}
 	}

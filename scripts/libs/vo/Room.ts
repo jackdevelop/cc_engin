@@ -1,17 +1,18 @@
 import { Round } from './Round';
+
 var _ = require('Underscore');
 
 export class Room {
-  public static className = 'Room';
 
   //房间的code
   public room_id: number;
   public room_code: number;
   public game_id: number;
-  public creator_uid;//房间的创建者id 
-  public room_channel;
+  public creator_uid: number;//房间的创建者id 
+  public room_channel: number;
 
-  public user_ids;//房间的人物 
+  public user_ids: number[] = [];//房间的人物 
+  public ready_ids: number[] = [];
 
 
 
