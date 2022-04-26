@@ -10,7 +10,7 @@ var _ = require('Underscore');
 	num 3: integer #数量
 	}
  */
-type BagItemData = {
+export type BagItemData = {
 	id: number;
 	config_id?: number;
 	num?: number;
