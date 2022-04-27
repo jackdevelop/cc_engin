@@ -84,7 +84,7 @@ export default class TimeUtil {
 	 * const HMS = TimeUtil.msToHMS(119000); // "00:01:59"
 	 */
 	public static msToHMS(
-		time: number,
+		time: number = null,
 		separator: string = ':',
 		keepHours: boolean = true
 	): string {

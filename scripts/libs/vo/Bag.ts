@@ -1,21 +1,11 @@
 
 var _ = require('Underscore');
 
-/**
- *  每个小 item 的数据格式  
- *  #背包数据
-	.UserBagItem {
-	id    1: integer #背包物品id
-	config_id   2: integer #配置表id
-	num 3: integer #数量
-	}
- */
 export type BagItemData = {
 	id: number;
-	config_id?: number;
+	configId?: number;
 	num?: number;
 	type?: number;
-	quality?: number;
 	[x: string]: any;
 }
 
@@ -52,10 +42,23 @@ export class Bag {
 	}
 
 	/**
+	 * 获取某个道具 获取第一个
+	 * @param configId 背包物配置表id
+	 * @returns 
+	 */
+	public getItemByConfigId(configId: number) {
+		let item: BagItemData = null;
+		if (configId > 0) {
+			item = _.findWhere(this.m_items, { configId });
+		}
+		return item;
+	}
+
+	/**
 	 * 批量设置道具
 	 * 如果存在则合并属性
 	 * 如果不存在则根据第二个参数决定是否新增
-	 * 新增时必须传入config_id
+	 * 新增时必须传入configId
 	 * @param opts
 	 */
 	public setItems(opts: BagItemData[], isCreateNotExist = false) {
@@ -151,31 +154,15 @@ export class Bag {
 		if (!isCreateNotExist) {
 			return;
 		}
-		let config_id = opts.config_id;
-		if (!(config_id > 0)) {
+		let configId = opts.configId;
+		if (!(configId > 0)) {
 			return;
 		}
 		let num = 0;
 		if (opts.num > 0) {
 			num = opts.num;
 		}
-		item = { id, config_id, num };
-		// const ItemConfig = GameHelp.getFromFileBy_EXCEL_TO_DB('ItemConfig');
-		// if (!ItemConfig) {
-		// 	return;
-		// }
-		// const oneConfig = ItemConfig[config_id];
-		// if (!oneConfig) {
-		// 	return;
-		// }
-		// let type = oneConfig.type;
-		// if (type >= 0) {
-		// 	item.type = type;
-		// }
-		// let quality = oneConfig.quality;
-		// if (quality >= 0) {
-		// 	item.quality = quality;
-		// }
+		item = { id, configId, num };
 		this.m_items.push(item);
 		_.map(opts, function (v, k) {
 			item[k] = v;
