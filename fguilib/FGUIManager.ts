@@ -44,6 +44,7 @@ export default class FGUIManager {
 		//两个必须要用到的组件
 		await GameLoader.loadFgui('game/planewar/FairyGUI/Common');
 		await GameLoader.loadFgui('game/planewar/FairyGUI/Loading');
+		await GameLoader.loadFgui('game/planewar/FairyGUI/Bg');
 	}
 
 	//destory 比如切换场景的时候  会调用此方法

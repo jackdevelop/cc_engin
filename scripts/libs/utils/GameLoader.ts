@@ -15,24 +15,16 @@ export class GameLoader {
 	 * @param prefab_url
 	 * @param type
 	 */
-	static async _loadFgui(url: string): Promise<object> {
+	public static async loadFgui(url: string): Promise<fairygui.UIPackage> {
 		return new Promise((res) => {
-			try {
-				fgui.UIPackage.loadPackage(url, function (error) {
-					res({});
-				});
-			} catch (error) {
-				res(null);
-			}
+			fgui.UIPackage.loadPackage(url, function (error, pkg: fairygui.UIPackage) {
+				if (error) {
+					res(null);
+				} else {
+					res(pkg);
+				}
+			});
 		});
-	}
-	public static async loadFgui(prefab_url: string): Promise<object> {
-		try {
-			const res = await this._loadFgui(prefab_url);
-			return res;
-		} catch (err) {
-			return null;
-		}
 	}
 
 	/**

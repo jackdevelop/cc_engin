@@ -16,7 +16,7 @@ const { ccclass, property, menu } = cc._decorator;
 @MWindowConfig({
 	PATH: 'game/planewar/FairyGUI/Common', // fgui的路径地址
 	FGUI_pkgName: 'Common', //fgui的文件夹名
-	FGUI_resName: 'TooltipsWin', //fgui的文件名  ui://Common/TooltipsWin
+	FGUI_resName: 'TooltipsWindow', //fgui的文件名
 
 	TYPE: 'single',
 	TYPE_MASK: 0,
@@ -29,7 +29,7 @@ export default class ToolTipsWindow_fgui extends BaseWindow_fgui {
 		let self = this;
 
 		let pos = cc.view.getCanvasSize();
-		this.m_start_pos = pos.height / 4;
+		this.m_start_pos = pos.height / 2;
 	}
 
 	//打开时候的调用
@@ -49,13 +49,14 @@ export default class ToolTipsWindow_fgui extends BaseWindow_fgui {
 		let node_tooltips = this.contentPane.node;
 		// cc.log(node_tooltips.getPosition());
 		node_tooltips.stopAllActions();
-		node_tooltips.setPosition(0, 0, 0);
+		node_tooltips.setPosition(0, 0);
 		node_tooltips.opacity = 255;
 		node_tooltips.active = true;
 
 		cc.tween(node_tooltips)
-			.to(0.5, { position: cc.v3(0, start_pos + 100) })
-			.to(1, { opacity: 0, position: cc.v3(0, start_pos + start_pos * 2) })
+			.to(0.2, { position: cc.v3(0, start_pos) })
+			.delay(1)
+			.to(0.5, { opacity: 0 })
 			.call(() => {
 				MWindow_fgui.hide(ToolTipsWindow_fgui, null);
 				// node_tooltips.active = false;
