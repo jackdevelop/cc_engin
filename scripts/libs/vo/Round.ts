@@ -4,7 +4,8 @@ var _ = require('Underscore');
 export class Round {
 
   /**游戏id**/
-  protected game_id: number = null;
+  public game_id: number = 0;
+  public map_id: number = 0;
 
   //游戏的 actions 
   public actions = null

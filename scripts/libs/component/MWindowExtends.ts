@@ -149,7 +149,60 @@ export abstract class MWindowExtends_gui extends fgui.Window {
 		return true;
 	}
 
+	// m__addEventHandle(event_name_all: Array<string>, priority: number) {
+	// 	console.log('MWindowExtends_gui > m__addEventHandle ');
+	// }
+    // @property({ tooltip: '隐藏是否监听事件' })
+	private hide_is_handleEvent: boolean = false;
+    //事件
+	private __eventHandle = null;
+	// //需要动态管理的资源
+	// private m_ref_ImageLoader = null;
+
+	//监听事件
 	m__addEventHandle(event_name_all: Array<string>, priority: number) {
-		console.log('MWindowExtends_gui > m__addEventHandle ');
+		// console.log('BaseComponent > m__addEventHandle ');
+        console.log('MWindowExtends_gui > m__addEventHandle ');
+		let event_name_hash = event_name_all;
+		if (!event_name_hash) {
+			return;
+		}
+		var self = this;
+		if (self.__eventHandle == null) {
+			self.__eventHandle = (data: any) => {
+				let curr_node = self.node;
+				//有 node
+				if (curr_node) {
+					if (curr_node.active) {
+						self.m__eventHandle(data);
+					} else {
+						if (self.hide_is_handleEvent) {
+							self.m__eventHandle(data);
+						}
+					}
+				} else {
+					self.m__eventHandle(data);
+				}
+			};
+
+			GameNotify.getInstance().removeAllEventListenersForHandle(
+				self.__eventHandle
+			);
+			for (let i = 0; i < event_name_hash.length; i++) {
+				let one_name = event_name_hash[i];
+				GameNotify.getInstance().addEventListener(
+					one_name,
+					self.__eventHandle,
+					null,
+					priority
+				);
+			}
+		}
+	}
+
+	m__eventHandle(event: { name: string; data?: any; target?: any }) {
+		var self = this;
+		var data = event.data;
+		// cc.log(event.name);
 	}
 }

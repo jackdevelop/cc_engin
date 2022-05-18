@@ -1,6 +1,7 @@
 import { GameConfigUrl } from '../../../../cc_own/config/GameConfigUrl';
 import LoadingChrysanthemum from '../../../loadingchrysanthemum/LoadingChrysanthemum';
 import { NetWork } from '../server/NetWork';
+import { StringExtension } from '../utils/StringExtension';
 import BaseComponent from './BaseComponent'
 
 const { ccclass, property } = cc._decorator
@@ -12,8 +13,9 @@ export class BaseService extends BaseComponent {
 		return await this.httpRequest(path, param, 'POST', ip);
 	}
 
-	public async httpGet(url: string, ip: string = '') {
-		return await this.httpRequest(url, null, 'GET', ip);
+	public async httpGet(path: string, param = {}, ip: string = '') {
+		path = StringExtension.appendGetPathParams(path, param);
+		return await this.httpRequest(path, param, 'GET', ip);
 	}
 
 	public async httpRequest(path: string, param = {}, method: string, ip: string = '') {
@@ -31,6 +33,17 @@ export class BaseService extends BaseComponent {
 		LoadingChrysanthemum.hide();
 		return ret;
 	}
+
+	// public appendGetPathParams(path: string, param = {}) {
+	// 	path = path.replace(/(\/+)$/, '');
+	// 	for (var key in param) {
+	// 		let value = param[key];
+	// 		if (value != null && value != undefined) {
+	// 			path = path + "/" + value;
+	// 		}
+	// 	}
+	// 	return path;
+	// }
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////FMS start ////////////////////////////////////////////////////////////////////////////////////////////////////////////

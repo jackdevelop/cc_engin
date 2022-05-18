@@ -73,6 +73,11 @@ export class NetHttp {
 				xhr.open('GET', new_url, true);
 				// xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
 				xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+                _.each(header_data, function (v, k) {
+					xhr.setRequestHeader(k, v);
+				});
+
 				xhr.onerror = () => {
 					throw new Error('xhr-on-error');
 				};

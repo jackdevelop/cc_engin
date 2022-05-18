@@ -55,4 +55,36 @@ export class StringExtension {
     }
     return result.join('');
   }
+
+
+
+  /**
+   *  返回get的一个组装参数 
+   * @param path 
+   * @param param 
+   * @returns 
+   */
+  public static appendGetPathParams(path: string, param = {},addStr:string = "/") {
+    path = path.replace(/(\/+)$/, '');
+    for (var key in param) {
+        let value = param[key];
+        if (value != null && value != undefined) {
+            path = path + addStr + value;
+        }
+    }
+    return path;
+ }
+ public static appendGetPathParams2(path: string, param = {},addStr:string = "&") {
+    path = path.replace(/(\/+)$/, '');
+    for (var key in param) {
+        let value = param[key];
+        if (value != null && value != undefined) {
+            path = path  + key + "="+ value  +addStr;
+        }
+    }
+    return path;
+ }
+
+
+
 }

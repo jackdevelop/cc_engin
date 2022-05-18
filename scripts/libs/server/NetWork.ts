@@ -190,6 +190,7 @@ export class NetWork {
 		if (networkName == null) {
 			networkName = 'HALL';
 		}
+		
 
 		if (servers == null) {
 			let user = UserList.getUserByUserid(UserList.meUserId);
@@ -272,7 +273,7 @@ export class NetWork {
 	 * @param callBack 回调
 	 * @param current_net 指定当前的 socket句柄
 	 */
-	public request(cmd: string, param: any, current_net, channel_name) {
+	public async request(cmd: string, param: any, current_net, channel_name) {
 		var self = this;
 
 		if (!param) param = new Object();
