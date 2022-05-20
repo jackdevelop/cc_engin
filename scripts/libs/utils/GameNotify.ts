@@ -38,7 +38,7 @@ export class GameNotify extends BaseEvent {
   public onConnectionLost(event) {
     var self = GameNotify.getInstance();
 
-    var event = { name: 'CONNECTION_LOST', data: event.data };
+    event = { name: 'CONNECTION_LOST', data: event.data };
     self.dispatchEvent(event);
   }
   //连接关闭
@@ -46,7 +46,7 @@ export class GameNotify extends BaseEvent {
     var self = GameNotify.getInstance();
 
     cc.log('GameNotify.onConnectionClose');
-    var event = { name: 'CONNECTION_CLOSE', data: event.data };
+    event = { name: 'CONNECTION_CLOSE', data: event.data };
     self.dispatchEvent(event);
   }
   //连接错误
@@ -54,7 +54,7 @@ export class GameNotify extends BaseEvent {
     var self = GameNotify.getInstance();
 
     cc.log('GameNotify.onConnectionError');
-    var event = { name: 'CONNECTION_ERROR', data: event.data };
+    event = { name: 'CONNECTION_ERROR', data: event.data };
     self.dispatchEvent(event);
   }
   //连接成功

@@ -200,7 +200,7 @@ export class NetWork {
 				param: {
 					ts: cc.sys.now(),
 					token: user.token,
-					user_code: user.user_code,
+					userid: user.getUserId(),
 				},
 			};
 		}

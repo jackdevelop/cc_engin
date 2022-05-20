@@ -37,13 +37,6 @@ export class UserList {
 		this.users = {};
 	}
 
-	// //获取用户
-	// public static getUserByUsercode(user_code): User {
-	//   user_code = user_code + '';
-	//   var user = this.users[user_code];
-
-	//   return user;
-	// }
 	//获取用户
 	public static getUserByUserid(user_id): User {
 		user_id = user_id + '';

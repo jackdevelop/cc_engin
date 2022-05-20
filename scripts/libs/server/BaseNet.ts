@@ -1,8 +1,3 @@
-// 父类
-// var GameNotify = require("GameNotify");
-// var EventProtocol = require("EventProtocol");
-// var moment_util = require("moment_util");
-
 import { BaseEvent } from '../base/BaseEvent';
 import TimeUtil from '../util/TimeUtil';
 import { GameNotify } from '../utils/GameNotify';
@@ -21,6 +16,7 @@ export class BaseNet extends BaseEvent {
 	protected _dispatchEvent: boolean = true; //是否抛送任何事件  默认为抛送
 
 	constructor() {
+		super();
 		this._sessionId = 0;
 		this._sessionIdHandlers = new Object();
 		// this._dispatchEvent = true;

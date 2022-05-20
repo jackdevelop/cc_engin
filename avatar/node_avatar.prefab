@@ -200,7 +200,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "2f73683f-e6d5-4c49-a015-85209313abc2"
+      "__id__": 0
     },
     "fileId": "17cGlxux1GfYWtU7mAWPE5",
     "sync": false
@@ -307,7 +307,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "2f73683f-e6d5-4c49-a015-85209313abc2"
+      "__id__": 0
     },
     "fileId": "4cHMDR3PZHKpRjUBG0BmXI",
     "sync": false
@@ -389,7 +389,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_string": "ID:254689",
     "_N$string": "ID:254689",
     "_fontSize": 30,
@@ -414,7 +415,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "2f73683f-e6d5-4c49-a015-85209313abc2"
+      "__id__": 0
     },
     "fileId": "4fcaQvP2VIQZD065JA5qLe",
     "sync": false
@@ -496,7 +497,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
-    "_useOriginalSize": false,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_string": "游客账号001",
     "_N$string": "游客账号001",
     "_fontSize": 30,
@@ -521,7 +523,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "2f73683f-e6d5-4c49-a015-85209313abc2"
+      "__id__": 0
     },
     "fileId": "3fKyeV411BWbWZpF5j41Mi",
     "sync": false
@@ -713,7 +715,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "2f73683f-e6d5-4c49-a015-85209313abc2"
+      "__id__": 0
     },
     "fileId": "02QG3ygyZL2IvXrdqKn8ap",
     "sync": false
@@ -785,7 +787,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_normalMaterial": null,
+    "_normalMaterial": {
+      "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+    },
     "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
@@ -869,7 +873,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "txt_user_code": {
+    "hide_is_handleEvent": false,
+    "GAME_AUTO_CLEAN": true,
+    "txt_userid": {
       "__id__": 9
     },
     "txt_gold": null,
@@ -907,6 +913,7 @@
         "__uuid__": "babdc57f-e41a-4a8c-85f8-ca60325422f1"
       }
     ],
+    "is_touch": false,
     "_id": ""
   },
   {
@@ -915,9 +922,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "2f73683f-e6d5-4c49-a015-85209313abc2"
+      "__id__": 0
     },
-    "fileId": "36QP2+sUNEmK14xb1jPskU",
+    "fileId": "",
     "sync": false
   }
 ]

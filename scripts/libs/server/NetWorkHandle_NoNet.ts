@@ -38,7 +38,7 @@ export class NetWorkHandle_NoNet {
           sysmail_receiveidx: 0,
           token: '2C84F135CB0D94B8F72C58D74133C366',
           type: 1,
-          user_code: 972109,
+          userid: 972109,
         };
 
         break;

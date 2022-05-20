@@ -112,7 +112,7 @@ export class NetWebSocket extends BaseNet {
 		_webSocket.onmessage = function (event) {
 			//var str = JSON.stringify(event["data"]);
 			var data = event.data;
-            cc.log("收到消息！！",event)
+            // cc.log("收到消息！！",event)
 
 			//json格式
 			if (self._isJson == true) {
@@ -122,14 +122,14 @@ export class NetWebSocket extends BaseNet {
 
 				let newdata = data 
 				var msg = JSON.parse(newdata);
-				cc.log('_webSocket.onmessage:>', newdata);
+				// cc.log('_webSocket.onmessage:>', newdata);
 				if (msg.sessionId) {
 					self._handleMessage_rsp(msg.sessionId, msg);
 				} else {
 					self._handleMessage_req(null, msg);
 				}
 			} else {
-				cc.log('_webSocket.onmessage:>', data);
+				// cc.log('_webSocket.onmessage:>', data);
 				//sproto格式;
 				PROTOCAL_CORE.getRecvPackage(
 					data,
@@ -180,7 +180,7 @@ export class NetWebSocket extends BaseNet {
 	// 发送数据
 	public send(cmd, param, callback, channel_name) {
 		var self = this;
-		cc.log(cmd, this._webSocket);
+		// cc.log(cmd, this._webSocket);
 		if (cmd == null) {
 			// var LoadingChrysanthemum = require("LoadingChrysanthemum");
 			// LoadingChrysanthemum.hide();
@@ -195,7 +195,7 @@ export class NetWebSocket extends BaseNet {
 
 		// cc.log(this._webSocket.readyState);
 		if (this._webSocket.readyState === WebSocket.OPEN) {
-			var sessionId = super.send(cmd, param, callback, channel_name);
+			let sessionId = super.send(cmd, param, callback, channel_name);
 
 			cc.log(
 				'全部消息发送 start => cmd: ' +
@@ -211,14 +211,15 @@ export class NetWebSocket extends BaseNet {
 				if (param == null) param = new Object();
 				param.cmd = cmd;
 				param.sessionId = sessionId;
-				var str = JSON.stringify(param);
+				let str = JSON.stringify(param);
 				self._webSocket.send(str);
 			} else {
-				var str = PROTOCAL_CORE.getSendPackage(cmd, param, sessionId);
+				let str = PROTOCAL_CORE.getSendPackage(cmd, param, sessionId);
 				// cc.log(str);
 				// cc.log(self._webSocket);
 				self._webSocket.send(str);
 			}
+			return sessionId;
 		}
 		// else {
 		// var LoadingChrysanthemum = require("LoadingChrysanthemum");
@@ -256,6 +257,6 @@ export class NetWebSocket extends BaseNet {
 			return;
 		}
 		this._webSocket.close();
-		super.close();
+		return super.close();
 	}
 }

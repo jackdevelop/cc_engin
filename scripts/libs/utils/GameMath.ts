@@ -1,3 +1,4 @@
+import { DateExtension } from "./DateExtension";
 
 export class GameMath {
 
@@ -34,62 +35,9 @@ export class GameMath {
 		return value;
 	}
 
-	public static getLimitDesc(data: { createTime: string, expireTime: string }) {
-		let create_date = this.getDateFromString(data.createTime);
-		let expire_date = this.getDateFromString(data.expireTime);
-		let str = `${create_date.toLocaleDateString()}(${this.getDifferentDateString(create_date, expire_date)}过期)`;
-		return str;
-	}
 
-	public static getDifferentDateString(start: Date, end: Date) {
-		let startTime = start.getTime();
-		let endTime = end.getTime();
-		var diffTime = endTime - startTime;
-		if (diffTime <= 0) {
-			return '已';
-		}
-		const C_Second = 1000;
-		const C_Minute = C_Second * 60;
-		const C_Hour = C_Minute * 60;
-		const C_Day = C_Hour * 24;
-		const C_Month = C_Day * 30;
-		const C_Year = C_Month * 12;
-		let year = diffTime / C_Year;
-		if (year >= 1) {
-			return Math.floor(year) + "年";
-		}
-		let month = diffTime / C_Month;
-		if (month >= 1) {
-			return Math.floor(month) + "个月";
-		}
-		let week = diffTime / (7 * C_Day);
-		if (week >= 1) {
-			return Math.floor(week) + "周";
-		}
-		let day = diffTime / C_Day;
-		if (day >= 1) {
-			return Math.floor(day) + "天";
-		}
-		let hour = diffTime / C_Hour;
-		if (hour >= 1) {
-			return Math.floor(hour) + "小时";
-		}
-		let minute = diffTime / C_Minute;
-		if (minute >= 1) {
-			return Math.floor(minute) + "分钟";
-		}
-		let second = diffTime / C_Minute;
-		if (second >= 1) {
-			return Math.floor(second) + "秒";
-		}
-		return '已';
-	}
 
-	/** format:"1999-09-09 09:09:09" */
-	public static getDateFromString(fullString: string) {
-		let date = new Date(fullString);
-		return date;
-	}
+
 
 	// static cnNum: string[] = [
 	//   '0',

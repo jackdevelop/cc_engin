@@ -21,8 +21,8 @@ export default class node_avatar extends BaseComponent {
 	@property({ tooltip: '是否自动销毁 ImageLoader 资源' })
 	GAME_AUTO_CLEAN: boolean = true;
 
-	@property({ type: cc.Label, tooltip: '用户 usercode' })
-	txt_user_code: cc.Label = null;
+	@property({ type: cc.Label, tooltip: '用户 userid' })
+	txt_userid: cc.Label = null;
 
 	@property({ type: cc.Label, tooltip: '金币' })
 	txt_gold: cc.Label = null;
@@ -86,8 +86,8 @@ export default class node_avatar extends BaseComponent {
 				this.setTxtGold(0);
 			}
 		}
-		if (this.txt_user_code) {
-			this.txt_user_code.string = (user.user_code || '') + ''; //user.bag.getItemByItemid_GOLD();
+		if (this.txt_userid) {
+			this.txt_userid.string = (user.getUserId() || '') + ''; //user.bag.getItemByItemid_GOLD();
 		}
 		if (this.spt_vip) {
 			let vip: number = user.vip || 0;
@@ -155,8 +155,8 @@ export default class node_avatar extends BaseComponent {
 	//复制剪贴板
 	private onClickcopyTextToClipboard() {
 		if (this.m_user) {
-			let user_code = this.m_user.user_code + '';
-			let success = NativeHelp.copyTextToClipboard(user_code);
+			let userid = this.m_user.getUserId() + '';
+			let success = NativeHelp.copyTextToClipboard(userid);
 		}
 	}
 }

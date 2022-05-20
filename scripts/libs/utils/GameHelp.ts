@@ -18,7 +18,7 @@ export class GameHelp {
   //  * @param {string} phone
   //  * @returns {any}
   //  */
-  // public static getDevice(user_code: string, phone: string) {
+  // public static getDevice(userid: string, phone: string) {
   //   let last_login_device = '';
 
   //   if (cc.sys.isNative) {
@@ -49,7 +49,7 @@ export class GameHelp {
   //         '_' +
   //         cc.sys.browserVersion +
   //         '_' +
-  //         user_code +
+  //         userid +
   //         '_' +
   //         phone;
   //     }
@@ -90,7 +90,7 @@ export class GameHelp {
   //         cc.sys.browserType +
   //         '_' +
   //         cc.sys.browserVersion +
-  //         '_'; //+ user_code + "_" + phone
+  //         '_'; //+ userid + "_" + phone
   //     }
   //   }
 

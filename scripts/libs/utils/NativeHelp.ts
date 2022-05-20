@@ -15,7 +15,7 @@ export class NativeHelp {
    * @param {string} phone
    * @returns {any}
    */
-  public static getDevice(user_code: string, phone: string) {
+  public static getDevice(userid: string, phone: string) {
     let last_login_device = '';
 
     if (cc.sys.isNative) {
@@ -46,7 +46,7 @@ export class NativeHelp {
           '_' +
           cc.sys.browserVersion +
           '_' +
-          user_code +
+          userid +
           '_' +
           phone;
       }
@@ -87,7 +87,7 @@ export class NativeHelp {
           cc.sys.browserType +
           '_' +
           cc.sys.browserVersion +
-          '_'; //+ user_code + "_" + phone
+          '_'; //+ userid + "_" + phone
       }
     }
 
