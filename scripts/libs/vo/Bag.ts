@@ -6,6 +6,8 @@ export type BagItemData = {
 	configId?: number;
 	num?: number;
 	type?: number;
+	lv?: number,
+	createTime?: string,
 	[x: string]: any;
 }
 
