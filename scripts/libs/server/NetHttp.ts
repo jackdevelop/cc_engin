@@ -79,10 +79,12 @@ export class NetHttp {
 				});
 
 				xhr.onerror = () => {
-					throw new Error('xhr-on-error');
+					res(null);
+					// throw new Error('xhr-on-error');
 				};
 				xhr.ontimeout = () => {
-					throw new Error('xhr-on-timeout');
+					res(null);
+					// throw new Error('xhr-on-timeout');
 				};
 				xhr.onreadystatechange = () => {
 					if (xhr.readyState != 4) {
@@ -91,7 +93,8 @@ export class NetHttp {
 					if (xhr.status >= 200 && xhr.status < 400) {
 						res(xhr.response);
 					} else {
-						throw new Error('xhr-status-not-200-400');
+						res(null);
+						// throw new Error('xhr-status-not-200-400');
 					}
 				};
 				xhr.send();
@@ -136,11 +139,11 @@ export class NetHttp {
 				xhr.setRequestHeader('Content-Type', 'application/json');
 				xhr.onerror = () => {
 					res(null);
-					throw new Error('xhr-on-error');
+					// throw new Error('xhr-on-error');
 				};
 				xhr.ontimeout = () => {
 					res(null);
-					throw new Error('xhr-on-timeout');
+					// throw new Error('xhr-on-timeout');
 				};
 				// xhr.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
 				xhr.onreadystatechange = () => {

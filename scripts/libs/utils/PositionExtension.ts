@@ -195,13 +195,18 @@ export default class PositionExtension {
 	 * @param endPos
 	 * @returns
 	 */
-	static get_p_p_rotation(startpos: cc.Vec2, endPos: cc.Vec2) {
+	static get_p_p_rotation(startpos: cc.Vec2 , endPos: cc.Vec2) {
 		let dir = endPos.sub(startpos);
 		//根据朝向计算出夹角弧度
 		var angle = dir.signAngle(cc.v2(1, 0));
 		//将弧度转换为欧拉角
 		var degree = this.trans_radian_to_angle(angle); //angle / Math.PI * 180;
 		return { angle, degree };
+	}
+
+    // 求两点的夹角（弧度）
+    static radians4point(ax, ay, bx, by) {
+        return Math.atan2(by - ay, bx - ax)
 	}
 
 	/**

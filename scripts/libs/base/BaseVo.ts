@@ -180,10 +180,24 @@ export default abstract class BaseVo {
 	}
 
 	/**
+	 *  获取移动类型 
+	 * @returns 
+	 */
+	public getMoveType() {
+		let move_type = 0;
+		let m_data = this.get_m_data();
+		if (m_data) {
+			move_type = m_data.move_type;
+		}
+		move_type = move_type > 0 ? move_type : 0;
+		return move_type;
+	}
+
+	/**
 	 *  获取当前是否可以移动
 	 */
 	get_m_ismove() {
-		let is_move = this.m_data.move_type > 0;
+		let is_move = this.getMoveType() > 0;
 		let stop_move_num = this.m_temp_data.stop_move_num;
 		if (is_move && stop_move_num <= 0) {
 			return true;

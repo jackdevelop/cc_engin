@@ -1,7 +1,9 @@
 import { GameConfigUrl } from '../../../../cc_own/config/GameConfigUrl';
+import { code_constants } from '../../../../cc_own/constants/code_constants';
 import LoadingChrysanthemum from '../../../loadingchrysanthemum/LoadingChrysanthemum';
 import { NetWork } from '../server/NetWork';
 import { StringExtension } from '../utils/StringExtension';
+import { UserList } from '../vo/UserList';
 import BaseComponent from './BaseComponent'
 
 const { ccclass, property } = cc._decorator
@@ -30,6 +32,19 @@ export class BaseService extends BaseComponent {
 			method,
 			GameConfigUrl.header_data
 		);
+        if (ret && ret.code == code_constants.SUCCESS) {
+            //过滤掉所有的 背包 item的变化 
+			let itemChange = ret.itemChange 
+            if(itemChange){
+                // let bagItems = itemChange.bagItems
+                // let coin = itemChange.coin
+                // let diamond = itemChange.diamond
+
+                let user = UserList.getUserByUserid(UserList.meUserId)
+                user.merge(itemChange)
+            }
+		}     
+
 		LoadingChrysanthemum.hide();
 		return ret;
 	}
@@ -48,36 +63,36 @@ export class BaseService extends BaseComponent {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////FMS start ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//状态机
-	private M_FSM = null
+	// //状态机
+	// private M_FSM = null
 
-	//状态机 init
-	public FSM_init() {
-		return true
-	}
-	//获取fsm
-	public FSM_get() {
-		return this.M_FSM
-	}
-	//go
-	public FSM_go(one) {
-		this.M_FSM.go(one)
-	}
-	//canGo
-	public FSM_canGo(one) {
-		return this.M_FSM.canGo(one)
-	}
-	// FSM_is
-	public FSM_is(one) {
-		return this.M_FSM.is(one)
-	}
+	// //状态机 init
+	// public FSM_init() {
+	// 	return true
+	// }
+	// //获取fsm
+	// public FSM_get() {
+	// 	return this.M_FSM
+	// }
+	// //go
+	// public FSM_go(one) {
+	// 	this.M_FSM.go(one)
+	// }
+	// //canGo
+	// public FSM_canGo(one) {
+	// 	return this.M_FSM.canGo(one)
+	// }
+	// // FSM_is
+	// public FSM_is(one) {
+	// 	return this.M_FSM.is(one)
+	// }
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////FMS end ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public onDestroy() {
 		super.onDestroy()
-		this.M_FSM = null
+		// this.M_FSM = null
 		if (this['instance']) {
 			this['instance'] = null
 		}

@@ -26,7 +26,7 @@ export default class BaseNodeTable extends cc.Component {
 	}
 
 	//创建
-	public async createOneSprite(_one_data?: any, _path_data?: any, _parent?: cc.Node) {
+	public async createOneSprite(_one_data?: any, path_id?: any, _parent?: cc.Node) {
 		let obj: BaseSprite = null;
 		return obj;
 	}

@@ -20,7 +20,7 @@ export class Bag {
 
 	init(opts: BagItemData[]) {
 		this.m_items = [];
-		this.setItems(opts, true);
+		this.setItems(opts);
 	}
 
 	/**
@@ -59,11 +59,11 @@ export class Bag {
 	/**
 	 * 批量设置道具
 	 * 如果存在则合并属性
-	 * 如果不存在则根据第二个参数决定是否新增
+	 * 如果不存在则新增
 	 * 新增时必须传入configId
 	 * @param opts
 	 */
-	public setItems(opts: BagItemData[], isCreateNotExist = false) {
+	public setItems(opts: BagItemData[]) {
 		let self = this;
 		// cc.log('================', opts);
 		if (!this.m_items) {
@@ -76,7 +76,7 @@ export class Bag {
 			if (!v || _.isEmpty(v)) {
 				return;
 			}
-			self.updateOne(v.id, v, isCreateNotExist);
+			self.updateOne(v.id, v);
 		});
 	}
 
@@ -146,30 +146,17 @@ export class Bag {
 		if (!opts || _.isEmpty(opts)) {
 			return;
 		}
-		let item = this.getItemById(id);
-		if (item) {
-			_.map(opts, function (v, k) {
-				item[k] = v;
-			});
-			return item;
-		}
-		if (!isCreateNotExist) {
-			return;
-		}
-		let configId = opts.configId;
-		if (!(configId > 0)) {
-			return;
-		}
-		let num = 0;
-		if (opts.num > 0) {
-			num = opts.num;
-		}
-		item = { id, configId, num };
-		this.m_items.push(item);
-		_.map(opts, function (v, k) {
-			item[k] = v;
+		let item = this.getItemById(id) ;
+        if (!item){
+            if (!(opts.configId > 0)){
+                return 
+            }
+            item =  opts;
+			this.m_items.push(item);
+        }
+        _.map(opts, function (v, k) {
+            item[k] = v;
 		});
-		return item;
+        return item;	
 	}
-
 }
