@@ -19,7 +19,7 @@ export default class BaseAICondition {
 	}
 
 	// ai执行
-	public excude(): boolean {
+	public excude(param:string): boolean {
 		return false;
 	}
 }
