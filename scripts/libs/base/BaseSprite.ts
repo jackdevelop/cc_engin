@@ -248,7 +248,7 @@ export default abstract class BaseSprite extends cc.Component {
 	protected lateUpdate(dt: number): void {
 		if (this.cur_time < this.total_time) {
 			this.cur_time += dt;
-			let angle = GameMath.Lerp(this.start_angle, this.end_angle, this.cur_time / this.total_time);
+			let angle = GameMath.lerp(this.start_angle, this.end_angle, this.cur_time / this.total_time);
 			this.setRotation(angle);
 		}
 	}

@@ -2,10 +2,10 @@ import { DateExtension } from "./DateExtension";
 
 export class GameMath {
 
-	public static Lerp(start: number, end: number, t: number): number;
-	public static Lerp(start: cc.Vec2, end: cc.Vec2, t: number): cc.Vec2;
-	public static Lerp(start: cc.Vec3, end: cc.Vec3, t: number): cc.Vec3;
-	public static Lerp(start: number | cc.Vec2 | cc.Vec3, end: number | cc.Vec2 | cc.Vec3, t: number) {
+	public static lerp(start: number, end: number, t: number): number;
+	public static lerp(start: cc.Vec2, end: cc.Vec2, t: number): cc.Vec2;
+	public static lerp(start: cc.Vec3, end: cc.Vec3, t: number): cc.Vec3;
+	public static lerp(start: number | cc.Vec2 | cc.Vec3, end: number | cc.Vec2 | cc.Vec3, t: number) {
 		if (cc.js.isNumber(t)) {
 			if (t < 0) {
 				t = 0;
@@ -26,7 +26,7 @@ export class GameMath {
 		}
 	}
 
-	public static Clamp(value: number, min: number, max: number) {
+	public static clamp(value: number, min: number, max: number) {
 		if (value < min) {
 			value = min;
 		} else if (value > max) {
@@ -35,9 +35,13 @@ export class GameMath {
 		return value;
 	}
 
-
-
-
+	public static convertToStandardAngle(angle: number) {
+		let sAngle = -1;
+		if (cc.js.isNumber(angle)) {
+			sAngle = ((angle % 360) + 360) % 360;
+		}
+		return sAngle;
+	}
 
 	// static cnNum: string[] = [
 	//   '0',
