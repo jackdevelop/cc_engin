@@ -16,8 +16,11 @@ export type BagItemData = {
  */
 export class Bag {
 
+    //当前的所有道具  
 	private m_items: BagItemData[] = [];
 
+
+    //初始化  
 	init(opts: BagItemData[]) {
 		this.m_items = [];
 		this.setItems(opts);
@@ -51,7 +54,7 @@ export class Bag {
 	public getItemByConfigId(configId: number) {
 		let item: BagItemData = null;
 		if (configId > 0) {
-			item = _.findWhere(this.m_items, { configId });
+			item = _.findWhere(this.m_items, { configId:configId });
 		}
 		return item;
 	}
@@ -112,22 +115,22 @@ export class Bag {
 		return new_num;
 	}
 
-	/**
-	 * 在原有基础上增加某个道具数量
-	 * @param id 
-	 * @param num 正数增加负数减少
-	 * @returns 返回改变后的数量 如果是负数代表修改失败
-	 */
-	public addItemNum(id: number, num: number) {
-		let new_num = -1;
-		if (_.isNumber(num)) {
-			let item = this.getItemById(id);
-			if (item) {
-				new_num = this.setItemNum(id, item.num + num);
-			}
-		}
-		return new_num;
-	}
+	// /**
+	//  * 在原有基础上增加某个道具数量
+	//  * @param id 
+	//  * @param num 正数增加负数减少
+	//  * @returns 返回改变后的数量 如果是负数代表修改失败
+	//  */
+	// public addItemNum(id: number, num: number) {
+	// 	let new_num = -1;
+	// 	if (_.isNumber(num)) {
+	// 		let item = this.getItemById(id);
+	// 		if (item) {
+	// 			new_num = this.setItemNum(id, item.num + num);
+	// 		}
+	// 	}
+	// 	return new_num;
+	// }
 
 	/**
 	 * 获取某个类型的所有道具
@@ -139,7 +142,8 @@ export class Bag {
 		}
 	}
 
-	private updateOne(id: number, opts: BagItemData, isCreateNotExist = false) {
+    //更改某一个  
+	private updateOne(id: number, opts: BagItemData) {
 		if (!(id > 0)) {
 			return;
 		}
