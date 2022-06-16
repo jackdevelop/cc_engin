@@ -194,6 +194,19 @@ export default abstract class BaseVo {
 	}
 
 	/**
+	 * 设置移动类型 
+	 * @returns 
+	 */
+	public setMoveType(move_type: number) {
+		move_type = move_type || 0;
+		let m_data = this.get_m_data();
+		if (m_data) {
+			m_data.move_type = move_type;
+		}
+		return move_type;
+	}
+
+	/**
 	 *  获取当前是否可以移动
 	 */
 	get_m_ismove() {
