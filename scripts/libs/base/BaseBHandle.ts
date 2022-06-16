@@ -5,6 +5,7 @@ const { ccclass, property } = cc._decorator;
 export default class BaseBHandle {
 	protected m_vo;
 	protected m_obj;
+	protected m_data;
 
 	/**
 	 *   初始化方法
@@ -14,9 +15,10 @@ export default class BaseBHandle {
 	 * @param obj
 	 * @param m_vo
 	 */
-	public init(obj, m_vo) {
+	public init(obj, m_vo, data?) {
 		this.m_vo = m_vo;
 		this.m_obj = obj;
+		this.m_data = data;
 	}
 
 	/**
