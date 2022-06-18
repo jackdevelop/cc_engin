@@ -200,7 +200,9 @@ export class NetWork {
 				param: {
 					ts: cc.sys.now(),
 					token: user.token,
+                    Authorization:user.token,
 					userid: user.getUserId(),
+                    Action: 'messagews',
 				},
 			};
 		}
